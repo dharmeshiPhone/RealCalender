@@ -6,7 +6,7 @@ import SwiftUI
 // App-wide: Only one version of each type/struct/enum below should exist in your entire repo!
 class AchievementManager: ObservableObject {
     
-    @Published var showLevelUp: Bool = false
+    
     
     @Published var achievements: [Achievement] = []
     @Published var unlockedAchievements: Set<UUID> = []

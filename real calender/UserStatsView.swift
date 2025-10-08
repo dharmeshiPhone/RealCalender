@@ -4,7 +4,8 @@ import Charts
 
 // MARK: - User Stats View
 struct UserStatsView: View {
-    @State private var profile: UserProfile
+    @EnvironmentObject var questManager: QuestManager
+    @Binding var profile: UserProfile
     @Namespace private var anim
     @State private var showingRunTracker = false
     @StateObject private var runningTracker = RunningTracker()
@@ -66,24 +67,24 @@ struct UserStatsView: View {
     @State private var showingPullUpsEditor = false
     
     
-    init(profile: UserProfile? = nil) {
-        var initialProfile: UserProfile
-        if let providedProfile = profile {
-            initialProfile = providedProfile
-        } else if let loadedProfile = UserProfile.load() {
-            initialProfile = loadedProfile
-        } else {
-            initialProfile = UserProfile.shared
-            initialProfile.name = "User"
-            initialProfile.age = 0
-            initialProfile.heightCM = 0
-            initialProfile.weightKG = 0
-            initialProfile.level = 1
-            initialProfile.xp = 0
-        }
-        
-        self._profile = State(initialValue: initialProfile)
-    }
+//    init(profile: UserProfile? = nil) {
+//        var initialProfile: UserProfile
+//        if let providedProfile = profile {
+//            initialProfile = providedProfile
+//        } else if let loadedProfile = UserProfile.load() {
+//            initialProfile = loadedProfile
+//        } else {
+//            initialProfile = UserProfile.shared
+//            initialProfile.name = "User"
+//            initialProfile.age = 0
+//            initialProfile.heightCM = 0
+//            initialProfile.weightKG = 0
+//            initialProfile.level = 1
+//            initialProfile.xp = 0
+//        }
+//        
+//        self._profile = State(initialValue: initialProfile)
+//    }
     
     
     var body: some View {
@@ -176,7 +177,10 @@ struct UserStatsView: View {
             RunningTrackerView(runningTracker: runningTracker, userProfile: $profile)
         }
         .sheet(isPresented: $showingSwimmingEditor) {
-            SwimmingEditor(userProfile: $profile)
+            SwimmingEditor(userProfile: $profile) {
+                // check Quest complete logic
+                
+            }
         }
         .sheet(isPresented: $showingIncomeEditor) {
             IncomeEditor(userProfile: $profile)
@@ -198,6 +202,8 @@ struct UserStatsView: View {
                 checkForNewUnlocks()
                 
                 print("🔔🔔🔔 UserStatsView: Animation check complete 🔔🔔🔔")
+                
+                
             } else {
                 print("🔔🔔🔔 UserStatsView: Could not cast notification object to UserProfile 🔔🔔🔔")
             }
@@ -213,18 +219,23 @@ struct UserStatsView: View {
         .onReceive(NotificationCenter.default.publisher(for: .swimmingUnlocked)) { _ in
             print("🔴 SWIMMING NOTIFICATION RECEIVED - triggering gold ball")
             triggerGoldBallAnimation(for: .swimming)
+            checkQuestComplition()
         }
         .onReceive(NotificationCenter.default.publisher(for: .runningUnlocked)) { _ in
             print("🔴 RUNNING NOTIFICATION RECEIVED - triggering gold ball")
             triggerGoldBallAnimation(for: .running)
+            checkQuestComplition()
+            
         }
         .onReceive(NotificationCenter.default.publisher(for: .pullUpsUnlocked)) { _ in
             print("🔴 PULLUPS NOTIFICATION RECEIVED - triggering gold ball")
             triggerGoldBallAnimation(for: .pullUps)
+            checkQuestComplition()
         }
         .onReceive(NotificationCenter.default.publisher(for: .incomeUnlocked)) { _ in
             print("🔴 INCOME NOTIFICATION RECEIVED - triggering gold ball")
             triggerGoldBallAnimation(for: .income)
+            checkQuestComplition()
         }
         .onAppear {
             print("📱 UserStatsView: onAppear called")
@@ -258,6 +269,20 @@ struct UserStatsView: View {
             ballAnimationTimer = nil
         }
     }
+    
+    // MARK: - Check Quest complition logic
+    
+    func checkQuestComplition(){
+        if !questManager.checkQuestWasCompleted("Complete two graphs in your profile"){
+            questManager.completeQuest(named: "Complete two graphs in your profile")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
+                withAnimation(.easeOut(duration: 0.3)){
+                    questManager.showLevelUp = true
+                }
+            }
+        }
+    }
+    
     
     // MARK: - Helper Functions
     private func initializeUnlockPhases() {

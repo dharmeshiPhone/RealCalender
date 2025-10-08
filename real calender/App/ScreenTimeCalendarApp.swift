@@ -22,6 +22,7 @@ struct ScreenTimeCalendarApp: App {
                     }
             }
             .preferredColorScheme(.dark)
+           
         }
         .commands {
             #if DEBUG

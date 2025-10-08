@@ -54,7 +54,8 @@ extension UserDefaults {
         "dailySummaryEnabled",
         "goalRemindersEnabled",
         "dailyGoals",
-        "blockedApps"
+        "blockedApps",
+        "userPets"
     ]
     
     // Remove specific keys

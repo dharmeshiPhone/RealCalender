@@ -2,6 +2,7 @@ import SwiftUI
 import Charts
 
 struct UserStatsPerformanceSection: View {
+    @EnvironmentObject var questManager: QuestManager
     @Binding var profile: UserProfile
     @Binding var swimmingUnlockPhase: Int
     @Binding var runningUnlockPhase: Int

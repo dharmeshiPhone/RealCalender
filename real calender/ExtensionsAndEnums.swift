@@ -10,6 +10,7 @@ extension Notification.Name {
     static let bmiUnlocked = Notification.Name("bmiUnlocked")
     static let bmiLockPositionUpdated = Notification.Name("bmiLockPositionUpdated")
     static let profileUpdated = Notification.Name("profileUpdated")
+    static let appDataReset = Notification.Name("appDataReset")
 }
 
 // MARK: - Normal Distribution Helper Function

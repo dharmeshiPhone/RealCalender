@@ -5,13 +5,14 @@ struct ContentView: View {
     init() {
         print("ContentView: Initializing new ContentView instance")
     }
-    
     @EnvironmentObject var screenTimeManager: ScreenTimeManager
     @EnvironmentObject var aiChatManager: AIChatManager
     @EnvironmentObject var achievementManager: AchievementManager
     @State private var selectedTab = 0
     @State private var events: [CalendarEvent] = []
     @StateObject private var messageAnalyzer = MessageAnalyzer()
+    @StateObject private var questManager = QuestManager()
+
     @State private var userProfile: UserProfile = UserProfile.shared
     @State private var hasCompletedOnboarding = false
     @State private var isCheckingOnboarding = true
@@ -136,6 +137,7 @@ struct ContentView: View {
             } else if !hasCompletedOnboarding {
                 OnboardingView(isCompleted: $hasCompletedOnboarding)
                     .onAppear {
+                        questManager.clearAllData()
                         print("📱 ContentView: Showing OnboardingView - hasCompletedOnboarding: \(hasCompletedOnboarding)")
                         let currentOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
                         print("📱 ContentView: UserDefaults onboarding flag: \(currentOnboarding)")
@@ -200,6 +202,23 @@ struct ContentView: View {
                         }
                         .tag(3)
                 }
+                .environmentObject(questManager)
+                .overlay(alignment: .center) {
+                    LevelUpCelebrationView(
+                        isShowing: $questManager.showLevelUp,
+                        achievementLevel: UserProfile.shared.level
+                    )
+    //                    if achievementManager.showLevelUp {
+    //                        ZStack {
+    //                            Color.black.opacity(0.9)
+    //                                .ignoresSafeArea()
+    //                                .transition(.opacity)
+    //
+    //                            congratulationsView
+    //
+    //                        }
+    //                    }
+                }
                 .onAppear {
                     print("📱 ContentView: Showing TabView - hasCompletedOnboarding: \(hasCompletedOnboarding)")
                 }
@@ -212,23 +231,6 @@ struct ContentView: View {
                         print(" Badges tab selected")
                     }
                 }
-                .overlay(alignment: .center) {
-                    LevelUpCelebrationView(
-                        isShowing: $achievementManager.showLevelUp,
-                        achievementLevel: UserProfile.shared.level
-                    )
-//                    if achievementManager.showLevelUp {
-//                        ZStack {
-//                            Color.black.opacity(0.9)
-//                                .ignoresSafeArea()
-//                                .transition(.opacity)
-//
-//                            congratulationsView
-//                                
-//                        }
-//                    }
-                }
-
             }
         }
         .overlay(
@@ -256,7 +258,7 @@ struct ContentView: View {
                 .multilineTextAlignment(.center)
             
             Button("Continue Your Journey") {
-                achievementManager.showLevelUp = false
+                questManager.showLevelUp = false
             }
             .font(.headline)
             .fontWeight(.bold)
@@ -275,9 +277,9 @@ struct ContentView: View {
             .padding(.horizontal, 20)
         }
         .transition(.scale.combined(with: .opacity))
-        .scaleEffect(achievementManager.showLevelUp ? 1.0 : 0.5)
-        .opacity(achievementManager.showLevelUp ? 1 : 0)
-        .animation(.spring(response: 0.5, dampingFraction: 0.6), value: achievementManager.showLevelUp)
+        .scaleEffect(questManager.showLevelUp ? 1.0 : 0.5)
+        .opacity(questManager.showLevelUp ? 1 : 0)
+        .animation(.spring(response: 0.5, dampingFraction: 0.6), value: questManager.showLevelUp)
     }
 
     private var debugGesture: some View {
@@ -504,33 +506,6 @@ struct ContentView: View {
         }
     }
 
-//    private func loadUserProfile() {
-//        DispatchQueue.main.async {
-//            do {
-//                if let savedProfile = UserDefaults.standard.data(forKey: "userProfile"),
-//                   let profile = try? JSONDecoder().decode(UserProfile.self, from: savedProfile) {
-//                    self.userProfile = profile
-//                    
-//                    // Ensure onboarding state is preserved when loading profile
-//                    let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
-//                    let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
-//                    
-//                    // If we have a valid profile but flags are missing, restore them
-//                    if !hasCompletedOnboarding {
-//                        print(" Profile loaded but onboarding flag missing - restoring")
-//                        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
-//                        self.hasCompletedOnboarding = true
-//                    }
-//                    
-//                } else {
-//                    self.createDefaultUserProfile()
-//                }
-//            } catch {
-//                print(" Error loading user profile: \(error)")
-//                self.createDefaultUserProfile()
-//            }
-//        }
-//    }
 
     private func createDefaultUserProfile() {
         UserProfile.createTempuser()
@@ -738,6 +713,7 @@ struct ContentView: View {
         UserDefaults.standard.removeObject(forKey: "lastMonthlyOverview")
         UserDefaults.standard.removeObject(forKey: "userLocation")
         UserDefaults.standard.removeObject(forKey: "morningPrepTime")
+        UserDefaults.standard.removeObject(forKey: "userPets")
         
         // Force synchronize UserDefaults to ensure changes are saved immediately
         UserDefaults.standard.synchronize()
@@ -746,6 +722,8 @@ struct ContentView: View {
         // Reset achievement manager first (this clears UserDefaults too)
         achievementManager.resetAllAchievements()
         print("Achievement manager reset completed")
+        
+        QuestStorageManager().clearAllData()
         
         // Reset all state variables immediately on main queue
         DispatchQueue.main.async {
@@ -777,6 +755,8 @@ struct ContentView: View {
             
             // Reset user profile to default
             self.userProfile = UserProfile.shared
+            
+//            NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
             
             print("All state variables reset, about to check onboarding status...")
             

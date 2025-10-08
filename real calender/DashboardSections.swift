@@ -613,7 +613,7 @@ struct ProgressStatsSection: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: UserStatsView(profile: UserProfile.load())) {
+                NavigationLink(destination: UserStatsView(profile: .constant(userProfile))) {
                     HStack(spacing: 16) {
                         // Icon circle
                         ZStack {

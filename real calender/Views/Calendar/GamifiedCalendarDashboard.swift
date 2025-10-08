@@ -3,7 +3,10 @@ import UIKit
 import Combine
 
 struct GamifiedCalendarDashboard: View {
-    @StateObject private var questManager = QuestManager()
+    @EnvironmentObject var screenTimeManager: ScreenTimeManager
+    @EnvironmentObject var aiChatManager: AIChatManager
+    @EnvironmentObject var achievementManager: AchievementManager
+    @EnvironmentObject var questManager: QuestManager
     
     @Binding var events: [CalendarEvent]
     @Binding var selectedDate: Date
@@ -18,9 +21,7 @@ struct GamifiedCalendarDashboard: View {
     @State private var showingCalendarReview = false
     @State private var showingProfileDropdown = false
     @State private var userProfile: UserProfile = UserProfile.shared
-    @EnvironmentObject var screenTimeManager: ScreenTimeManager
-    @EnvironmentObject var aiChatManager: AIChatManager
-    @EnvironmentObject var achievementManager: AchievementManager
+    
     
     @State private var showCustomPopover = false
     @State private var openPetView = false
@@ -35,6 +36,12 @@ struct GamifiedCalendarDashboard: View {
                     userProfile: userProfile,
                     todaysQuote: todaysQuote
                 )
+                .onChange(of: UserProfile.shared.level, { _, new in
+                    if new > 1{
+                        loadUserProfile()
+                    }
+                    
+                })
                 .onReceive(NotificationCenter.default.publisher(for: .profileUpdated)) { notification in
                     if let updatedProfile = notification.object as? UserProfile {
                         userProfile = updatedProfile
@@ -176,7 +183,7 @@ struct GamifiedCalendarDashboard: View {
                 print("􀄰 DEBUG: === END SETUP CALLBACK ANALYSIS ===")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.34) {
                     withAnimation(.easeOut(duration: 0.3)){
-                        achievementManager.showLevelUp = true
+                        questManager.showLevelUp = true
                     }
                 }
                 

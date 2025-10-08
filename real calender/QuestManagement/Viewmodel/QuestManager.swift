@@ -55,6 +55,8 @@ class QuestManager: ObservableObject {
     @Published var currentBatch: Int = 1
     @Published var allQuests: [QuestItem] = []
     
+    @Published var showLevelUp: Bool = false// for level up
+    
     private let storageManager = QuestStorageManager()
     private let predefinedQuests: [QuestItem]
     
@@ -149,7 +151,7 @@ class QuestManager: ObservableObject {
                     user.level += 1
                 }
                 user.save()
-                
+                NotificationCenter.default.post(name: .profileUpdated, object: user)
             }
             // Save quests and check batch
             saveAllData()
@@ -159,6 +161,14 @@ class QuestManager: ObservableObject {
         } else {
             print("Quest already completed: \(questTitle)")
         }
+    }
+    
+    func checkQuestWasCompleted(_ questTitle: String) -> Bool{
+        guard let index = allQuests.firstIndex(where: { $0.title == questTitle }) else {
+            print("Quest not found: \(questTitle)")
+            return false
+        }
+        return allQuests[index].isCompleted
     }
     
     
