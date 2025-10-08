@@ -1,0 +1,1 @@
+// The enum has been moved back to OnboardingView.swift to maintain compatibility with the older system

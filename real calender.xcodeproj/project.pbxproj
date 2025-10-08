@@ -1,0 +1,611 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		F24D96B02E2611A4006455EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F24D969A2E2611A2006455EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F24D96A12E2611A2006455EA;
+			remoteInfo = "real calender";
+		};
+		F24D96BA2E2611A4006455EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F24D969A2E2611A2006455EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F24D96A12E2611A2006455EA;
+			remoteInfo = "real calender";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F24D96A22E2611A2006455EA /* real calender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "real calender.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F24D96AF2E2611A4006455EA /* real calenderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "real calenderTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F24D96B92E2611A4006455EA /* real calenderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "real calenderUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F24D96A42E2611A2006455EA /* real calender */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "real calender";
+			sourceTree = "<group>";
+		};
+		F24D96B22E2611A4006455EA /* real calenderTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "real calenderTests";
+			sourceTree = "<group>";
+		};
+		F24D96BC2E2611A4006455EA /* real calenderUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "real calenderUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F24D969F2E2611A2006455EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F24D96AC2E2611A4006455EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F24D96B62E2611A4006455EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F24D96992E2611A2006455EA = {
+			isa = PBXGroup;
+			children = (
+				F24D96A42E2611A2006455EA /* real calender */,
+				F24D96B22E2611A4006455EA /* real calenderTests */,
+				F24D96BC2E2611A4006455EA /* real calenderUITests */,
+				F24D96A32E2611A2006455EA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F24D96A32E2611A2006455EA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F24D96A22E2611A2006455EA /* real calender.app */,
+				F24D96AF2E2611A4006455EA /* real calenderTests.xctest */,
+				F24D96B92E2611A4006455EA /* real calenderUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F24D96A12E2611A2006455EA /* real calender */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F24D96C32E2611A4006455EA /* Build configuration list for PBXNativeTarget "real calender" */;
+			buildPhases = (
+				F24D969E2E2611A2006455EA /* Sources */,
+				F24D969F2E2611A2006455EA /* Frameworks */,
+				F24D96A02E2611A2006455EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F24D96A42E2611A2006455EA /* real calender */,
+			);
+			name = "real calender";
+			packageProductDependencies = (
+			);
+			productName = "real calender";
+			productReference = F24D96A22E2611A2006455EA /* real calender.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F24D96AE2E2611A4006455EA /* real calenderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F24D96C62E2611A4006455EA /* Build configuration list for PBXNativeTarget "real calenderTests" */;
+			buildPhases = (
+				F24D96AB2E2611A4006455EA /* Sources */,
+				F24D96AC2E2611A4006455EA /* Frameworks */,
+				F24D96AD2E2611A4006455EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F24D96B12E2611A4006455EA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F24D96B22E2611A4006455EA /* real calenderTests */,
+			);
+			name = "real calenderTests";
+			packageProductDependencies = (
+			);
+			productName = "real calenderTests";
+			productReference = F24D96AF2E2611A4006455EA /* real calenderTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F24D96B82E2611A4006455EA /* real calenderUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F24D96C92E2611A4006455EA /* Build configuration list for PBXNativeTarget "real calenderUITests" */;
+			buildPhases = (
+				F24D96B52E2611A4006455EA /* Sources */,
+				F24D96B62E2611A4006455EA /* Frameworks */,
+				F24D96B72E2611A4006455EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F24D96BB2E2611A4006455EA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F24D96BC2E2611A4006455EA /* real calenderUITests */,
+			);
+			name = "real calenderUITests";
+			packageProductDependencies = (
+			);
+			productName = "real calenderUITests";
+			productReference = F24D96B92E2611A4006455EA /* real calenderUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F24D969A2E2611A2006455EA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					F24D96A12E2611A2006455EA = {
+						CreatedOnToolsVersion = 16.4;
+						LastSwiftMigration = 1640;
+					};
+					F24D96AE2E2611A4006455EA = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = F24D96A12E2611A2006455EA;
+					};
+					F24D96B82E2611A4006455EA = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = F24D96A12E2611A2006455EA;
+					};
+				};
+			};
+			buildConfigurationList = F24D969D2E2611A2006455EA /* Build configuration list for PBXProject "real calender" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F24D96992E2611A2006455EA;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F24D96A32E2611A2006455EA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F24D96A12E2611A2006455EA /* real calender */,
+				F24D96AE2E2611A4006455EA /* real calenderTests */,
+				F24D96B82E2611A4006455EA /* real calenderUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F24D96A02E2611A2006455EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F24D96AD2E2611A4006455EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F24D96B72E2611A4006455EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F24D969E2E2611A2006455EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F24D96AB2E2611A4006455EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F24D96B52E2611A4006455EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F24D96B12E2611A4006455EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F24D96A12E2611A2006455EA /* real calender */;
+			targetProxy = F24D96B02E2611A4006455EA /* PBXContainerItemProxy */;
+		};
+		F24D96BB2E2611A4006455EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F24D96A12E2611A2006455EA /* real calender */;
+			targetProxy = F24D96BA2E2611A4006455EA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F24D96C12E2611A4006455EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 3A4TWBKX66;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F24D96C22E2611A4006455EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 3A4TWBKX66;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F24D96C42E2611A4006455EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3A4TWBKX66;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_GeminiAPIKey = AIzaSyDM4vCFfJBJ5sI9zSxBe_bpIT4cljm5j9Y;
+				INFOPLIST_KEY_LSMinimumSystemVersion = 15.0;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app accesses health data to provide personalized fitness coaching and activity tracking.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app needs to read your health data to provide personalized fitness recommendations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app uses location to find nearby fitness facilities and track outdoor activities.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to create calendar events through voice commands.";
+				INFOPLIST_KEY_NSUserNotificationUsageDescription = "This app sends notifications to alert you about app usage limits, daily summaries, and goal achievements.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.RedFox.real-calender";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F24D96C52E2611A4006455EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3A4TWBKX66;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_GeminiAPIKey = AIzaSyDM4vCFfJBJ5sI9zSxBe_bpIT4cljm5j9Y;
+				INFOPLIST_KEY_LSMinimumSystemVersion = 15.0;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app accesses health data to provide personalized fitness coaching and activity tracking.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app needs to read your health data to provide personalized fitness recommendations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app uses location to find nearby fitness facilities and track outdoor activities.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to create calendar events through voice commands.";
+				INFOPLIST_KEY_NSUserNotificationUsageDescription = "This app sends notifications to alert you about app usage limits, daily summaries, and goal achievements.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.RedFox.real-calender";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F24D96C72E2611A4006455EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3A4TWBKX66;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_GeminiAPIKey = AIzaSyDM4vCFfJBJ5sI9zSxBe_bpIT4cljm5j9Y;
+				INFOPLIST_KEY_LSMinimumSystemVersion = 15.0;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app accesses health data to provide personalized fitness coaching and activity tracking.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app needs to read your health data to provide personalized fitness recommendations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app uses location to find nearby fitness facilities and track outdoor activities.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to create calendar events through voice commands.";
+				INFOPLIST_KEY_NSUserNotificationUsageDescription = "This app sends notifications to alert you about app usage limits, daily summaries, and goal achievements.";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.RedFox.real-calenderTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/real calender.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/real calender";
+			};
+			name = Debug;
+		};
+		F24D96C82E2611A4006455EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3A4TWBKX66;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_GeminiAPIKey = AIzaSyDM4vCFfJBJ5sI9zSxBe_bpIT4cljm5j9Y;
+				INFOPLIST_KEY_LSMinimumSystemVersion = 15.0;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app accesses health data to provide personalized fitness coaching and activity tracking.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app needs to read your health data to provide personalized fitness recommendations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app uses location to find nearby fitness facilities and track outdoor activities.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to create calendar events through voice commands.";
+				INFOPLIST_KEY_NSUserNotificationUsageDescription = "This app sends notifications to alert you about app usage limits, daily summaries, and goal achievements.";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.RedFox.real-calenderTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/real calender.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/real calender";
+			};
+			name = Release;
+		};
+		F24D96CA2E2611A4006455EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3A4TWBKX66;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_GeminiAPIKey = AIzaSyDM4vCFfJBJ5sI9zSxBe_bpIT4cljm5j9Y;
+				INFOPLIST_KEY_LSMinimumSystemVersion = 15.0;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app accesses health data to provide personalized fitness coaching and activity tracking.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app needs to read your health data to provide personalized fitness recommendations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app uses location to find nearby fitness facilities and track outdoor activities.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to create calendar events through voice commands.";
+				INFOPLIST_KEY_NSUserNotificationUsageDescription = "This app sends notifications to alert you about app usage limits, daily summaries, and goal achievements.";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.RedFox.real-calenderUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "real calender";
+			};
+			name = Debug;
+		};
+		F24D96CB2E2611A4006455EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3A4TWBKX66;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_GeminiAPIKey = AIzaSyDM4vCFfJBJ5sI9zSxBe_bpIT4cljm5j9Y;
+				INFOPLIST_KEY_LSMinimumSystemVersion = 15.0;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app accesses health data to provide personalized fitness coaching and activity tracking.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app needs to read your health data to provide personalized fitness recommendations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app uses location to find nearby fitness facilities and track outdoor activities.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to create calendar events through voice commands.";
+				INFOPLIST_KEY_NSUserNotificationUsageDescription = "This app sends notifications to alert you about app usage limits, daily summaries, and goal achievements.";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.RedFox.real-calenderUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "real calender";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F24D969D2E2611A2006455EA /* Build configuration list for PBXProject "real calender" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F24D96C12E2611A4006455EA /* Debug */,
+				F24D96C22E2611A4006455EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F24D96C32E2611A4006455EA /* Build configuration list for PBXNativeTarget "real calender" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F24D96C42E2611A4006455EA /* Debug */,
+				F24D96C52E2611A4006455EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F24D96C62E2611A4006455EA /* Build configuration list for PBXNativeTarget "real calenderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F24D96C72E2611A4006455EA /* Debug */,
+				F24D96C82E2611A4006455EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F24D96C92E2611A4006455EA /* Build configuration list for PBXNativeTarget "real calenderUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F24D96CA2E2611A4006455EA /* Debug */,
+				F24D96CB2E2611A4006455EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F24D969A2E2611A2006455EA /* Project object */;
+}

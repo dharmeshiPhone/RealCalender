@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Family Controls Entitlement - Required for Screen Time API -->
+    <key>com.apple.developer.family-controls</key>
+    <true/>
+    
+    <!-- Device Activity Entitlement - Required for monitoring app usage -->
+    <key>com.apple.developer.deviceactivity</key>
+    <true/>
+    
+    <!-- Managed Settings Entitlement - Required for blocking apps -->
+    <key>com.apple.developer.managed-settings</key>
+    <true/>
+    
+    <!-- App Groups for sharing data between main app and extensions -->
+    <key>com.apple.security.application-groups</key>
+    <array>
+        <string>group.com.yourname.screentimecalendar</string>
+    </array>
+    
+    <!-- Background Processing for monitoring -->
+    <key>com.apple.developer.background-processing</key>
+    <array>
+        <string>com.yourname.screentimecalendar.usage-check</string>
+        <string>com.yourname.screentimecalendar.goal-check</string>
+        <string>com.yourname.screentimecalendar.daily-summary</string>
+    </array>
+    
+    <!-- Push Notifications -->
+    <key>aps-environment</key>
+    <string>development</string>
+    
+    <!-- Network Access for Gemini AI -->
+    <key>com.apple.security.network.client</key>
+    <true/>
+    
+    <!-- Keychain Access for secure storage -->
+    <key>keychain-access-groups</key>
+    <array>
+        <string>$(AppIdentifierPrefix)com.yourname.screentimecalendar</string>
+    </array>
+</dict>
+</plist>
