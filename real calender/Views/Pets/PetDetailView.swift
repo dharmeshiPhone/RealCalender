@@ -19,16 +19,13 @@ struct PetDetailView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Enhanced Background
                 backgroundGradient
                 
                 VStack(spacing: 0) {
-                    // Header
                     headerView
                         .padding(.horizontal)
                         .padding(.top, 10)
                     Spacer()
-                    // Pet Display Section
                     if pet.isUnlocked{
                         petDisplayView
                             .frame(height: geometry.size.height * 0.35)
@@ -38,7 +35,6 @@ struct PetDetailView: View {
                     }
                    
                     Spacer()
-                    // Stats Card
                     statsCardView
                         .padding(.horizontal)
                         .padding(.bottom, 10)
@@ -180,7 +176,6 @@ struct PetDetailView: View {
     // MARK: - Pet Display
     private var petDisplayView: some View {
         ZStack {
-            // Outer glow effect
             Circle()
                 .fill(pet.swiftUIColor.opacity(0.2))
                 .frame(width: 220, height: 220)
@@ -188,9 +183,7 @@ struct PetDetailView: View {
                 .scaleEffect(scaleEffect)
                 .opacity(glowOpacity)
             
-            // Main pet container
             ZStack {
-                // Background rings
                 ForEach(0..<3) { ring in
                     Circle()
                         .stroke(
@@ -210,7 +203,6 @@ struct PetDetailView: View {
                         .scaleEffect(scaleEffect)
                 }
                 
-                // Main icon container
                 Circle()
                     .fill(
                         LinearGradient(
@@ -236,7 +228,6 @@ struct PetDetailView: View {
                     )
                     .shadow(color: pet.swiftUIColor.opacity(0.5), radius: 20, x: 0, y: 0)
                 
-                // Pet icon
                 Image(systemName: pet.icon)
                     .font(.system(size: 70, weight: .bold))
                     .foregroundColor(.white)
@@ -249,7 +240,6 @@ struct PetDetailView: View {
     // MARK: - PetLoked Display
     private var petLockedDisplayView: some View {
         ZStack {
-            // Grayed outer glow effect
             Circle()
                 .fill(Color.gray.opacity(0.2))
                 .frame(width: 220, height: 220)
@@ -257,9 +247,7 @@ struct PetDetailView: View {
                 .scaleEffect(scaleEffect)
                 .opacity(glowOpacity * 0.5)
             
-            // Main locked container
             ZStack {
-                // Background rings (grayed version)
                 ForEach(0..<3) { ring in
                     Circle()
                         .stroke(
@@ -288,7 +276,6 @@ struct PetDetailView: View {
                     .scaleEffect(scaleEffect)
                     .overlay {
                         VStack(spacing: 12) {
-                            // Lock icon
                             ZStack {
                                 Circle()
                                     .fill(Color.black.opacity(0.7))
@@ -300,7 +287,6 @@ struct PetDetailView: View {
                                     .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 2)
                             }
                             
-                            // "Locked" text
                             Text("LOCKED")
                                 .font(.system(size: 12, weight: .bold))
                                 .foregroundColor(.gray)
@@ -316,7 +302,6 @@ struct PetDetailView: View {
                     }
             }
             
-            // Dim overlay for extra locked effect
             Rectangle()
                 .fill(Color.black.opacity(0.3))
                 .frame(width: 200, height: 200)
@@ -328,7 +313,6 @@ struct PetDetailView: View {
     // MARK: - Stats Card
     private var statsCardView: some View {
         VStack(alignment: .leading, spacing: 20) {
-            // Status Header
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Pet Status")
@@ -418,18 +402,15 @@ struct PetDetailView: View {
             }
             
             ZStack(alignment: .leading) {
-                // Background track
                 Capsule()
                     .fill(Color.black.opacity(0.4))
                     .frame(height: 16)
                 
-                // Progress
                 Capsule()
                     .fill(happinessGradient)
                     .frame(width: CGFloat(happiness) / 100 * (UIScreen.main.bounds.width - 88), height: 16)
                     .shadow(color: happinessColor.opacity(0.5), radius: 3, x: 0, y: 2)
                 
-                // Glow effect
                 Capsule()
                     .fill(happinessColor)
                     .frame(width: CGFloat(happiness) / 100 * (UIScreen.main.bounds.width - 88), height: 16)
@@ -460,7 +441,6 @@ struct PetDetailView: View {
                 Spacer()
                 
                 Button(action: {
-                    // Evolve action
                     triggerEvolution()
                 }) {
                     HStack(spacing: 8) {
@@ -583,30 +563,26 @@ struct PetDetailView: View {
         rotationAngle = 0
         showStats = false
         
-        // 1. Main entrance animation
         withAnimation(.spring(response: 0.8, dampingFraction: 0.7)) {
             scaleEffect = 1.0
             glowOpacity = 0.6
             showStats = true
         }
         
-        // 2. Continuous rotation (slower for smoother look)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             withAnimation(.linear(duration: 12).repeatForever(autoreverses: false)) {
                 rotationAngle = 360
             }
         }
         
-        // 3. Separate pulsing animation (on a different property)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
-                glowOpacity = 0.8 // Pulse the glow instead of scale
+                glowOpacity = 0.8
             }
         }
     }
 
     private func triggerEvolution() {
-        // Evolution animation logic
         withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
             scaleEffect = 1.3
         }
@@ -645,7 +621,7 @@ struct StatView: View {
 }
 
 
-// MARK: - Pet Detail View
+// MARK: - Pet Detail View(Mock up)
 
 //struct PetDetailView: View {
 //    var pet: Pet

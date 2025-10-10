@@ -4,6 +4,7 @@ import Charts
 
 // MARK: - User Stats View
 struct UserStatsView: View {
+    @AppStorage("showGlowIcon") private var showGlowQuestIcon: Bool = false
     @EnvironmentObject var questManager: QuestManager
     @Binding var profile: UserProfile
     @Namespace private var anim
@@ -275,11 +276,12 @@ struct UserStatsView: View {
     func checkQuestComplition(){
         if !questManager.checkQuestWasCompleted("Complete two graphs in your profile"){
             questManager.completeQuest(named: "Complete two graphs in your profile")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
-                withAnimation(.easeOut(duration: 0.3)){
-                    questManager.showLevelUp = true
-                }
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
+//                withAnimation(.easeOut(duration: 0.3)){
+//                    questManager.showLevelUp = true
+//                }
+//            }
+           // showGlowQuestIcon = true
         }
     }
     

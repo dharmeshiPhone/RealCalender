@@ -52,6 +52,21 @@ class QuestStorageManager {
 
 // MARK: - Quest Manager
 class QuestManager: ObservableObject {
+    @AppStorage("showGlowIcon") private var showGlowQuestIcon: Bool = false
+    @AppStorage("pendingRewardQuestId") private var storedPendingRewardQuestId: String?
+    
+    var pendingRewardQuestId: UUID? {
+        get {
+            guard let id = storedPendingRewardQuestId else { return nil }
+            return UUID(uuidString: id)
+        }
+        set {
+            storedPendingRewardQuestId = newValue?.uuidString
+        }
+    }
+
+   
+
     @Published var currentBatch: Int = 1
     @Published var allQuests: [QuestItem] = []
     
@@ -141,17 +156,21 @@ class QuestManager: ObservableObject {
             let latestQuest = allQuests[index]
             if latestQuest.isCompleted{
                 // Add XP to current user
-                var user = UserProfile.shared
-                user.xp += Double(quest.xP)
-                user.coins += quest.coins
-                
-                let XprequriedToComplteLevel = UserProfile.xpRequiredForLevel(user.level)
-                
-                if user.xp >= XprequriedToComplteLevel{
-                    user.level += 1
-                }
-                user.save()
-                NotificationCenter.default.post(name: .profileUpdated, object: user)
+//                var user = UserProfile.shared
+//                user.xp += Double(quest.xP)
+//                user.coins += quest.coins
+//                
+//                let XprequriedToComplteLevel = UserProfile.xpRequiredForLevel(user.level)
+//                
+//                if user.xp >= XprequriedToComplteLevel{
+//                    user.level += 1
+//                    showGlowQuestIcon = true
+//                }
+//                
+//                user.save()
+//                NotificationCenter.default.post(name: .profileUpdated, object: user)
+                storedPendingRewardQuestId = quest.id.uuidString
+                showGlowQuestIcon = true
             }
             // Save quests and check batch
             saveAllData()

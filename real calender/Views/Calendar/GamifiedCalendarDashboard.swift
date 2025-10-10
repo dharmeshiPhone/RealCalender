@@ -8,6 +8,9 @@ struct GamifiedCalendarDashboard: View {
     @EnvironmentObject var achievementManager: AchievementManager
     @EnvironmentObject var questManager: QuestManager
     
+    @AppStorage("showGlowIcon") private var showGlowQuestIcon: Bool = false
+
+    
     @Binding var events: [CalendarEvent]
     @Binding var selectedDate: Date
     @State private var currentStreak = 7
@@ -181,11 +184,12 @@ struct GamifiedCalendarDashboard: View {
                 )
                 print("✅ DEBUG: Posted NewEventsCreated notification with \(newEvents.count) events")
                 print("􀄰 DEBUG: === END SETUP CALLBACK ANALYSIS ===")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.34) {
-                    withAnimation(.easeOut(duration: 0.3)){
-                        questManager.showLevelUp = true
-                    }
-                }
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.34) {
+//                    withAnimation(.easeOut(duration: 0.3)){
+//                        questManager.showLevelUp = true
+//                    }
+//                }
+                //showGlowQuestIcon = true
                 
             }
         }
@@ -367,6 +371,16 @@ struct GamifiedCalendarDashboard: View {
     
     private var QuestButton: some View {
         Button(action: {
+//            if showGlowQuestIcon{
+//                showGlowQuestIcon = false
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+//                    withAnimation(.easeOut(duration: 0.3)){
+//                        questManager.showLevelUp = true
+//                    }
+//                }
+//            }else{
+//                showCustomPopover.toggle()
+//            }
             showCustomPopover.toggle()
         }) {
             ZStack {
@@ -386,6 +400,26 @@ struct GamifiedCalendarDashboard: View {
                     .rotationEffect(.degrees(-90))
                     .frame(width: 28, height: 28)
                     .animation(.easeInOut(duration: 0.3), value: progress)
+                // glow effect
+                if showGlowQuestIcon{
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                gradient: Gradient(colors: [
+                                    .yellow.opacity(0.8),
+                                    .orange.opacity(0.6),
+                                    .clear
+                                ]),
+                                center: .center,
+                                startRadius: 2,
+                                endRadius: 20
+                            )
+                        )
+                        .frame(width: 30, height: 30)
+                        .blur(radius: 1)
+                        .scaleEffect(1.2)
+                }
+                
                 
                 Image(systemName: "document.circle")
                     .foregroundColor(.orange)
@@ -403,8 +437,8 @@ struct GamifiedCalendarDashboard: View {
         Button(action: {
             openPetView.toggle()
         }) {
-            Image(systemName: "dollarsign.ring")
-                .foregroundColor(.orange)
+            Image(systemName:"pawprint.circle.fill")//"dollarsign.ring"
+                .foregroundColor(.blue)
                 .font(.system(size: 20, weight: .regular))
         }
         .buttonStyle(.plain)

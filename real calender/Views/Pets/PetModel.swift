@@ -8,11 +8,11 @@
 import SwiftUI
 
 // MARK: - Data Models
-struct Pet: Codable, Identifiable,Hashable {//,Hashable
+struct Pet: Codable, Identifiable,Hashable {
     let id: UUID
     let name: String
     var isUnlocked: Bool
-    var unlockTimestamp: Date?     // ← NEW
+    var unlockTimestamp: Date?
     let cost: Int
     let icon: String
     let color: CustomColor
@@ -27,38 +27,21 @@ struct Pet: Codable, Identifiable,Hashable {//,Hashable
         self.unlockTimestamp = unlockTimestamp
     }
     
-    // Computed property for the color
     var swiftUIColor: Color { color.color }
     
-    // 🕒 Hatching time — set to 1 minute for testing
-    private static let hatchDuration: TimeInterval = 60
-
+    private static let hatchDuration: TimeInterval = 3600
     
-    // Time remaining for hatching
-//    var timeRemaining: TimeInterval? {
-//        guard let start = unlockTimestamp else { return nil }
-//        let remaining = Pet.hatchDuration - Date().timeIntervalSince(start)
-//        return remaining > 0 ? remaining : 0
-//    }
     
     func timeRemaining(currentTime: Date) -> TimeInterval? {
-           guard let start = unlockTimestamp else { return nil }
-           let remaining = Pet.hatchDuration - currentTime.timeIntervalSince(start)
-           return remaining > 0 ? remaining : 0
-       }
+        guard let start = unlockTimestamp else { return nil }
+        let remaining = Pet.hatchDuration - currentTime.timeIntervalSince(start)
+        return remaining > 0 ? remaining : 0
+    }
     
     var isHatching: Bool {
-            guard let start = unlockTimestamp else { return false }
-            return Pet.hatchDuration - Date().timeIntervalSince(start) > 0 && !isUnlocked
-        }
-    
-    
-//    var isHatching: Bool {
-//        if let timeRemaining = timeRemaining {
-//            return timeRemaining > 0 && !isUnlocked
-//        }
-//        return false
-//    }
+        guard let start = unlockTimestamp else { return false }
+        return Pet.hatchDuration - Date().timeIntervalSince(start) > 0 && !isUnlocked
+    }
     
     var isReadyToReveal: Bool {
         if let unlockTimestamp = unlockTimestamp {
@@ -78,11 +61,11 @@ struct Pet: Codable, Identifiable,Hashable {//,Hashable
     
     static func == (lhs: Pet, rhs: Pet) -> Bool {
         return lhs.id == rhs.id &&
-               lhs.name == rhs.name &&
-               lhs.isUnlocked == rhs.isUnlocked &&
-               lhs.unlockTimestamp == rhs.unlockTimestamp &&
-               lhs.cost == rhs.cost &&
-               lhs.icon == rhs.icon
+        lhs.name == rhs.name &&
+        lhs.isUnlocked == rhs.isUnlocked &&
+        lhs.unlockTimestamp == rhs.unlockTimestamp &&
+        lhs.cost == rhs.cost &&
+        lhs.icon == rhs.icon
     }
 }
 

@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct PetStoreView: View {
+    @AppStorage("showGlowIcon") private var showGlowQuestIcon: Bool = false
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var questManager: QuestManager
     @State private var userProfile = UserProfile.shared
@@ -86,11 +87,7 @@ struct PetStoreView: View {
             .onReceive(timer) { _ in
                 currentTime = Date()
             }
-            //            .onReceive(timer) { _ in
-            //                withAnimation(.linear(duration: 0.25)) {
-            //                    pets = pets.map { $0 }
-            //                }
-            //            }
+            
         }
     }
     
@@ -343,11 +340,12 @@ struct PetStoreView: View {
         
         questManager.completeQuest(named: "Get your first egg from the pet store")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.34) {
-            withAnimation(.easeOut(duration: 0.3)){
-                questManager.showLevelUp = true
-            }
-        }
+        //showGlowQuestIcon = true
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.34) {
+//            withAnimation(.easeOut(duration: 0.3)){
+//                questManager.showLevelUp = true
+//            }
+//        }
     }
     
     // MARK: - Action Buttons
@@ -377,7 +375,6 @@ struct PetStoreView: View {
         }
     }
     
-    // MARK: - UserDefaults
     private func loadPets() {
         if let savedPetsData = UserDefaults.standard.data(forKey: "userPets"),
            let decodedPets = try? JSONDecoder().decode([Pet].self, from: savedPetsData) {

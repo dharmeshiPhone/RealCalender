@@ -237,13 +237,11 @@ struct UnlockPetAnimationView: View {
     }
     
     private func startAnimationSequence() {
-        // Phase 1: Particle explosion
         withAnimation(.easeOut(duration: 0.5)) {
             animationPhase = 1
             particleScale = 1.5
         }
         
-        // Phase 2: Pet reveal with glow
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
                 animationPhase = 2
@@ -256,14 +254,12 @@ struct UnlockPetAnimationView: View {
             }
         }
         
-        // Phase 3: Text reveal
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
                 animationPhase = 3
             }
         }
         
-        // Continuous confetti effect
         withAnimation(.easeInOut(duration: 0.3).repeatForever(autoreverses: true)) {
             confettiPosition = CGSize(width: 0.5, height: 0.5)
         }
@@ -271,7 +267,7 @@ struct UnlockPetAnimationView: View {
 }
 
 
-// MARK: - Unlock Animation View
+// MARK: - Unlock Animation View (Moke)
 //struct UnlockAnimationView: View {
 //    let pet: Pet
 //    @Binding var isShowing: Bool
