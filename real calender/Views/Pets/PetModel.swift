@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: - Data Models
-struct Pet: Codable, Identifiable,Hashable {
+struct Pet: Codable, Identifiable,Hashable {//,Hashable
     let id: UUID
     let name: String
     var isUnlocked: Bool
@@ -35,19 +35,30 @@ struct Pet: Codable, Identifiable,Hashable {
 
     
     // Time remaining for hatching
-    var timeRemaining: TimeInterval? {
-        guard let start = unlockTimestamp else { return nil }
-        let remaining = Pet.hatchDuration - Date().timeIntervalSince(start)
-        return remaining > 0 ? remaining : 0
-    }
+//    var timeRemaining: TimeInterval? {
+//        guard let start = unlockTimestamp else { return nil }
+//        let remaining = Pet.hatchDuration - Date().timeIntervalSince(start)
+//        return remaining > 0 ? remaining : 0
+//    }
     
+    func timeRemaining(currentTime: Date) -> TimeInterval? {
+           guard let start = unlockTimestamp else { return nil }
+           let remaining = Pet.hatchDuration - currentTime.timeIntervalSince(start)
+           return remaining > 0 ? remaining : 0
+       }
     
     var isHatching: Bool {
-        if let timeRemaining = timeRemaining {
-            return timeRemaining > 0 && !isUnlocked
+            guard let start = unlockTimestamp else { return false }
+            return Pet.hatchDuration - Date().timeIntervalSince(start) > 0 && !isUnlocked
         }
-        return false
-    }
+    
+    
+//    var isHatching: Bool {
+//        if let timeRemaining = timeRemaining {
+//            return timeRemaining > 0 && !isUnlocked
+//        }
+//        return false
+//    }
     
     var isReadyToReveal: Bool {
         if let unlockTimestamp = unlockTimestamp {
@@ -57,12 +68,22 @@ struct Pet: Codable, Identifiable,Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
-
-        static func == (lhs: Pet, rhs: Pet) -> Bool {
-            lhs.id == rhs.id
-        }
+        hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(isUnlocked)
+        hasher.combine(unlockTimestamp)
+        hasher.combine(cost)
+        hasher.combine(icon)
+    }
+    
+    static func == (lhs: Pet, rhs: Pet) -> Bool {
+        return lhs.id == rhs.id &&
+               lhs.name == rhs.name &&
+               lhs.isUnlocked == rhs.isUnlocked &&
+               lhs.unlockTimestamp == rhs.unlockTimestamp &&
+               lhs.cost == rhs.cost &&
+               lhs.icon == rhs.icon
+    }
 }
 
 

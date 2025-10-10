@@ -20,7 +20,7 @@ struct PetStoreView: View {
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     @State private var openPet: Pet? = nil
-    
+    @State private var currentTime = Date()
     // Sample initial pet data
     let initialPets = [
         Pet(name: "Fluffy", isUnlocked: false, cost: 50, icon: "pawprint.circle.fill", color: .blue),
@@ -55,7 +55,7 @@ struct PetStoreView: View {
                 }
                 
                 if showingUnlockAnimation, let unlockedIndex = unlockedPetIndex, unlockedIndex < pets.count {
-                    UnlockAnimationView(
+                    UnlockPetAnimationView(
                         pet: pets[unlockedIndex],
                         isShowing: $showingUnlockAnimation
                     )
@@ -84,10 +84,13 @@ struct PetStoreView: View {
                 }
             }
             .onReceive(timer) { _ in
-                withAnimation(.linear(duration: 0.25)) {
-                    pets = pets.map { $0 }
-                }
+                currentTime = Date()
             }
+            //            .onReceive(timer) { _ in
+            //                withAnimation(.linear(duration: 0.25)) {
+            //                    pets = pets.map { $0 }
+            //                }
+            //            }
         }
     }
     
@@ -165,11 +168,6 @@ struct PetStoreView: View {
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 16), count: 2), spacing: 16) {
                 ForEach(Array(pets.enumerated()), id: \.offset) { index, pet in
-//                    NavigationLink {
-//                        PetDetailView(pet: pet)
-//                    } label: {
-//
-//                    }
                     petCardView(pet: pet, index: index)
                 }
             }
@@ -235,17 +233,15 @@ struct PetStoreView: View {
                             .cornerRadius(12)
                         
                     } else if pet.isHatching {
-                        let remaining = pet.timeRemaining ?? 0
-
-                        
+                        let remaining = pet.timeRemaining(currentTime: currentTime) ?? 0
                         Text("Hatching...")
                             .font(.headline)
                             .foregroundColor(.orange)
                         
                         Text(String(format: "%02d:%02d:%02d",
-                            Int(remaining) / 3600,
-                            (Int(remaining) % 3600) / 60,
-                            Int(remaining) % 60))
+                                    Int(remaining ) / 3600,
+                                    (Int(remaining) % 3600) / 60,
+                                    Int(remaining) % 60))
                         .font(.system(size: 24, weight: .semibold, design: .monospaced))
                         .foregroundColor(.white)
                         
@@ -298,20 +294,20 @@ struct PetStoreView: View {
         }
         
         if pet.isUnlocked {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                selectedPet = nil
-//                openPet = pet
-//            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                selectedPet = nil
+                openPet = pet
+            }
             print("Selected pet: \(pet.name)")
         } else if !pet.isHatching && !pet.isReadyToReveal {
             attemptToUnlockPet(at: index)
         }else{
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                selectedPet = nil
-//                openPet = pet
-//            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                selectedPet = nil
+                openPet = pet
+            }
         }
-        
+        //
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             selectedPet = nil
         }
@@ -329,10 +325,10 @@ struct PetStoreView: View {
             
             print("🪺 \(pet.name) is now hatching! Will unlock in 24 hours.")
         } else {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                selectedPet = nil
-//                openPet = pet
-//            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                selectedPet = nil
+                openPet = pet
+            }
             print("Not enough coins to unlock \(pet.name).")
         }
     }
@@ -421,82 +417,3 @@ struct PetStoreView: View {
 
 
 
-// MARK: - Unlock Animation View
-struct UnlockAnimationView: View {
-    let pet: Pet
-    @Binding var isShowing: Bool
-    @State private var animationPhase = 0
-    
-    var body: some View {
-        ZStack {
-            Color.black.opacity(0.8).ignoresSafeArea()
-            
-            VStack(spacing: 30) {
-                ZStack {
-                    ForEach(0..<12) { i in
-                        Circle()
-                            .fill(Color.white)
-                            .frame(width: 8, height: 8)
-                            .offset(x: cos(Double(i) * .pi / 6) * 100,
-                                    y: sin(Double(i) * .pi / 6) * 100)
-                            .scaleEffect(animationPhase >= 1 ? 1.5 : 0.5)
-                            .opacity(animationPhase >= 1 ? 0 : 1)
-                    }
-                }
-                .animation(.easeOut(duration: 0.8).delay(0.5), value: animationPhase)
-                
-                ZStack {
-                    Circle()
-                        .fill(pet.color.color.opacity(0.3))
-                        .frame(width: 150, height: 150)
-                        .scaleEffect(animationPhase >= 2 ? 1.2 : 0.1)
-                    
-                    Image(systemName: pet.icon)
-                        .font(.system(size: 60))
-                        .foregroundColor(pet.color.color)
-                        .scaleEffect(animationPhase >= 2 ? 1.0 : 0.1)
-                }
-                .animation(.spring(response: 0.6, dampingFraction: 0.7).delay(1.0), value: animationPhase)
-                
-                VStack(spacing: 10) {
-                    Text("Pet Unlocked!")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .opacity(animationPhase >= 3 ? 1 : 0)
-                    
-                    Text(pet.name)
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                        .foregroundColor(pet.color.color)
-                        .opacity(animationPhase >= 3 ? 1 : 0)
-                }
-                .animation(.easeIn(duration: 0.5).delay(1.8), value: animationPhase)
-                
-                if animationPhase >= 3 {
-                    Button("Continue") {
-                        withAnimation(.easeOut(duration: 0.3)) { isShowing = false }
-                    }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 40)
-                    .padding(.vertical, 12)
-                    .background(pet.color.color)
-                    .cornerRadius(25)
-                    .transition(.scale.combined(with: .opacity))
-                }
-            }
-        }
-        .onAppear { startAnimationSequence() }
-    }
-    
-    private func startAnimationSequence() {
-        withAnimation(.easeOut(duration: 0.3)) { animationPhase = 1 }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) { animationPhase = 2 }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
-            withAnimation(.easeIn(duration: 0.5)) { animationPhase = 3 }
-        }
-    }
-}

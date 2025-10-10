@@ -14,6 +14,7 @@ struct QuestItemView: View {
     
     let questBoxColor = Color(red: 32/255, green: 32/255, blue: 32/255) // Dark gray/black box
     let rewardIconColor = Color(red: 255/255, green: 200/255, blue: 70/255) // Gold/Yellow reward background
+    let grayRewardIconColor = Color(red: 100/255, green: 100/255, blue: 100/255) // Gray for upcoming quests
     let progressBackgroundColor = Color(red: 80/255, green: 80/255, blue: 80/255) // Dark gray progress background
     let completedProgressColor = Color(red: 60/255, green: 200/255, blue: 60/255) // Bright green for 1/1
     let partialProgressColor = Color(red: 160/255, green: 160/255, blue: 160/255).opacity(0.5) // Gray for 1/2
@@ -59,7 +60,7 @@ struct QuestItemView: View {
             // Right Side: Reward Icon with Tap Action
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(rewardIconColor)
+                    .fill(rewardIconFillColor)
                     .frame(width: 54, height: 54)
                 
                 VStack(spacing: 0) {
@@ -92,5 +93,15 @@ struct QuestItemView: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(quest.isCompleted ? completedProgressColor : Color.clear, lineWidth: 2)
         )
+    }
+    
+    private var rewardIconFillColor: Color {
+        if quest.isCompleted {
+            return rewardIconColor // completed quest → yellow
+        } else if quest.completedCount > 0 {
+            return rewardIconColor // running quest → yellow
+        } else {
+            return grayRewardIconColor // upcoming quest → gray
+        }
     }
 }
