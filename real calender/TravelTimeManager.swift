@@ -325,7 +325,9 @@ class TravelTimeManager {
             ),
             color: getTravelColor(for: transportMethod),
             location: "From \(homeLocation) to \(workLocation)",
-            teacher: nil
+            teacher: nil,
+            isRespond: false,
+            isCompleted: false
         )
         
         return travelEvent
@@ -362,7 +364,9 @@ class TravelTimeManager {
             ),
             color: getTravelColor(for: transportMethod).opacity(0.7),
             location: "From \(workLocation) to \(homeLocation)",
-            teacher: nil
+            teacher: nil,
+            isRespond: false,
+            isCompleted: false
         )
         
         return returnEvent

@@ -692,7 +692,9 @@ class AIChatManager: ObservableObject {
             title: title,
             date: eventDate,
             notes: "Created by AI Personal Trainer",
-            color: .blue
+            color: .blue,
+            isRespond: false,
+            isCompleted: false
         )
         
         return event

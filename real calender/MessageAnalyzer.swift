@@ -502,7 +502,9 @@ class MessageAnalyzer: NSObject, ObservableObject {
                 title: extractedEvent.title,
                 date: extractedEvent.date,
                 notes: "Created from text analysis: \(extractedEvent.originalMessage)",
-                color: .blue
+                color: .blue,
+                isRespond: false,
+                isCompleted: false
             )
             
             onEventCreated?(calendarEvent)

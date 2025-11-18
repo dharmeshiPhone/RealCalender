@@ -480,22 +480,27 @@ struct DashboardQuickActionButton: View {
 }
 
 #Preview {
-    CalendarDashboardView(events: .constant([
+    CalendarAnalyticsView(events: .constant([
         CalendarEvent(
             title: "Math Class",
-            date: Date().addingTimeInterval(3600),
-            notes: "Algebra basics",
+            date: Date(),
+            notes: "Algebra",
             color: .blue,
-            location: "Room 101"
+            location: "Room 101",
+            isRespond: false,
+            isCompleted: false
         ),
         CalendarEvent(
-            title: "History Class",
-            date: Date().addingTimeInterval(7200),
-            notes: "World War II",
-            color: .red,
-            location: "Room 203"
+            title: "Meeting",
+            date: Date().addingTimeInterval(3600),
+            notes: "Project discussion",
+            color: .green,
+            location: "Office",
+            isRespond: false,
+            isCompleted: false
         )
     ]))
     .environmentObject(ScreenTimeManager())
     .environmentObject(AchievementManager())
 }
+

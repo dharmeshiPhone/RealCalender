@@ -298,12 +298,14 @@ struct CalendarEvent: Identifiable, Codable {
     var folderId: UUID?
     var extraInformation: String
     var equipment: String
+    var isRespond: Bool
+    var isCompleted: Bool
 
     enum CodingKeys: String, CodingKey {
-        case id, title, date, notes, colorData, location, teacher, folderId, extraInformation, equipment
+        case id, title, date, notes, colorData, location, teacher, folderId, extraInformation, equipment, isRespond, isCompleted
     }
 
-    init(title: String, date: Date, notes: String = "", color: Color = .blue, location: String = "", teacher: String? = nil, folderId: UUID? = nil, extraInformation: String = "", equipment: String = "") {
+    init(title: String, date: Date, notes: String = "", color: Color = .blue, location: String = "", teacher: String? = nil, folderId: UUID? = nil, extraInformation: String = "", equipment: String = "",isRespond: Bool, isCompleted: Bool) {
         self.id = UUID()
         self.title = title
         self.date = date
@@ -314,6 +316,8 @@ struct CalendarEvent: Identifiable, Codable {
         self.folderId = folderId
         self.extraInformation = extraInformation
         self.equipment = equipment
+        self.isRespond = isRespond
+        self.isCompleted = isCompleted
     }
 
     init(from decoder: Decoder) throws {
@@ -326,6 +330,8 @@ struct CalendarEvent: Identifiable, Codable {
         teacher = try container.decodeIfPresent(String.self, forKey: .teacher)
         folderId = try container.decodeIfPresent(UUID.self, forKey: .folderId)
         extraInformation = try container.decodeIfPresent(String.self, forKey: .extraInformation) ?? ""
+        isRespond = try container.decodeIfPresent(Bool.self, forKey: .isRespond) ?? false
+        isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
         equipment = try container.decodeIfPresent(String.self, forKey: .equipment) ?? ""
         if let colorData = try container.decodeIfPresent(Data.self, forKey: .colorData),
            let uiColor = try NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: colorData) {
@@ -346,6 +352,8 @@ struct CalendarEvent: Identifiable, Codable {
         try container.encodeIfPresent(folderId, forKey: .folderId)
         try container.encode(extraInformation, forKey: .extraInformation)
         try container.encode(equipment, forKey: .equipment)
+        try container.encode(isRespond, forKey: .isRespond)
+        try container.encode(isCompleted, forKey: .isCompleted)
         let uiColor = UIColor(color)
         let colorData = try NSKeyedArchiver.archivedData(withRootObject: uiColor, requiringSecureCoding: false)
         try container.encode(colorData, forKey: .colorData)

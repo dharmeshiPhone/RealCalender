@@ -422,7 +422,9 @@ class GeminiAIService {
                         notes: " Extracted from timetable image\n Room: \(room)",
                         color: getColorForEvent(className),
                         location: room,
-                        teacher: teacher
+                        teacher: teacher,
+                        isRespond: false,
+                        isCompleted: false
                     )
                     
                     events.append(event)
@@ -435,7 +437,7 @@ class GeminiAIService {
     }
     
     // MARK: - Fallback Events (Reduced and clearly marked)
-    private func createFallbackEvents() -> [CalendarEvent] {
+     func createFallbackEvents() -> [CalendarEvent] {
         print("⚠️ WARNING: Creating fallback events - AI image processing failed")
         
         let calendar = Calendar.current
@@ -448,7 +450,9 @@ class GeminiAIService {
                 notes: "❌ AI couldn't read your timetable image. Please try uploading a clearer, higher-resolution image with better lighting. Make sure text is clearly visible and not blurry.",
                 color: .red,
                 location: "Please retry with better image",
-                teacher: "AI Processing Error"
+                teacher: "AI Processing Error",
+                isRespond: false,
+                isCompleted: false
             ),
             CalendarEvent(
                 title: "📸 Upload Better Image",
@@ -456,7 +460,9 @@ class GeminiAIService {
                 notes: "💡 Tips for better results:\n• Use good lighting\n• Keep text sharp and clear\n• Avoid shadows or glare\n• Try a different angle\n• Ensure high contrast",
                 color: .orange,
                 location: "Image Quality Tips",
-                teacher: "AI Helper"
+                teacher: "AI Helper",
+                isRespond: false,
+                isCompleted: false
             )
         ]
     }
@@ -489,7 +495,9 @@ class GeminiAIService {
                         notes: "Created from audio recording analysis",
                         color: color,
                         location: "",
-                        teacher: nil
+                        teacher: nil,
+                        isRespond: false,
+                        isCompleted: false
                     )
                     events.append(event)
                 }
@@ -562,7 +570,7 @@ class GeminiAIService {
         return selectedColor
     }
     
-    private func createSampleAudioEvents() -> [CalendarEvent] {
+     func createSampleAudioEvents() -> [CalendarEvent] {
         print("⚠️ WARNING: Creating fallback audio events - AI audio processing failed")
         
         let calendar = Calendar.current
@@ -575,7 +583,8 @@ class GeminiAIService {
                 notes: "❌ AI couldn't process your voice recording. Please try speaking more clearly or use the photo upload option instead.",
                 color: .red,
                 location: "Voice Processing Error",
-                teacher: "AI Audio Helper"
+                teacher: "AI Audio Helper",
+                isRespond: false, isCompleted: false
             )
         ]
     }

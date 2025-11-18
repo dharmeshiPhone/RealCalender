@@ -263,7 +263,7 @@ struct SimpleInputStep: View {
         Task {
             do {
                 print("🤖 Processing voice recording with AI...")
-                let events = try await GeminiAIService.shared.processAudioRecording(duration: recordingTime)
+                let events = GeminiAIService.shared.createSampleAudioEvents()//try await GeminiAIService.shared.processAudioRecording(duration: recordingTime)
                 
                 await MainActor.run {
                     calendarEvents = events
@@ -279,7 +279,9 @@ struct SimpleInputStep: View {
                         title: "📝 Voice Recording Event",
                         date: Date(),
                         notes: "Created from \(formatTime(recordingTime)) voice recording",
-                        color: .orange
+                        color: .orange,
+                        isRespond: false,
+                        isCompleted: false
                     )
                     calendarEvents = [fallbackEvent]
                     showingCalendarPopup = true

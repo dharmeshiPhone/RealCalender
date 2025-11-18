@@ -293,7 +293,9 @@ struct EventDetailView: View {
         location: "Room 101",
         teacher: "Dr. Smith",
         extraInformation: "",
-        equipment: ""
+        equipment: "",
+        isRespond: false,
+        isCompleted: false
     )
     @State var isPresented = true
     

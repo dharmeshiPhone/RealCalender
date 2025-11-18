@@ -29,7 +29,7 @@ struct Pet: Codable, Identifiable,Hashable {
     
     var swiftUIColor: Color { color.color }
     
-    private static let hatchDuration: TimeInterval = 3600
+    private static let hatchDuration: TimeInterval = 30//24 * 60 * 60
     
     
     func timeRemaining(currentTime: Date) -> TimeInterval? {
@@ -45,7 +45,7 @@ struct Pet: Codable, Identifiable,Hashable {
     
     var isReadyToReveal: Bool {
         if let unlockTimestamp = unlockTimestamp {
-            return !isUnlocked && Date().timeIntervalSince(unlockTimestamp) >= Pet.hatchDuration//24 * 60 * 60
+            return !isUnlocked && Date().timeIntervalSince(unlockTimestamp) >= Pet.hatchDuration
         }
         return false
     }

@@ -60,7 +60,9 @@ class TimetableAnalysisService {
                     title: rawTitle.isEmpty ? "Imported Event" : rawTitle,
                     date: date,
                     notes: notes,
-                    color: color
+                    color: color,
+                    isRespond: false,
+                    isCompleted: false
                 ))
             }
         }

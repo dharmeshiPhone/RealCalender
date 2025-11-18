@@ -719,14 +719,18 @@ struct InsightRow: View {
             date: Date(),
             notes: "Algebra",
             color: .blue,
-            location: "Room 101"
+            location: "Room 101",
+            isRespond: false,
+            isCompleted: false
         ),
         CalendarEvent(
             title: "Meeting",
             date: Date().addingTimeInterval(3600),
             notes: "Project discussion",
             color: .green,
-            location: "Office"
+            location: "Office",
+            isRespond: false,
+            isCompleted: false
         )
     ]))
     .environmentObject(ScreenTimeManager())

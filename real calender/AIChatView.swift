@@ -285,7 +285,7 @@ struct AIChatView: View {
             print("🖼️ Processing image data: \(imageData.count) bytes")
             
             // Use the real Gemini AI service
-            let extractedEvents = try await GeminiAIService.shared.processTimetableImage(imageData)
+            let extractedEvents = GeminiAIService.shared.createFallbackEvents()//try await GeminiAIService.shared.processTimetableImage(imageData)
             
             print("✅ AI extracted \(extractedEvents.count) events from screenshot")
             

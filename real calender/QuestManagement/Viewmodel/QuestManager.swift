@@ -85,9 +85,9 @@ class QuestManager: ObservableObject {
             
             // temps
             // Batch 2 - Intermediate Quests
-            QuestItem(title: "Complete daily goals 3 times", completedCount: 0, totalCount: 3, xP: 75, coins: 40, batch: 2),
-            QuestItem(title: "Unlock 5 achievements", completedCount: 0, totalCount: 5, xP: 100, coins: 60, batch: 2),
-            QuestItem(title: "Reach level 5 with your pet", completedCount: 0, totalCount: 1, xP: 80, coins: 45, batch: 2),
+            QuestItem(title: "Log 3 calendar event", completedCount: 0, totalCount: 3, xP: 75, coins: 50, batch: 2),
+            QuestItem(title: "Turn on notifications", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 2),
+            QuestItem(title: "Complete 1 scheduled event", completedCount: 0, totalCount: 1, xP: 100, coins: 75, batch: 2),
             
             // Batch 3 - Advanced Quests
             QuestItem(title: "Join a study group", completedCount: 0, totalCount: 1, xP: 120, coins: 75, batch: 3),
@@ -142,7 +142,7 @@ class QuestManager: ObservableObject {
         }
     }
     
-    
+    // MARK: - Complete Quest normally
     func completeQuest(named questTitle: String) {
         guard let index = allQuests.firstIndex(where: { $0.title == questTitle }) else {
             print("Quest not found: \(questTitle)")
@@ -174,7 +174,33 @@ class QuestManager: ObservableObject {
             }
             // Save quests and check batch
             saveAllData()
-            checkBatchCompletion()
+          //  checkBatchCompletion()
+            
+            print("Quest progress updated: \(questTitle), XP added: \(quest.xP)")
+        } else {
+            print("Quest already completed: \(questTitle)")
+        }
+    }
+    
+    // MARK: - Complete Quest force
+    
+    func completeQuestWithIncremnetForce(named questTitle: String,num:Int) {
+        guard let index = allQuests.firstIndex(where: { $0.title == questTitle }) else {
+            print("Quest not found: \(questTitle)")
+            return
+        }
+        
+        let quest = allQuests[index]
+        if !quest.isCompleted {
+            allQuests[index].incrementforceProgress(num: num)
+            
+            let latestQuest = allQuests[index]
+            if latestQuest.isCompleted{
+                storedPendingRewardQuestId = quest.id.uuidString
+                showGlowQuestIcon = true
+            }
+            // Save quests and check batch
+            saveAllData()
             
             print("Quest progress updated: \(questTitle), XP added: \(quest.xP)")
         } else {
@@ -214,7 +240,7 @@ class QuestManager: ObservableObject {
         checkBatchCompletion()
     }
     
-    private func checkBatchCompletion() {
+    func checkBatchCompletion() {
         let currentBatchQuests = getCurrentBatchQuests()
         let allCompleted = currentBatchQuests.allSatisfy { $0.isCompleted }
         
@@ -238,6 +264,25 @@ class QuestManager: ObservableObject {
         
         resetCurrentBatchQuests()
         saveAllData()
+        
+        // MARK: -  Auto complete questions
+        
+        switch currentBatch{
+        case 2:
+            if let data = UserDefaults.standard.data(forKey: "calendarEvents"),
+               let events = try? JSONDecoder().decode([CalendarEvent].self, from: data) {
+                if events.count == 1{
+                    completeQuest(named: "Log 3 calendar event")
+                }else if events.count == 2{
+                    completeQuestWithIncremnetForce(named: "Log 3 calendar event", num: 2)
+                }else if events.count > 2{
+                    completeQuestWithIncremnetForce(named: "Log 3 calendar event", num: 3)
+                }
+            }
+        default:
+            break
+        }
+       
     }
     
     private func resetCurrentBatchQuests() {

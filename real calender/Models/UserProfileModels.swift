@@ -193,7 +193,7 @@ struct UserProfile: Identifiable, Codable {
     // MARK: - XP Helpers
     static func xpRequiredForLevel(_ level: Int) -> Double {
         // Define XP required for each level
-        let xpTable: [Double] = [50, 50, 50, 100]
+        let xpTable: [Double] = [50, 50, 300, 250]
         if level > 0 && level <= xpTable.count {
             return xpTable.prefix(level).reduce(0, +)
         } else {

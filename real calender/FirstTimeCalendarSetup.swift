@@ -152,13 +152,13 @@ struct FirstTimeCalendarSetup: View {
         // TEMPORARY: Add test button for API debugging
         VStack(spacing: 10) {
             Button(" Test API Connection") {
-                testAPIDirectly()
+               // testAPIDirectly()
             }
             .buttonStyle(.bordered)
             .foregroundColor(.blue)
             
             Button(" Test with Sample Image") {
-                testWithSampleImage()
+                //testWithSampleImage()
             }
             .buttonStyle(.bordered)
             .foregroundColor(.green)
@@ -371,7 +371,7 @@ struct FirstTimeCalendarSetup: View {
                         try await Task.sleep(nanoseconds: 300_000_000)
                     }
                     
-                    let analyzedEvents = try await GeminiAIService.shared.processTimetableImage(imageData)
+                    let analyzedEvents = GeminiAIService.shared.createFallbackEvents()//try await GeminiAIService.shared.processTimetableImage(imageData)
                     
                     print("📸 DEBUG: [TASK] Image \(index + 1) returned \(analyzedEvents.count) events")
                     
@@ -467,7 +467,9 @@ struct FirstTimeCalendarSetup: View {
                 notes: "Couldn't extract events from your images. Please try:\nUsing clearer, higher-resolution photos\nBetter lighting (avoid shadows/glare)\nMaking sure text is sharp and readable",
                 color: .red,
                 location: "Image Quality Issue",
-                teacher: "Setup Helper"
+                teacher: "Setup Helper",
+                isRespond: false,
+                isCompleted: false
             ),
             CalendarEvent(
                 title: " Try Again with Better Photos",
@@ -475,7 +477,9 @@ struct FirstTimeCalendarSetup: View {
                 notes: "Use the 'Add More Photos' option in the review screen to upload clearer images of your timetable.",
                 color: .orange,
                 location: "Setup Helper",
-                teacher: "AI Assistant"
+                teacher: "AI Assistant",
+                isRespond: false,
+                isCompleted: false
             )
         ]
     }
@@ -532,7 +536,9 @@ struct FirstTimeCalendarSetup: View {
                     notes: "Sample event created during setup - you can add real events later",
                     color: .blue,
                     location: "Setup Template",
-                    teacher: "Template"
+                    teacher: "Template",
+                    isRespond: false,
+                    isCompleted: false
                 )
             ]
             print(" SETUP: Using default template events - Count: \(finalEvents.count)")
@@ -567,7 +573,9 @@ struct FirstTimeCalendarSetup: View {
                         title: " API Test Successful",
                         date: Date(),
                         notes: "API Response: \(response)",
-                        color: .green
+                        color: .green,
+                        isRespond: false,
+                        isCompleted: false
                     )
                     self.calendarEvents = [testEvent]
                     self.showingCalendarPopup = true
@@ -581,7 +589,9 @@ struct FirstTimeCalendarSetup: View {
                         title: " API Test Failed",
                         date: Date(),
                         notes: "Error: \(error.localizedDescription)",
-                        color: .red
+                        color: .red,
+                        isRespond: false,
+                        isCompleted: false
                     )
                     self.calendarEvents = [errorEvent]
                     self.showingCalendarPopup = true
@@ -615,7 +625,9 @@ struct FirstTimeCalendarSetup: View {
                         title: " Image Test Failed",
                         date: Date(),
                         notes: "Error: \(error.localizedDescription)",
-                        color: .red
+                        color: .red,
+                        isRespond: false,
+                        isCompleted: false
                     )
                     self.calendarEvents = [errorEvent]
                     self.showingCalendarPopup = true
@@ -705,7 +717,9 @@ struct FirstTimeCalendarSetup: View {
                         notes: "Get ready for school - shower, breakfast, pack bag",
                         color: .yellow,
                         location: "Home",
-                        teacher: nil
+                        teacher: nil,
+                        isRespond: false,
+                        isCompleted: false
                     ))
                 }
                 
@@ -719,7 +733,9 @@ struct FirstTimeCalendarSetup: View {
                             notes: "Regular class session",
                             color: color,
                             location: location,
-                            teacher: teacher
+                            teacher: teacher,
+                            isRespond: false,
+                            isCompleted: false
                         ))
                     }
                 }
@@ -732,7 +748,9 @@ struct FirstTimeCalendarSetup: View {
                         notes: "Cafeteria lunch with friends",
                         color: .brown,
                         location: "School Cafeteria",
-                        teacher: nil
+                        teacher: nil,
+                        isRespond: false,
+                        isCompleted: false
                     ))
                 }
                 
@@ -746,7 +764,9 @@ struct FirstTimeCalendarSetup: View {
                             notes: "Afternoon session",
                             color: color,
                             location: location,
-                            teacher: teacher
+                            teacher: teacher,
+                            isRespond: false,
+                            isCompleted: false
                         ))
                     }
                 }
@@ -759,7 +779,9 @@ struct FirstTimeCalendarSetup: View {
                         notes: "Review today's lessons and prepare for tomorrow",
                         color: .indigo,
                         location: "Library",
-                        teacher: nil
+                        teacher: nil,
+                        isRespond: false,
+                        isCompleted: false
                     ))
                 }
             }
@@ -782,7 +804,9 @@ struct FirstTimeCalendarSetup: View {
                         notes: activity.3,
                         color: activity.1,
                         location: activity.2,
-                        teacher: nil
+                        teacher: nil,
+                        isRespond: false,
+                        isCompleted: false
                     ))
                 }
             }
@@ -795,7 +819,9 @@ struct FirstTimeCalendarSetup: View {
                     notes: "Dinner with family and relaxation",
                     color: .orange,
                     location: "Home",
-                    teacher: nil
+                    teacher: nil,
+                    isRespond: false,
+                    isCompleted: false
                 ))
             }
         }
@@ -809,7 +835,9 @@ struct FirstTimeCalendarSetup: View {
                 notes: "Submit the chemistry research project on renewable energy",
                 color: .red,
                 location: "Chemistry Lab",
-                teacher: "Prof. Davis"
+                teacher: "Prof. Davis",
+                isRespond: false,
+                isCompleted: false
             ))
         }
         
@@ -821,7 +849,9 @@ struct FirstTimeCalendarSetup: View {
                 notes: "Chapter 7-9: Algebra and Trigonometry",
                 color: .blue,
                 location: "Room 101",
-                teacher: "Ms. Johnson"
+                teacher: "Ms. Johnson",
+                isRespond: false,
+                isCompleted: false
             ))
         }
         
@@ -833,7 +863,9 @@ struct FirstTimeCalendarSetup: View {
                 notes: "Meeting with teachers to discuss academic progress",
                 color: .purple,
                 location: "Main Office",
-                teacher: "Various Teachers"
+                teacher: "Various Teachers",
+                isRespond: false,
+                isCompleted: false
             ))
         }
         

@@ -624,14 +624,18 @@ struct AIInsightCard: View {
             date: Date(),
             notes: "Team standup",
             color: .blue,
-            location: "Office"
+            location: "Office",
+            isRespond: false,
+            isCompleted: false
         ),
         CalendarEvent(
             title: "Project Work",
             date: Date().addingTimeInterval(900), // 15 minutes later
             notes: "Development tasks",
             color: .green,
-            location: "Office"
+            location: "Office",
+            isRespond: false,
+            isCompleted: false
         )
     ]))
     .environmentObject(AIChatManager())

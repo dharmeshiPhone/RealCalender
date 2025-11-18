@@ -25,11 +25,11 @@ struct PetStoreView: View {
     // Sample initial pet data
     let initialPets = [
         Pet(name: "Fluffy", isUnlocked: false, cost: 50, icon: "pawprint.circle.fill", color: .blue),
-        Pet(name: "Sparky", isUnlocked: false, cost: 100, icon: "bolt.circle.fill", color: .yellow),
-        Pet(name: "Aqua", isUnlocked: false, cost: 150, icon: "drop.circle.fill", color: .cyan),
-        Pet(name: "Rocky", isUnlocked: false, cost: 200, icon: "shield.righthalf.filled", color: .brown),
-        Pet(name: "Mystic", isUnlocked: false, cost: 250, icon: "apple.image.playground.fill", color: .purple),
-        Pet(name: "Blaze", isUnlocked: false, cost: 300, icon: "flame.circle.fill", color: .orange)
+//        Pet(name: "Sparky", isUnlocked: false, cost: 100, icon: "bolt.circle.fill", color: .yellow),
+//        Pet(name: "Aqua", isUnlocked: false, cost: 150, icon: "drop.circle.fill", color: .cyan),
+//        Pet(name: "Rocky", isUnlocked: false, cost: 200, icon: "shield.righthalf.filled", color: .brown),
+//        Pet(name: "Mystic", isUnlocked: false, cost: 250, icon: "apple.image.playground.fill", color: .purple),
+//        Pet(name: "Blaze", isUnlocked: false, cost: 300, icon: "flame.circle.fill", color: .orange)
     ]
     
     var body: some View {
@@ -49,7 +49,7 @@ struct PetStoreView: View {
                     VStack(spacing: 32) {
                         headerSection
                         petCollectionSection
-                        actionButtonsSection
+                       // actionButtonsSection
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
@@ -65,7 +65,7 @@ struct PetStoreView: View {
             .navigationTitle("Pet Store")
             .navigationBarTitleDisplayMode(.large)
             .navigationDestination(item: $openPet, destination: { pet in
-                PetDetailView(pet: pet)
+                PetDetailView(pet: pet, questManager: questManager)
             })
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

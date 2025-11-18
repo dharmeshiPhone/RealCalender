@@ -342,14 +342,18 @@ private let sampleEvents = [
         date: Date(),
         notes: "Algebra",
         color: .blue,
-        location: "Room 101"
+        location: "Room 101",
+        isRespond: false,
+        isCompleted: false
     ),
     CalendarEvent(
         title: "Physics Class", 
         date: Date().addingTimeInterval(1800),
         notes: "Mechanics",
         color: .red,
-        location: "Room 205"
+        location: "Room 205",
+        isRespond: false,
+        isCompleted: false
     )
 ]
 

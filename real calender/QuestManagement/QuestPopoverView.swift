@@ -52,10 +52,13 @@ struct QuestPopoverView: View {
             user.xp += Double(quest.xP)
             user.coins += quest.coins
             
+            var showLevelUp : Bool = false
+            
             // Handle level-up
             let xpRequired = UserProfile.xpRequiredForLevel(user.level)
             if user.xp >= xpRequired {
                 user.level += 1
+                showLevelUp = true
             }
             
             user.save()
@@ -64,10 +67,13 @@ struct QuestPopoverView: View {
             // Clear glow & pending reward
             showGlowQuestIcon = false
             questManager.pendingRewardQuestId = nil
+            questManager.checkBatchCompletion()
             dismiss()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
-                withAnimation(.easeOut(duration: 0.3)){
-                    questManager.showLevelUp = true
+            if showLevelUp{
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                    withAnimation(.easeOut(duration: 0.3)){
+                        questManager.showLevelUp = true
+                    }
                 }
             }
         }

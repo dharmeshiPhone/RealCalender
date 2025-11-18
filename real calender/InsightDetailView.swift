@@ -337,7 +337,9 @@ struct RelatedEventRow: View {
                 date: Date(),
                 notes: "Team standup",
                 color: .blue,
-                location: "Office"
+                location: "Office",
+                isRespond: false,
+                isCompleted: false
             )
         ])
     )

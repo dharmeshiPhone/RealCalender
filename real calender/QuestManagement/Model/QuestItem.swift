@@ -48,6 +48,12 @@ struct QuestItem: Identifiable, Codable {
         }
     }
     
+    mutating func incrementforceProgress(num:Int) {
+        if completedCount < totalCount {
+            completedCount += num
+        }
+    }
+    
     mutating func resetProgress() {
         completedCount = 0
     }

@@ -298,7 +298,9 @@ struct AddEventView: View {
             date: date,
             notes: notes,
             color: selectedColor,
-            location: location
+            location: location,
+            isRespond: false,
+            isCompleted: false
         )
         
         // Add to local array for immediate UI update
