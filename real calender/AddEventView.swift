@@ -3,6 +3,7 @@ import SwiftUI
 import CoreLocation
 
 struct AddEventView: View {
+    @EnvironmentObject var questManager: QuestManager
     let selectedDate: Date
     @Binding var events: [CalendarEvent]
     @Binding var isPresented: Bool
@@ -293,14 +294,18 @@ struct AddEventView: View {
     }
     
     private func saveEvent() {
+        // Check if this is the FIRST scheduled event
+          let isFirstScheduledEvent = !events.contains { $0.scheduleEvent == true }
+        
         let newEvent = CalendarEvent(
             title: title,
             date: date,
             notes: notes,
             color: selectedColor,
             location: location,
-            isRespond: false,
-            isCompleted: false
+            isRespond: isFirstScheduledEvent ? true : false,
+            isCompleted: isFirstScheduledEvent ? true : false,
+            scheduleEvent: true
         )
         
         // Add to local array for immediate UI update
@@ -313,6 +318,9 @@ struct AddEventView: View {
         )
         
         print("📅 AddEventView: Created manual event '\(newEvent.title)' and posted unified notification")
+        if isFirstScheduledEvent{
+            questManager.completeQuest(named: "Complete 1 scheduled event")
+        }
         
         isPresented = false
     }

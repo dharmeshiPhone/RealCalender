@@ -539,12 +539,19 @@ struct ContentView: View {
                 if let data = try? JSONEncoder().encode(self.events) {
                     UserDefaults.standard.set(data, forKey: "calendarEvents")
                     print("📅 ContentView: Saved \(self.events.count) events to UserDefaults")
+                    setupCalenderLogEvent()
                 }
             } catch {
                 print("📅 ContentView: Error saving events: \(error)")
             }
         }
     }
+    
+    func setupCalenderLogEvent(){
+        questManager.completeQuestWithIncremnetStaticForce(named: "Log 3 calendar event", num: events.count)
+    }
+    
+    
 
     private func setupInitialData() {
         loadEvents()
@@ -567,8 +574,13 @@ struct ContentView: View {
             forName: Notification.Name("EventsModified"),
             object: nil,
             queue: .main
-        ) { _ in
+        ) { notification in
+            let shouldReload = notification.userInfo?["shouldLoadEvent"] as? Bool ?? false
+            
             print(" ContentView: Events modified notification received - saving events")
+            if shouldReload{
+                loadEvents()
+            }
             self.saveEvents()
         }
         
@@ -714,6 +726,8 @@ struct ContentView: View {
         UserDefaults.standard.removeObject(forKey: "userLocation")
         UserDefaults.standard.removeObject(forKey: "morningPrepTime")
         UserDefaults.standard.removeObject(forKey: "userPets")
+        UserDefaults.standard.removeObject(forKey: "pendingRewardQuestIds")
+        UserDefaults.standard.removeObject(forKey: "showGlowIcon")
         
         // Force synchronize UserDefaults to ensure changes are saved immediately
         UserDefaults.standard.synchronize()

@@ -662,7 +662,7 @@ struct FirstTimeCalendarSetup: View {
         morningRoutineMinutes = 30
         
         // Create comprehensive fallback events
-        let fallbackEvents = createComprehensiveFallbackEvents()
+//        let fallbackEvents = createComprehensiveFallbackEvents() // har
         
         // Save settings
         UserDefaults.hasCompletedCalendarSetup = true
@@ -672,14 +672,14 @@ struct FirstTimeCalendarSetup: View {
         UserDefaults.standard.set(workLocation, forKey: "workLocation")
         UserDefaults.standard.set(travelTimeMinutes, forKey: "travelTimeMinutes")
         UserDefaults.standard.set(transportMethod.rawValue, forKey: "transportMethod")
-        
-        print("🚀 DEV SKIP: Created \(fallbackEvents.count) fallback events")
-        for (index, event) in fallbackEvents.enumerated() {
-            print("   [\(index + 1)] \(event.title) on \(event.date.formatted(date: .abbreviated, time: .shortened))")
-        }
-        
-        // Call completion handlers
-        onEventsCreated(fallbackEvents)
+        //har
+//        print("🚀 DEV SKIP: Created \(fallbackEvents.count) fallback events")
+//        for (index, event) in fallbackEvents.enumerated() {
+//            print("   [\(index + 1)] \(event.title) on \(event.date.formatted(date: .abbreviated, time: .shortened))")
+//        }
+//        
+//        // Call completion handlers
+        onEventsCreated([])//fallbackEvents
         isPresented = false
         
         print("🚀 DEV SKIP: Setup completed successfully")

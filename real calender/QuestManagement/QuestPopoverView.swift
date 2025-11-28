@@ -26,7 +26,7 @@ struct QuestPopoverView: View {
             // Quest Items List
             VStack(spacing: 8) {
                 ForEach(questManager.getCurrentBatchQuests()) { quest in
-                    QuestItemView(quest: quest,isUnassignedCoin:quest.id == questManager.pendingRewardQuestId)
+                    QuestItemView(quest: quest,isUnassignedCoin:questManager.pendingRewardQuestIds.contains(quest.id))
                         .onTapGesture {
                             handle(quest: quest)
                         }
@@ -43,41 +43,53 @@ struct QuestPopoverView: View {
         )
     }
     
-    private func handle(quest:QuestItem){
+    private func handle(quest: QuestItem) {
         guard quest.isCompleted else { return }
         
-        if questManager.pendingRewardQuestId == quest.id {
-            // Add XP & coins when user taps
-            var user = UserProfile.shared
-            user.xp += Double(quest.xP)
-            user.coins += quest.coins
-            
-            var showLevelUp : Bool = false
-            
-            // Handle level-up
-            let xpRequired = UserProfile.xpRequiredForLevel(user.level)
-            if user.xp >= xpRequired {
-                user.level += 1
-                showLevelUp = true
-            }
-            
-            user.save()
-            NotificationCenter.default.post(name: .profileUpdated, object: user)
-            
-            // Clear glow & pending reward
+        // Check if this quest has a pending reward
+        guard questManager.pendingRewardQuestIds.contains(quest.id) else { return }
+        
+        var user = UserProfile.shared
+        user.xp += Double(quest.xP)
+        user.coins += quest.coins
+        
+        var showLevelUp: Bool = false
+        
+        let xpRequired = UserProfile.xpRequiredForLevel(user.level)
+        if user.xp >= xpRequired {
+            user.level += 1
+            showLevelUp = true
+        }
+        
+        user.save()
+        NotificationCenter.default.post(name: .profileUpdated, object: user)
+        
+        // Remove this quest from pending list
+        questManager.removePendingReward(for: quest.id)
+        
+        // Hide glow if no rewards left
+        // 🔥 ONLY check batch completion when NO pending rewards left
+        let pendingInCurrentBatch = questManager.pendingRewardQuestIds.filter { pendingId in
+            questManager.getCurrentBatchQuests().contains { $0.id == pendingId }
+        }
+        
+        if pendingInCurrentBatch.isEmpty {
             showGlowQuestIcon = false
-            questManager.pendingRewardQuestId = nil
             questManager.checkBatchCompletion()
-            dismiss()
-            if showLevelUp{
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
-                    withAnimation(.easeOut(duration: 0.3)){
-                        questManager.showLevelUp = true
-                    }
+        }
+       
+        dismiss()
+        
+        // Level-up animation
+        if showLevelUp {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                withAnimation(.easeOut(duration: 0.3)) {
+                    questManager.showLevelUp = true
                 }
             }
         }
     }
+
     
     private func resetCurrentBatch() {
         let currentBatchQuests = questManager.getCurrentBatchQuests()

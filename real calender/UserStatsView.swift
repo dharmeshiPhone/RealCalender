@@ -16,6 +16,7 @@ struct UserStatsView: View {
     @State private var runningUnlockPhase = 0
     @State private var pullUpsUnlockPhase = 0
     @State private var incomeUnlockPhase = 0
+    @State private var acedeamyUnlockPhase = 0
     @State private var bmiUnlockAnimationPhase = 0 // 0: locked, 1: unlocking, 2: unlocked
     @State private var bmiHasBeenSeen = false
     
@@ -34,12 +35,15 @@ struct UserStatsView: View {
     @State private var bmiLockIconPosition: CGPoint = .zero
     @State private var bmiChartCenterPosition: CGPoint = .zero
     @State private var ballAnimationTimer: Timer?
+    @State private var showAcedemyBall = false
+    
     
     // NEW: Lock positions for each chart
     @State private var swimmingLockPosition: CGPoint = .zero
     @State private var runningLockPosition: CGPoint = .zero
     @State private var pullUpsLockPosition: CGPoint = .zero
     @State private var incomeLockPosition: CGPoint = .zero
+    @State private var acedemicLockPosition: CGPoint = .zero
     
     // Individual gold ball states
     @State private var showSwimmingBall = false {
@@ -104,11 +108,12 @@ struct UserStatsView: View {
                     runningUnlockPhase: $runningUnlockPhase,
                     pullUpsUnlockPhase: $pullUpsUnlockPhase,
                     incomeUnlockPhase: $incomeUnlockPhase,
+                    acedeamyUnlockPhase: $acedeamyUnlockPhase,
                     bmiUnlockAnimationPhase: $bmiUnlockAnimationPhase,
                     showSwimmingBall: $showSwimmingBall,
                     showRunningBall: $showRunningBall,
                     showPullUpsBall: $showPullUpsBall,
-                    showIncomeBall: $showIncomeBall,
+                    showIncomeBall: $showIncomeBall, showAcedemyBall: $showAcedemyBall,
                     showBMIBall: $showBMIBall,
                     graphsCompletedTextPosition: $graphsCompletedTextPosition,
                     bmiBallXPosition: $bmiBallXPosition,
@@ -120,6 +125,7 @@ struct UserStatsView: View {
                     runningLockPosition: $runningLockPosition,
                     pullUpsLockPosition: $pullUpsLockPosition,
                     incomeLockPosition: $incomeLockPosition,
+                    acedemicLockPosition: $acedemicLockPosition,
                     completionProgress: $completionProgress,
                     animatedCompletedCount: $animatedCompletedCount,
                     showCompletionEffect: $showCompletionEffect,
@@ -159,6 +165,7 @@ struct UserStatsView: View {
                     showPullUpsBall: $showPullUpsBall,
                     showIncomeBall: $showIncomeBall,
                     showBMIBall: $showBMIBall,
+                    showAcedemyBall: $showAcedemyBall,
                     targetPosition: graphsCompletedTextPosition,
                     bmiBallXPosition: bmiBallXPosition,
                     bmiBallPosition: bmiBallPosition,
@@ -168,7 +175,8 @@ struct UserStatsView: View {
                     swimmingStartPosition: swimmingLockPosition,  // NEW
                     runningStartPosition: runningLockPosition,    // NEW
                     pullUpsStartPosition: pullUpsLockPosition,    // NEW
-                    incomeStartPosition: incomeLockPosition       // NEW
+                    incomeStartPosition: incomeLockPosition,       // NEW
+                    acedemyStartPosition: acedemicLockPosition       // NEW
                 )
             }
                 .allowsHitTesting(false)
@@ -379,6 +387,18 @@ struct UserStatsView: View {
             
         case .bmi:
             triggerBMIUnlockAnimation()
+        case .acedemic:
+            withAnimation(.easeInOut(duration: 2.0)) {
+                acedeamyUnlockPhase = 1
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                NotificationCenter.default.post(name: .acedemicUnlocked, object: nil)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                withAnimation(.spring(response: 1.0, dampingFraction: 0.7)) {
+                    acedeamyUnlockPhase = 2
+                }
+            }
         }
     }
     
@@ -403,6 +423,8 @@ struct UserStatsView: View {
             startPosition = incomeLockPosition
         case .bmi:
             startPosition = .zero // BMI uses a different animation
+        case .acedemic:
+            startPosition = acedemicLockPosition
         }
         
         print("🚀 Start position for \(graphType): \(startPosition)")
@@ -454,6 +476,16 @@ struct UserStatsView: View {
             
         case .bmi:
             break
+        case .acedemic:
+            print("🚀 Setting showAcedemy = true")
+            showAcedemyBall = true
+            updateProgressWithAnimation(to: lastUnlockedCount + 1)
+            lastUnlockedCount = lastUnlockedCount + 1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                withAnimation(.easeOut(duration: 0.5)) {
+                    showAcedemyBall = false
+                }
+            }
         }
         
         print("🚀 Gold ball states after trigger: swimming=\(showSwimmingBall), running=\(showRunningBall), pullups=\(showPullUpsBall), income=\(showIncomeBall)")
@@ -466,7 +498,7 @@ struct UserStatsView: View {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             withAnimation(.spring(response: 1.2, dampingFraction: 0.6)) {
-                completionProgress = Double(newCount) / 5.0
+                completionProgress = Double(newCount) / 6.0
             }
         }
         
@@ -475,7 +507,7 @@ struct UserStatsView: View {
             impact.impactOccurred()
         }
         
-        if newCount >= 5 {
+        if newCount >= 6 {
             let impact = UIImpactFeedbackGenerator(style: .heavy)
             impact.impactOccurred()
         }

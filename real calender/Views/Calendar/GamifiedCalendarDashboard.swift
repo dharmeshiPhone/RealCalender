@@ -105,6 +105,20 @@ struct GamifiedCalendarDashboard: View {
                 .padding(.top)
         })
 #endif
+        .overlay(content: {
+            if questManager.showNotificationPopup{
+                NotificationPopupView {
+                    DispatchQueue.main.async(execute: {
+                        questManager.completeQuest(named: "Turn on notifications")
+                        questManager.showNotificationPopup = false
+                    })
+                } onSkip: {
+                    DispatchQueue.main.async(execute: {
+                        questManager.showNotificationPopup = false
+                    })
+                }
+            }
+        })
         .onAppear {
             loadUserProfile()
             checkForScheduledOverviews()

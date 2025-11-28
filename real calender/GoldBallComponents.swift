@@ -7,18 +7,21 @@ struct SimplifiedGoldBallOverlay: View {
     @Binding var showPullUpsBall: Bool
     @Binding var showIncomeBall: Bool
     @Binding var showBMIBall: Bool
+    @Binding var showAcedemyBall: Bool
     let targetPosition: CGPoint
     let bmiBallXPosition: CGFloat
     let bmiBallPosition: CGFloat
     let bmiBallOpacity: Double
     let scrollBounds: CGRect
     let bmiChartCenterPosition: CGPoint  // BMI chart center position
+  
     
     // NEW: Add start positions for each ball
     let swimmingStartPosition: CGPoint
     let runningStartPosition: CGPoint
     let pullUpsStartPosition: CGPoint
     let incomeStartPosition: CGPoint
+    let acedemyStartPosition: CGPoint
     
     var body: some View {
         ZStack {

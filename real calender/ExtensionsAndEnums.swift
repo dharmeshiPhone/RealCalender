@@ -8,6 +8,7 @@ extension Notification.Name {
     static let pullUpsUnlocked = Notification.Name("pullUpsUnlocked")
     static let incomeUnlocked = Notification.Name("incomeUnlocked")
     static let bmiUnlocked = Notification.Name("bmiUnlocked")
+    static let acedemicUnlocked = Notification.Name("acedemicUnlocked")
     static let bmiLockPositionUpdated = Notification.Name("bmiLockPositionUpdated")
     static let profileUpdated = Notification.Name("profileUpdated")
     static let appDataReset = Notification.Name("appDataReset")
@@ -25,4 +26,5 @@ public enum GraphType {
     case pullUps
     case income
     case bmi
+    case acedemic
 }

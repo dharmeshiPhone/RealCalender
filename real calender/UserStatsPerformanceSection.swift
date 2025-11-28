@@ -8,12 +8,14 @@ struct UserStatsPerformanceSection: View {
     @Binding var runningUnlockPhase: Int
     @Binding var pullUpsUnlockPhase: Int
     @Binding var incomeUnlockPhase: Int
+    @Binding var acedeamyUnlockPhase: Int
     @Binding var bmiUnlockAnimationPhase: Int
     
     @Binding var showSwimmingBall: Bool
     @Binding var showRunningBall: Bool
     @Binding var showPullUpsBall: Bool
     @Binding var showIncomeBall: Bool
+    @Binding var showAcedemyBall: Bool
     @Binding var showBMIBall: Bool
     
     @Binding var graphsCompletedTextPosition: CGPoint
@@ -28,6 +30,7 @@ struct UserStatsPerformanceSection: View {
     @Binding var runningLockPosition: CGPoint
     @Binding var pullUpsLockPosition: CGPoint
     @Binding var incomeLockPosition: CGPoint
+    @Binding var acedemicLockPosition: CGPoint
     
     @Binding var completionProgress: Double
     @Binding var animatedCompletedCount: Int
@@ -158,6 +161,24 @@ struct UserStatsPerformanceSection: View {
                     }
                 )
                 
+                DistributionUnlockChart(
+                    title: "Academic Graph",
+                    userValue: Double(profile.annualIncomeThousands),
+                    ageGroupStats: AgeGroupDataGenerator.getIncomeStats(age: profile.age, gender: profile.gender),
+                    unit: "grade",
+                    color: .indigo,
+                    isHigherBetter: true,
+                    unlockPhase: acedeamyUnlockPhase,
+                    showGoldBall: showAcedemyBall,
+                    profile: profile,
+                    onAddData: {
+                        showingIncomeEditor = true
+                    },
+                    onLockPosition: { position in  // NEW
+                        acedemicLockPosition = position
+                    }
+                )
+                
                 GeometryReader { geometry in
                     let frame = geometry.frame(in: .global)
                     let screenHeight = UIScreen.main.bounds.height
@@ -230,7 +251,7 @@ struct UserStatsPerformanceSection: View {
                 
                 HStack {
                     ZStack {
-                        Text("Graphs completed: \(animatedCompletedCount)/5")
+                        Text("Graphs completed: \(animatedCompletedCount)/6")
                             .font(.caption)
                             .foregroundColor(completionProgress > 0.8 ? .green : .secondary)
                             .fontWeight(completionProgress > 0.8 ? .semibold : .regular)
@@ -250,7 +271,7 @@ struct UserStatsPerformanceSection: View {
                             )
                         
                         if showCompletionEffect {
-                            Text("Graphs completed: \(animatedCompletedCount)/5")
+                            Text("Graphs completed: \(animatedCompletedCount)/6")
                                 .font(.caption)
                                 .fontWeight(.bold)
                                 .foregroundColor(.green)

@@ -255,12 +255,15 @@ struct AIOverviewSection: View {
 }
 
 struct CalendarSection: View {
+    @EnvironmentObject var questManager: QuestManager
     @Binding var selectedDate: Date
     let eventsForSelectedDate: [CalendarEvent]
     let onAddEvent: () -> Void
     let onCalendarReview: () -> Void
     let trackCalendarUsage: () -> Void
     @State private var allEvents: [CalendarEvent] = []
+    @State private var totalPassedEvents: [CalendarEvent] = []
+    @State private var showAnalyticsSheet = false
     
     // Check if calendar setup is completed
     private var hasCompletedSetup: Bool {
@@ -345,6 +348,12 @@ struct CalendarSection: View {
                             .foregroundColor(.blue)
                     }
                 }
+                
+                if questManager.currentBatch > 2 {
+                    dailyAnalyticsSection
+                }
+                
+                
             } else {
                 // Show setup reminder before calendar is available
                 calendarSetupPrompt
@@ -362,8 +371,88 @@ struct CalendarSection: View {
                 loadAllEvents()
             }
         }
+        .sheet(isPresented: $showAnalyticsSheet) {
+            AnalyticsSheetView(
+                missedEvents: missedResponseEvents,
+                todayCompletionRate: todayCompletionRate,
+                totalEvents: allEvents.count
+            )
+        }
     }
     
+    // MARK: - Daily Analytics Section
+    private var dailyAnalyticsSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .font(.headline)
+                    .foregroundColor(.green)
+                
+                Text("Daily Analytics")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                // Show count of missed responses
+                if missedResponseCount > 0 {
+                    Text("\(missedResponseCount)")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.red)
+                        .clipShape(Capsule())
+                }
+            }
+            
+            // Progress bar for today's completion rate
+            VStack(spacing: 8) {
+                HStack {
+                    Text("Today's Completion")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.secondary)
+                    
+                    Spacer()
+                    
+                    Text("\(Int(todayCompletionRate * 100))%")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundColor(todayCompletionColor)
+                }
+                
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .fill(Color(.systemGray5))
+                            .frame(height: 8)
+                            .cornerRadius(4)
+                        
+                        Rectangle()
+                            .fill(todayCompletionColor)
+                            .frame(width: geometry.size.width * CGFloat(todayCompletionRate), height: 8)
+                            .cornerRadius(4)
+                            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: todayCompletionRate)
+                    }
+                }
+                .frame(height: 8)
+            }
+            .padding(.top, 4)
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.blue.opacity(0.05))
+                .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 1)
+        )
+        .onTapGesture {
+            showAnalyticsSheet = true
+            trackCalendarUsage()
+        }
+    }
     // MARK: - Calendar Setup Prompt
     private var calendarSetupPrompt: some View {
         VStack(spacing: 20) {
@@ -500,6 +589,40 @@ struct CalendarSection: View {
             allEvents = events
         }
     }
+    
+    // Computed property for events that passed with isRespond = false
+    private var missedResponseEvents: [CalendarEvent] {
+        let now = Date()
+        return allEvents.filter { event in
+            event.date < now && !event.isRespond && !event.isCompleted
+        }
+    }
+
+    // Count of missed responses
+    private var missedResponseCount: Int {
+        missedResponseEvents.count
+    }
+
+    // Today's completion rate
+    private var todayCompletionRate: Double {
+        let todayEvents = allEvents.filter { event in
+            Calendar.current.isDateInToday(event.date)
+        }
+        
+        guard !todayEvents.isEmpty else { return 1.0 }
+        
+        let completedCount = todayEvents.filter { $0.isCompleted }.count
+        return Double(completedCount) / Double(todayEvents.count)
+    }
+
+    private var todayCompletionColor: Color {
+        switch todayCompletionRate {
+        case 0.8...1.0: return .green
+        case 0.5..<0.8: return .orange
+        default: return .red
+        }
+    }
+  
 }
 
 struct ScreenshotAnalysisSection: View {

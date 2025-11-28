@@ -160,7 +160,7 @@ struct InitialProfileSetupView: View {
                     }
                     
                     // Education Level Info (read-only display)
-                    if userProfile.educationLevel != .notSet {
+                    if userProfile.educationLevel != .notSet{//educationLevel
                         VStack(alignment: .leading, spacing: 16) {
                             Text("Education Status")
                                 .font(.title2)
