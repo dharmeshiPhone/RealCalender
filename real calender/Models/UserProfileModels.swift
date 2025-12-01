@@ -16,6 +16,8 @@ struct UserProfile: Identifiable, Codable {
     var morningPrepTimeMinutes: Int = 30
     var waistCM: Double = 0
     var gender: Gender = .notSet
+    var isStudent: Bool = false
+
     var educationLevel: EducationLevel = .notSet
     var highSchoolGPA: Double = 0.0
     var universityGPA: Double = 0.0
@@ -193,7 +195,7 @@ struct UserProfile: Identifiable, Codable {
     // MARK: - XP Helpers
     static func xpRequiredForLevel(_ level: Int) -> Double {
         // Define XP required for each level
-        let xpTable: [Double] = [50, 50, 300, 250]
+        let xpTable: [Double] = [50, 50, 300, 250, 250, 250, 250, 250, 250]
         if level > 0 && level <= xpTable.count {
             return xpTable.prefix(level).reduce(0, +)
         } else {

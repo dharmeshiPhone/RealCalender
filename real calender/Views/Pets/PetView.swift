@@ -375,6 +375,7 @@ struct PetStoreView: View {
         }
     }
     
+    
     private func loadPets() {
         if let savedPetsData = UserDefaults.standard.data(forKey: "userPets"),
            let decodedPets = try? JSONDecoder().decode([Pet].self, from: savedPetsData) {

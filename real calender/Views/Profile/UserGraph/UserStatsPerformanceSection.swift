@@ -48,6 +48,19 @@ struct UserStatsPerformanceSection: View {
     @Binding var showingPullUpsEditor: Bool
     @Binding var showingIncomeEditor: Bool
     
+    var academicValue: Double {
+        switch profile.educationLevel {
+        case .highSchool:
+            return 50 + (profile.highSchoolGPA / 10.0) * 50
+        case .university:
+            return Double(profile.universityGPA)
+        case .notSet:
+            return 0.0
+        case .neither:
+            return 0.0
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             HStack {
@@ -161,23 +174,30 @@ struct UserStatsPerformanceSection: View {
                     }
                 )
                 
-                DistributionUnlockChart(
-                    title: "Academic Graph",
-                    userValue: Double(profile.annualIncomeThousands),
-                    ageGroupStats: AgeGroupDataGenerator.getIncomeStats(age: profile.age, gender: profile.gender),
-                    unit: "grade",
-                    color: .indigo,
-                    isHigherBetter: true,
-                    unlockPhase: acedeamyUnlockPhase,
-                    showGoldBall: showAcedemyBall,
-                    profile: profile,
-                    onAddData: {
-                        showingIncomeEditor = true
-                    },
-                    onLockPosition: { position in  // NEW
-                        acedemicLockPosition = position
-                    }
-                )
+                if profile.isStudent {
+                    DistributionUnlockChart(
+                        title: "Academic Graph",
+                        userValue: academicValue,
+                        ageGroupStats: AgeGroupDataGenerator.getEducationStats(
+                            age: profile.age,
+                            educationLevel: profile.educationLevel,
+                            gender: profile.gender
+                        ),
+                        unit: profile.educationLevel == .university ? "CGPA" : "marks",
+                        color: .indigo,
+                        isHigherBetter: true,
+                        unlockPhase: acedeamyUnlockPhase,
+                        showGoldBall: showAcedemyBall,
+                        profile: profile,
+                        onAddData: {
+                            //showingAcademicEditor = true
+                        },
+                        onLockPosition: { position in
+                            acedemicLockPosition = position
+                        }
+                    )
+                }
+
                 
                 GeometryReader { geometry in
                     let frame = geometry.frame(in: .global)
@@ -251,7 +271,7 @@ struct UserStatsPerformanceSection: View {
                 
                 HStack {
                     ZStack {
-                        Text("Graphs completed: \(animatedCompletedCount)/6")
+                        Text("Graphs completed: \(animatedCompletedCount)/\(profile.isStudent ? "6" : "5")")
                             .font(.caption)
                             .foregroundColor(completionProgress > 0.8 ? .green : .secondary)
                             .fontWeight(completionProgress > 0.8 ? .semibold : .regular)
@@ -271,7 +291,7 @@ struct UserStatsPerformanceSection: View {
                             )
                         
                         if showCompletionEffect {
-                            Text("Graphs completed: \(animatedCompletedCount)/6")
+                            Text("Graphs completed: \(animatedCompletedCount)/\(profile.isStudent ? "6" : "5")")
                                 .font(.caption)
                                 .fontWeight(.bold)
                                 .foregroundColor(.green)
@@ -377,6 +397,12 @@ struct UserStatsPerformanceSection: View {
         
         if profile.annualIncomeThousands == 0 { lockedCount += 1 }
         if profile.bmi == 0 { lockedCount += 1 }
+        
+        if profile.isStudent{
+            if  profile.highSchoolGPA > 0.0 || profile.universityGPA > 0.0{
+                lockedCount += 1
+            }
+        }
         
         return lockedCount
     }

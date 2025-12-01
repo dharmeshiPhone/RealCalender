@@ -284,12 +284,6 @@ struct UserStatsView: View {
     func checkQuestComplition(){
         if !questManager.checkQuestWasCompleted("Complete two graphs in your profile"){
             questManager.completeQuest(named: "Complete two graphs in your profile")
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
-//                withAnimation(.easeOut(duration: 0.3)){
-//                    questManager.showLevelUp = true
-//                }
-//            }
-           // showGlowQuestIcon = true
         }
     }
     
@@ -306,6 +300,12 @@ struct UserStatsView: View {
         
         incomeUnlockPhase = profile.annualIncomeThousands > 0 ? 2 : 0
         bmiUnlockAnimationPhase = profile.bmi > 0 ? 2 : 0
+        
+        if profile.isStudent {
+            acedeamyUnlockPhase =
+                (profile.highSchoolGPA > 0.0 || profile.universityGPA > 0.0) ? 2 : 0
+        }
+
     }
     
     private func checkForNewUnlocks() {
@@ -492,13 +492,14 @@ struct UserStatsView: View {
     }
     
     func updateProgressWithAnimation(to newCount: Int) {
+        let isStudent = profile.isStudent
         withAnimation(.spring(response: 1.0, dampingFraction: 0.6)) {
             animatedCompletedCount = newCount
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             withAnimation(.spring(response: 1.2, dampingFraction: 0.6)) {
-                completionProgress = Double(newCount) / 6.0
+                completionProgress = Double(newCount) / (isStudent ? 6.0 : 5.0)
             }
         }
         
@@ -507,7 +508,7 @@ struct UserStatsView: View {
             impact.impactOccurred()
         }
         
-        if newCount >= 6 {
+        if newCount >=  (isStudent ? 6 : 5){
             let impact = UIImpactFeedbackGenerator(style: .heavy)
             impact.impactOccurred()
         }

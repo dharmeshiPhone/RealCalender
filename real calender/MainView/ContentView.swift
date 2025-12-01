@@ -154,7 +154,7 @@ struct ContentView: View {
                         }
                         .tag(0)
 
-                    AIChatView()
+                    AIChatView(events: $events)
                         .environmentObject(aiChatManager)
                         .environmentObject(screenTimeManager)
                         .tabItem {
@@ -549,6 +549,16 @@ struct ContentView: View {
     
     func setupCalenderLogEvent(){
         questManager.completeQuestWithIncremnetStaticForce(named: "Log 3 calendar event", num: events.count)
+        
+        if events.count > 3 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 5 new event", num: events.count - 3)
+        }
+       
+        let respondedAndCompletedCount = events.filter { $0.isRespond && $0.isCompleted }.count
+        questManager.completeQuestWithIncremnetStaticForce(named: "Complete 2 scheduled event", num: respondedAndCompletedCount)
+        questManager.completeQuestWithIncremnetStaticForce(named: "Complete 3 scheduled event", num: respondedAndCompletedCount)
+        
+        
     }
     
     

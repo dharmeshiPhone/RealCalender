@@ -4,11 +4,14 @@ import PhotosUI
 struct AIChatView: View {
     @EnvironmentObject var aiChatManager: AIChatManager
     @EnvironmentObject var screenTimeManager: ScreenTimeManager
+    @EnvironmentObject var questManager: QuestManager
+    @Binding var events: [CalendarEvent]
     @State private var messageText = ""
     @State private var showingQuickActions = false
     @State private var showingImagePicker = false
     @State private var selectedImage: UIImage?
     @State private var photoPickerItem: PhotosPickerItem?
+    @State private var showingTaskPrioritization = false
 
     var body: some View {
         NavigationView {
@@ -72,6 +75,49 @@ struct AIChatView: View {
                 
                 // Input area
                 VStack(spacing: 12) {
+                    // Task Prioritise button
+                    let isUnlocked = questManager.currentBatch > 2
+
+                    HStack {
+                        Spacer()
+                        
+                        Button(action: {
+                            if isUnlocked {
+                                showingTaskPrioritization = true
+                                questManager.completeQuest(named: "Use Task Prioritisation")
+                            }
+                        }) {
+                            HStack(spacing: 12) {
+                                Image(systemName: isUnlocked ? "list.bullet.indent" : "lock.fill")
+                                    .font(.subheadline)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(isUnlocked ? .white : .gray.opacity(0.7))
+                                
+                                Text("Task Prioritise")
+                                    .font(.subheadline)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(isUnlocked ? .white : .gray.opacity(0.7))
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(
+                                isUnlocked
+                                ? Color.teal.opacity(0.2)
+                                : Color.gray.opacity(0.1)
+                            )
+                            .cornerRadius(30)
+                            .shadow(
+                                color: isUnlocked ? Color.teal.opacity(0.35) : Color.clear,
+                                radius: 6,
+                                x: 0,
+                                y: 3
+                            )
+                        }
+                        .disabled(!isUnlocked)
+                    }
+
+                  
+                    
                     // Quick action buttons
                     if showingQuickActions {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -204,6 +250,7 @@ struct AIChatView: View {
                     }
                 }
             }
+            .animation(.spring(), value: showingTaskPrioritization)
             .onChange(of: photoPickerItem) { oldValue, newValue in
                 Task {
                     if let newItem = newValue {
@@ -245,8 +292,17 @@ struct AIChatView: View {
                     }
                 }
             }
+            .sheet(isPresented: $showingTaskPrioritization, onDismiss: {
+                //save har
+                saveEvents()
+            }, content: {
+                TaskPrioritizationView(events: $events)
+            })
+            
         }
     }
+    
+    
     
     private func sendMessage() {
         guard !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
@@ -378,6 +434,14 @@ struct AIChatView: View {
             aiChatManager.messages.append(errorResponse)
         }
     }
+    
+    private func saveEvents(){
+        DispatchQueue.main.async {
+            if let data = try? JSONEncoder().encode(self.events) {
+                UserDefaults.standard.set(data, forKey: "calendarEvents")
+            }
+        }
+    }
 }
 
 struct MessageBubble: View {
@@ -496,5 +560,429 @@ struct ChatQuickActionButton: View {
             .foregroundColor(.blue)
             .cornerRadius(20)
         }
+    }
+}
+
+
+
+struct PrioritySelectorView: View {
+    @Binding var priority: Int?
+    let eventTitle: String
+    
+    var body: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 20) {
+                Text("Set Priority for")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+                
+                Text(eventTitle)
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                
+                // Priority scale explanation
+                HStack(spacing: 16) {
+                    Label("Low", systemImage: "arrow.down.circle.fill")
+                        .font(.caption)
+                        .foregroundColor(.green)
+                    
+                    Spacer()
+                    
+                    Label("High", systemImage: "arrow.up.circle.fill")
+                        .font(.caption)
+                        .foregroundColor(.red)
+                }
+                .padding(.horizontal)
+                
+                // Priority selector grid
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 10) {
+                    ForEach(0..<11) { level in
+                        PriorityButton(level: level, selectedLevel: $priority)
+                    }
+                }
+                .padding()
+                
+                // Current priority display
+                if let priority = priority {
+                    VStack(spacing: 8) {
+                        Text("Selected Priority")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        
+                        HStack(spacing: 4) {
+                            ForEach(0..<priority, id: \.self) { _ in
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(priorityColor(for: priority))
+                                    .font(.caption)
+                            }
+                        }
+                        
+                        Text("Level \(priority)/10")
+                            .font(.headline)
+                            .foregroundColor(priorityColor(for: priority))
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
+                }
+                
+                // Clear button
+                if priority != nil {
+                    Button(action: {
+                        priority = nil
+                    }) {
+                        Label("Clear Priority", systemImage: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                }
+            }
+            .padding()
+        }
+    }
+    
+    private func priorityColor(for level: Int) -> Color {
+        switch level {
+        case 0...3: return .green
+        case 4...6: return .orange
+        case 7...10: return .red
+        default: return .gray
+        }
+    }
+}
+
+struct PriorityButton: View {
+    let level: Int
+    @Binding var selectedLevel: Int?
+    
+    var body: some View {
+        Button(action: {
+            selectedLevel = level
+        }) {
+            VStack(spacing: 4) {
+                ZStack {
+                    Circle()
+                        .fill(selectedLevel == level ? priorityColor(for: level) : Color(.systemGray5))
+                        .frame(width: 40, height: 40)
+                    
+                    Text("\(level)")
+                        .fontWeight(.bold)
+                        .foregroundColor(selectedLevel == level ? .white : .primary)
+                }
+                
+                Text(level == 0 ? "None" : "P\(level)")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+    
+    private func priorityColor(for level: Int) -> Color {
+        switch level {
+        case 0: return .gray
+        case 1...3: return .green
+        case 4...6: return .orange
+        case 7...10: return .red
+        default: return .blue
+        }
+    }
+}
+
+
+struct TaskPrioritizationView: View {
+    @Binding var events: [CalendarEvent]
+    @State private var selectedEvent: CalendarEvent?
+    @State private var showingPrioritySelector = false
+    @State private var sortOrder: SortOrder = .priority
+    
+    enum SortOrder {
+        case priority, date, title
+    }
+    
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Color(.systemGroupedBackground)
+                    .ignoresSafeArea()
+                
+                VStack(spacing: 0) {
+                    // Header
+                    VStack(spacing: 12) {
+                        Text("Task Prioritization")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        
+                        Text("Set priorities (0-10) for your events")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        // Sort options
+                        Picker("Sort by", selection: $sortOrder) {
+                            Label("Priority", systemImage: "star.fill").tag(SortOrder.priority)
+                            Label("Date", systemImage: "calendar").tag(SortOrder.date)
+                            Label("Title", systemImage: "textformat").tag(SortOrder.title)
+                        }
+                        .pickerStyle(.segmented)
+                        .padding(.horizontal)
+                    }
+                    .padding(.top)
+                    .padding(.horizontal)
+                    
+                    // Stats
+                    HStack {
+                        StatBox(title: "Total", value: "\(events.count)", color: .blue)
+                        StatBox(title: "Prioritized", value: "\(prioritizedCount)", color: .green)
+                        StatBox(title: "No Priority", value: "\(noPriorityCount)", color: .orange)
+                    }
+                    .padding()
+                    
+                    // Event list
+                    ScrollView {
+                        LazyVStack(spacing: 12) {
+                            ForEach(sortedEvents) { event in
+                                PriorityEventRow(
+                                    event: event,
+                                    onPriorityTap: {
+                                        selectedEvent = event
+                                        showingPrioritySelector = true
+                                    }
+                                )
+                                .padding(.horizontal)
+                            }
+                        }
+                        .padding(.vertical)
+                    }
+                }
+            }
+            .navigationBarHidden(true)
+            .sheet(item: $selectedEvent) { event in
+                NavigationView {
+                    PrioritySelectorView(priority: binding(for: event.id), eventTitle: event.title)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button("Done") {
+                                    showingPrioritySelector = false
+                                    selectedEvent = nil
+                                }
+                            }
+                        }
+                }
+            }
+        }
+    }
+    
+    private var sortedEvents: [CalendarEvent] {
+        switch sortOrder {
+        case .priority:
+            return events.sorted { ($0.priority ?? -1) > ($1.priority ?? -1) }
+        case .date:
+            return events.sorted { $0.date < $1.date }
+        case .title:
+            return events.sorted { $0.title < $1.title }
+        }
+    }
+    
+    private var prioritizedCount: Int {
+        events.filter { $0.priority != nil }.count
+    }
+    
+    private var noPriorityCount: Int {
+        events.filter { $0.priority == nil }.count
+    }
+    
+    private func binding(for eventId: UUID) -> Binding<Int?> {
+        .init(
+            get: {
+                events.first(where: { $0.id == eventId })?.priority
+            },
+            set: { newValue in
+                if let index = events.firstIndex(where: { $0.id == eventId }) {
+                    events[index].priority = newValue
+                }
+            }
+        )
+    }
+}
+
+struct PriorityEventRow: View {
+    let event: CalendarEvent
+    let onPriorityTap: () -> Void
+    @State private var isHovering = false
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            // Priority indicator
+            Button(action: onPriorityTap) {
+                PriorityIndicator(priority: event.priority)
+            }
+            .buttonStyle(.plain)
+            
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text(event.title)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    Spacer()
+                    
+                    if let priority = event.priority {
+                        Text("P\(priority)")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(priorityColor(for: priority))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(priorityColor(for: priority).opacity(0.2))
+                            .cornerRadius(8)
+                    } else {
+                        Text("No Priority")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                HStack(spacing: 16) {
+                    Label(formatDate(event.date), systemImage: "calendar")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    if !event.location.isEmpty {
+                        Label(event.location, systemImage: "location.fill")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                if !event.notes.isEmpty {
+                    Text(event.notes)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                        .padding(.top, 4)
+                }
+            }
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(event.color.opacity(0.3), lineWidth: 2)
+        )
+        .scaleEffect(isHovering ? 1.02 : 1.0)
+        .animation(.easeInOut(duration: 0.2), value: isHovering)
+        .onHover { hovering in
+            isHovering = hovering
+        }
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+    
+    private func priorityColor(for level: Int) -> Color {
+        switch level {
+        case 0...3: return .green
+        case 4...6: return .orange
+        case 7...10: return .red
+        default: return .gray
+        }
+    }
+}
+
+struct PriorityIndicator: View {
+    let priority: Int?
+    
+    var body: some View {
+        VStack(spacing: 4) {
+            if let priority = priority {
+                // Show priority stars
+                VStack(spacing: 2) {
+                    ForEach(0..<3) { row in
+                        let remaining = priority - (row * 3)
+                        if remaining > 0 {
+                            HStack(spacing: 2) {
+                                ForEach(0..<min(remaining, 3), id: \.self) { _ in
+                                    Image(systemName: "star.fill")
+                                        .font(.caption2)
+                                        .foregroundColor(priorityColor(for: priority))
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+                .frame(width: 40, height: 40)
+                .background(priorityColor(for: priority).opacity(0.1))
+                .cornerRadius(10)
+                
+                Text("\(priority)")
+                    .font(.caption2)
+                    .fontWeight(.bold)
+                    .foregroundColor(priorityColor(for: priority))
+            } else {
+                // Show empty priority indicator
+                Image(systemName: "star")
+                    .font(.title3)
+                    .foregroundColor(.gray)
+                    .frame(width: 40, height: 40)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                
+                Text("Set")
+                    .font(.caption2)
+                    .foregroundColor(.gray)
+            }
+        }
+    }
+    
+    private func priorityColor(for level: Int) -> Color {
+        switch level {
+        case 0...3: return .green
+        case 4...6: return .orange
+        case 7...10: return .red
+        default: return .gray
+        }
+    }
+}
+
+struct StatBox: View {
+    let title: String
+    let value: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Text(value)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(color)
+            
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(color.opacity(0.1))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
     }
 }

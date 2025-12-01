@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - Data Models
 struct Pet: Codable, Identifiable,Hashable {
     let id: UUID
-    let name: String
+    var name: String
     var isUnlocked: Bool
     var unlockTimestamp: Date?
     let cost: Int

@@ -353,7 +353,12 @@ struct MissedEventRow: View {
         // Simulate processing delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             isProcessing = false
-            NotificationCenter.default.post(name: Notification.Name("EventsModified"), object: ["shouldLoadEvent": true])
+            NotificationCenter.default.post(
+                name: Notification.Name("EventsModified"),
+                object: nil,
+                userInfo: ["shouldLoadEvent": true]
+            )
+
         }
     }
     

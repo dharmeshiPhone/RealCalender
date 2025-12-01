@@ -93,7 +93,7 @@ struct PerformanceCompletionNote: View {
     
     private var completionPercentage: Int {
         var completed = 0
-        var total = 5
+        let total = 5
         
         // Basic measurements
         if userProfile.hasBasicMeasurements {

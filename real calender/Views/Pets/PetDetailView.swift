@@ -16,6 +16,8 @@ struct PetDetailView: View {
     @State private var glowOpacity: Double = 0
     @State private var rotationAngle: Double = 0
     @State private var showStats = false
+    @State private var showingEditSheet = false
+    @State private var newPetName: String = ""
     
     var body: some View {
         GeometryReader { geometry in
@@ -43,11 +45,128 @@ struct PetDetailView: View {
             }
         }
         .navigationBarHidden(true)
+        .sheet(isPresented: $showingEditSheet) {
+            editPetNameSheet
+        }
         .onAppear {
             startAnimations()
             initializePetState()
+            newPetName = pet.name
+            
+            if questManager.currentBatch == 4{
+                questManager.completeQuest(named: "Check pet happiness (just open pet page)")
+                questManager.completeQuest(named:"Use Sick or Holiday prompt")
+            }
         }
     }
+    
+    // MARK: - Edit Pet Name Sheet
+        private var editPetNameSheet: some View {
+            NavigationView {
+                VStack(spacing: 30) {
+                    // Header
+                    VStack(spacing: 15) {
+                        ZStack {
+                            Circle()
+                                .fill(pet.swiftUIColor.opacity(0.2))
+                                .frame(width: 100, height: 100)
+                            
+                            Image(systemName: pet.icon)
+                                .font(.system(size: 40))
+                                .foregroundColor(pet.swiftUIColor)
+                        }
+                        
+                        Text("Edit Pet Name")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        
+                        Text("Give your pet a new name!")
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.top, 20)
+                    
+                    // Text Field
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Pet Name")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        TextField("Enter new name", text: $newPetName)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color(.systemGray6))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(pet.swiftUIColor, lineWidth: 1)
+                            )
+                            .disableAutocorrection(true)
+                            .textInputAutocapitalization(.words)
+                        
+                        HStack {
+                            Image(systemName: "info.circle.fill")
+                                .foregroundColor(.gray)
+                                .font(.caption)
+                            
+                            Text("Maximum 20 characters")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding(.horizontal)
+                    
+                    Spacer()
+                    
+                    // Action Buttons
+                    VStack(spacing: 15) {
+                        Button(action: {
+                            saveNewName()
+                        }) {
+                            HStack {
+                                Spacer()
+                                Text("Save Changes")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                Spacer()
+                            }
+                            .padding()
+                            .background(
+                                LinearGradient(
+                                    colors: [pet.swiftUIColor, pet.swiftUIColor.opacity(0.8)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .cornerRadius(15)
+                        }
+                        .disabled(newPetName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                        .opacity(newPetName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.6 : 1.0)
+                        
+                        Button(action: {
+                            newPetName = pet.name
+                            showingEditSheet = false
+                        }) {
+                            Text("Cancel")
+                                .font(.body)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 30)
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(
+                    leading: Button("Cancel") {
+                        newPetName = pet.name
+                        showingEditSheet = false
+                    }
+                )
+            }
+            .accentColor(pet.swiftUIColor)
+        }
     
 
     
@@ -294,7 +413,7 @@ struct PetDetailView: View {
                         .font(.headline)
                         .foregroundColor(.gray)
                     
-                    Text(pet.name)
+                    Text(newPetName)
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -302,17 +421,20 @@ struct PetDetailView: View {
                 }
                 
                 Spacer()
-                
-                Button(action: {
-                    // Edit pet action
-                }) {
-                    Image(systemName: "pencil.circle.fill")
-                        .font(.system(size: 28))
-                        .foregroundColor(pet.swiftUIColor)
-                        .background(Color.white)
-                        .clipShape(Circle())
-                        .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 2)
+                if questManager.currentBatch > 3{
+                    Button(action: {
+                        // Edit pet action
+                        showingEditSheet = true
+                    }) {
+                        Image(systemName: "pencil.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(pet.swiftUIColor)
+                            .background(Color.white)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 2)
+                    }
                 }
+               
             }
             
             // Happiness Meter
@@ -556,6 +678,38 @@ struct PetDetailView: View {
 //        }
         
         happiness = max(value,10)
+    }
+   
+    
+    private func saveNewName() {
+        // Trim whitespace and newlines
+        let trimmedName = newPetName.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Validate name
+        guard !trimmedName.isEmpty else {
+            return
+        }
+        
+        let finalName = String(trimmedName.prefix(20))
+        
+        if let savedPetsData = UserDefaults.standard.data(forKey: "userPets"),
+           var decodedPets = try? JSONDecoder().decode([Pet].self, from: savedPetsData) {
+            if let index = decodedPets.firstIndex(where: { $0.id == pet.id }) {
+                decodedPets[index].name = finalName
+                if let encodedPets = try? JSONEncoder().encode(decodedPets) {
+                    UserDefaults.standard.set(encodedPets, forKey: "userPets")
+                }
+            }
+        }
+        
+        
+        // For now, just close the sheet
+        withAnimation {
+            showingEditSheet = false
+        }
+        
+        // Show success animation or haptic feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
     }
 
     
