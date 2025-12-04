@@ -70,6 +70,7 @@ struct UserStatsView: View {
     @State private var showingSwimmingEditor = false
     @State private var showingIncomeEditor = false
     @State private var showingPullUpsEditor = false
+    @State private var showingAcademicEditor = false
     
     
 //    init(profile: UserProfile? = nil) {
@@ -138,7 +139,8 @@ struct UserStatsView: View {
                     showingSwimmingEditor: $showingSwimmingEditor,
                     showingRunTracker: $showingRunTracker,
                     showingPullUpsEditor: $showingPullUpsEditor,
-                    showingIncomeEditor: $showingIncomeEditor
+                    showingIncomeEditor: $showingIncomeEditor,
+                    showingAcademicEditor:$showingAcademicEditor
                 )
                 
                 // 5K Run Tracker
@@ -196,6 +198,9 @@ struct UserStatsView: View {
         }
         .sheet(isPresented: $showingPullUpsEditor) {
             PullUpsEditor(userProfile: $profile)
+        }
+        .sheet(isPresented: $showingAcademicEditor) {
+            AcedemicEditor(userProfile: $profile)
         }
         .onReceive(NotificationCenter.default.publisher(for: .profileUpdated)) { notification in
             print("🔔🔔🔔 UserStatsView: NOTIFICATION RECEIVED 🔔🔔🔔")

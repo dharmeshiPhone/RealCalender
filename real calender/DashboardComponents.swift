@@ -183,38 +183,101 @@ struct DashboardEventRow: View {
     }
 }
 
+//struct OverviewCard: View {
+//    let title: String
+//    let icon: String
+//    let color: Color
+//    let description: String
+//    var islocked: Bool = false
+//    let action: () -> Void
+//    
+//    var body: some View {
+//        Button(action: action) {
+//            VStack(spacing: 8) {
+//                Image(systemName: icon)
+//                    .font(.title2)
+//                    .foregroundColor(color)
+//                
+//                Text(title)
+//                    .font(.headline)
+//                    .fontWeight(.semibold)
+//                
+//                Text(description)
+//                    .font(.caption)
+//                    .foregroundColor(.secondary)
+//                    .multilineTextAlignment(.center)
+//            }
+//            .frame(width: 120, height: 100)
+//            .padding()
+//            .background(Color(.systemBackground))
+//            .cornerRadius(12)
+//            .shadow(radius: 2)
+//        }
+//        .buttonStyle(.plain)
+//    }
+//}
+
 struct OverviewCard: View {
     let title: String
     let icon: String
     let color: Color
     let description: String
+    var islocked: Bool = false
     let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
-            VStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(.title2)
-                    .foregroundColor(color)
-                
-                Text(title)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                
-                Text(description)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
+        Button(action: {
+            if !islocked {
+                action()
             }
-            .frame(width: 120, height: 100)
-            .padding()
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .shadow(radius: 2)
+        }) {
+            ZStack {
+                // MAIN CARD
+                VStack(spacing: 8) {
+                    Image(systemName: icon)
+                        .font(.title2)
+                        .foregroundColor(color)
+                    
+                    Text(title)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                    Text(description)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                .frame(width: 120, height: 100)
+                .padding()
+                .background(Color(.systemBackground))
+                .cornerRadius(12)
+                .shadow(radius: 2)
+                .opacity(islocked ? 0.4 : 1)   // dim card when locked
+                
+                // LOCK OVERLAY
+                if islocked {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(.black.opacity(0.35))
+                        .blur(radius: 1)
+                    
+                    VStack(spacing: 6) {
+                        Image(systemName: "lock.fill")
+                            .font(.title2)
+                            .foregroundColor(.white.opacity(0.6))
+                        
+                        Text("Locked")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(.white.opacity(0.5))
+                            .opacity(0.9)
+                    }
+                }
+            }
         }
         .buttonStyle(.plain)
     }
 }
+
 
 struct StatCard: View {
     let icon: String

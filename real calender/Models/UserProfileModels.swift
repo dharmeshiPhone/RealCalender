@@ -43,6 +43,13 @@ struct UserProfile: Identifiable, Codable {
     
     var coins:Int = 0
     
+    var numSwimiingGraphUpdated: Int = 0
+    var numBMIGraphUpdated: Int = 0
+    var numAcedemicGraphUpdated: Int = 0
+    var numIncomeGraphUpdated: Int = 0
+    var numPullupsGraphUpdated: Int = 0
+    var numRunningGraphUpdated: Int = 0
+    
     // Computed properties to fix compilation errors
     var hasBasicMeasurements: Bool {
         return heightCM > 0 && weightKG > 0
@@ -195,7 +202,7 @@ struct UserProfile: Identifiable, Codable {
     // MARK: - XP Helpers
     static func xpRequiredForLevel(_ level: Int) -> Double {
         // Define XP required for each level
-        let xpTable: [Double] = [50, 50, 300, 250, 250, 250, 250, 250, 250]
+        let xpTable: [Double] = [50, 50, 300, 250, 250, 250, 250, 250, 250, 250, 250 ,250, 250, 250 ,250]
         if level > 0 && level <= xpTable.count {
             return xpTable.prefix(level).reduce(0, +)
         } else {
@@ -210,6 +217,24 @@ struct UserProfile: Identifiable, Codable {
         let progress = (xp - currentLevelXP) / (nextLevelXP - currentLevelXP)
         return max(0, min(1, progress))
     }
+    
+    mutating func incrementGraphUpdate(for type: GraphType) {
+        switch type {
+        case .swimming:
+            numSwimiingGraphUpdated += 1
+        case .bmi:
+            numBMIGraphUpdated += 1
+        case .acedemic:
+            numAcedemicGraphUpdated += 1
+        case .income:
+            numIncomeGraphUpdated += 1
+        case .pullUps:
+            numPullupsGraphUpdated += 1
+        case .running:
+            numRunningGraphUpdated += 1
+        }
+    }
+
     
 }
 

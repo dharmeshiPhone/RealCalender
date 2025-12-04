@@ -6,6 +6,7 @@ struct AIChatView: View {
     @EnvironmentObject var screenTimeManager: ScreenTimeManager
     @EnvironmentObject var questManager: QuestManager
     @Binding var events: [CalendarEvent]
+    @Binding var userProfile: UserProfile
     @State private var messageText = ""
     @State private var showingQuickActions = false
     @State private var showingImagePicker = false
@@ -84,7 +85,11 @@ struct AIChatView: View {
                         Button(action: {
                             if isUnlocked {
                                 showingTaskPrioritization = true
-                                questManager.completeQuest(named: "Use Task Prioritisation")
+                                if questManager.currentBatch == 3{
+                                    questManager.completeQuest(named: "Use Task Prioritisation")
+                                    userProfile.coins -= 100
+                                    userProfile.save()
+                                }
                             }
                         }) {
                             HStack(spacing: 12) {
@@ -197,6 +202,7 @@ struct AIChatView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .onSubmit {
                                 sendMessage()
+                               
                             }
                         
                         // Screenshot analysis button
@@ -308,8 +314,19 @@ struct AIChatView: View {
         guard !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         
         aiChatManager.sendMessage(messageText)
-        messageText = ""
+       
         showingQuickActions = false
+        // for sick and holiday
+        if messageText.lowercased().contains("sick") ||
+           messageText.lowercased().contains("holiday") {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Use Sick or Holiday prompt", num: 1, Quebatch: 4)
+           
+            if questManager.currentBatch > 4{
+                questManager.completeQuestWithIncremnetStaticForce(named: "Use Sick or Holiday prompt", num: 1, Quebatch: 5)
+            }
+        }
+        messageText = ""
+
     }
     
     private func analyzeScreenshot(_ image: UIImage) async {
@@ -692,6 +709,7 @@ struct PriorityButton: View {
 
 
 struct TaskPrioritizationView: View {
+    @EnvironmentObject var questManager: QuestManager
     @Binding var events: [CalendarEvent]
     @State private var selectedEvent: CalendarEvent?
     @State private var showingPrioritySelector = false
@@ -767,6 +785,10 @@ struct TaskPrioritizationView: View {
                                 Button("Done") {
                                     showingPrioritySelector = false
                                     selectedEvent = nil
+                                    
+                                    if questManager.currentBatch == 6{
+                                        questManager.completeQuest(named:"Use Task Prioritisation on 1 task")
+                                    }
                                 }
                             }
                         }

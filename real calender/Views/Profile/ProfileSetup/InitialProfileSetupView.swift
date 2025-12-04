@@ -577,6 +577,8 @@ struct InitialProfileSetupView: View {
             userProfile.name = "User"
         }
         
+        userProfile.incrementGraphUpdate(for: .acedemic)
+        userProfile.incrementGraphUpdate(for: .bmi)
         print("🔧 InitialProfileSetup: Updated profile data:")
         print("🔧 InitialProfileSetup:   Name: '\(userProfile.name)'")
         print("🔧 InitialProfileSetup:   Gender: \(userProfile.gender)")

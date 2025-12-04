@@ -20,23 +20,36 @@ struct DistributionUnlockChart: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                HStack(spacing: 8) {
-                    if isLocked {
-                        Image(systemName: "pencil")
-                            .font(.title3)
-                            .foregroundColor(.blue)
-                    } else {
-                        // FIXED: Show chart icon when unlocked
-                        Image(systemName: "chart.bar.fill")
-                            .font(.title3)
-                            .foregroundColor(color)
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 8) {
+                        if isLocked {
+                            Image(systemName: "pencil")
+                                .font(.title3)
+                                .foregroundColor(.blue)
+                        } else {
+                            // FIXED: Show chart icon when unlocked
+                            Image(systemName: "chart.bar.fill")
+                                .font(.title3)
+                                .foregroundColor(color)
+                        }
+                        
+                        Text(title)
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.primary)
+                            .lineLimit(1)
                     }
                     
-                    Text(title)
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
-                        .lineLimit(1)
+                    //
+                    Button {
+                        onAddData()
+                    } label: {
+                        Text("Update Data")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.blue)
+                    }
+
                 }
                 
                 Spacer()
@@ -156,6 +169,8 @@ struct DistributionUnlockChart: View {
                     )
                     .transition(.opacity.combined(with: .scale))
                     .animation(.spring(response: 1.2, dampingFraction: 0.8), value: userValue)
+                    .padding(.vertical)
+                    
                 }
                 
                 DistributionChartSummary(

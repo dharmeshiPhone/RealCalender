@@ -4,6 +4,7 @@ import SwiftUI
 struct GreetingAndQuoteSection: View {
     let userProfile: UserProfile
     let todaysQuote: (quote: String, author: String)
+    var showQuote: Bool = true
     
     var body: some View {
         VStack(spacing: 16) {
@@ -13,25 +14,26 @@ struct GreetingAndQuoteSection: View {
                         .font(.title2)
                         .fontWeight(.medium)
                         .foregroundColor(.secondary)
-                    
-                    HStack(alignment: .top, spacing: 12) {
-                        Image(systemName: "quote.opening")
-                            .font(.title3)
-                            .foregroundColor(.blue)
-                       
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(todaysQuote.quote)
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                                .italic()
-                                .foregroundColor(.primary)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                           
-                            Text("- \(todaysQuote.author)")
-                                .font(.caption)
-                                .fontWeight(.semibold)
+                    if showQuote{
+                        HStack(alignment: .top, spacing: 12) {
+                            Image(systemName: "quote.opening")
+                                .font(.title3)
                                 .foregroundColor(.blue)
+                            
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(todaysQuote.quote)
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                                    .italic()
+                                    .foregroundColor(.primary)
+                                    .multilineTextAlignment(.leading)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                
+                                Text("- \(todaysQuote.author)")
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.blue)
+                            }
                         }
                     }
                 }
@@ -218,9 +220,11 @@ struct FirstTimeSetupSection: View {
 }
 
 struct AIOverviewSection: View {
+    var currentBatch: Int = 0
     let onCalendarReview: () -> Void
     let onDailySummary: () -> Void
     let onMonthlyReport: () -> Void
+    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -243,9 +247,12 @@ struct AIOverviewSection: View {
                         title: "Daily Summary",
                         icon: "sun.max.fill",
                         color: .orange,
-                        description: "End of day insights"
+                        description: "End of day insights",
+                        islocked: currentBatch <= 7
                     ) {
-                        onDailySummary()
+                        if currentBatch > 7{
+                            onDailySummary()
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -597,12 +604,12 @@ struct CalendarSection: View {
             event.date < now && !event.isRespond && !event.isCompleted
         }
     }
-
+    
     // Count of missed responses
     private var missedResponseCount: Int {
         missedResponseEvents.count
     }
-
+    
     // Today's completion rate
     private var todayCompletionRate: Double {
         let todayEvents = allEvents.filter { event in
@@ -614,7 +621,7 @@ struct CalendarSection: View {
         let completedCount = todayEvents.filter { $0.isCompleted }.count
         return Double(completedCount) / Double(todayEvents.count)
     }
-
+    
     private var todayCompletionColor: Color {
         switch todayCompletionRate {
         case 0.8...1.0: return .green
@@ -622,7 +629,7 @@ struct CalendarSection: View {
         default: return .red
         }
     }
-  
+    
 }
 
 struct ScreenshotAnalysisSection: View {
@@ -807,7 +814,7 @@ struct ProgressStatsSection: View {
                     .controlSize(.small)
                     .font(.caption)
                     .foregroundColor(.orange)
-        
+                    
                     Button("🔥 DIRECT TEST") {
                         print("🔥 Direct test button - bypassing everything")
                         DispatchQueue.main.async {

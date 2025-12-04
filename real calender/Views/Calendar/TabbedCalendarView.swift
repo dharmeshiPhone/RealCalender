@@ -3,9 +3,11 @@ import SwiftUI
 struct TabbedCalendarView: View {
     @Binding var events: [CalendarEvent]
     @State private var selectedDate = Date()
+    @StateObject private var streakManager = StreakManager()
     @EnvironmentObject var screenTimeManager: ScreenTimeManager
     @EnvironmentObject var aiChatManager: AIChatManager
     @EnvironmentObject var achievementManager: AchievementManager
+    @EnvironmentObject var questManager: QuestManager
     
     var body: some View {
         NavigationView {
@@ -19,6 +21,20 @@ struct TabbedCalendarView: View {
             .environmentObject(achievementManager)
             .navigationTitle("Dashboard")
             .navigationBarTitleDisplayMode(.inline)
+            .overlay(
+                Group {
+                    if streakManager.shouldShowPopup {
+                        StreakPopupView(
+                            isPresented: .constant(streakManager.shouldShowPopup),
+                            streakCount: streakManager.currentStreak,
+                            previousStreak: max(0, streakManager.currentStreak - 1)
+                        ) {
+                            streakManager.markPopupShown()
+                        }
+                        
+                    }
+                }
+            )
         }
     }
 }

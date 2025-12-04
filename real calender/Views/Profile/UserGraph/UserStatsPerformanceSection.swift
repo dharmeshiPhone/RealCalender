@@ -47,6 +47,7 @@ struct UserStatsPerformanceSection: View {
     @Binding var showingRunTracker: Bool
     @Binding var showingPullUpsEditor: Bool
     @Binding var showingIncomeEditor: Bool
+    @Binding var showingAcademicEditor: Bool
     
     var academicValue: Double {
         switch profile.educationLevel {
@@ -190,7 +191,7 @@ struct UserStatsPerformanceSection: View {
                         showGoldBall: showAcedemyBall,
                         profile: profile,
                         onAddData: {
-                            //showingAcademicEditor = true
+                            showingAcademicEditor = true
                         },
                         onLockPosition: { position in
                             acedemicLockPosition = position
@@ -398,12 +399,15 @@ struct UserStatsPerformanceSection: View {
         if profile.annualIncomeThousands == 0 { lockedCount += 1 }
         if profile.bmi == 0 { lockedCount += 1 }
         
-        if profile.isStudent{
-            if  profile.highSchoolGPA > 0.0 || profile.universityGPA > 0.0{
+        if profile.isStudent {
+            let noHS = profile.highSchoolGPA <= 0.0
+            let noUni = profile.universityGPA <= 0.0
+            
+            if noHS && noUni {
                 lockedCount += 1
             }
         }
-        
+        print()
         return lockedCount
     }
 }

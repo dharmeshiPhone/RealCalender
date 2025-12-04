@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - Profile Edit View
 struct ProfileEditView: View {
+    @EnvironmentObject var questManager: QuestManager
     @Binding var userProfile: UserProfile
     @Environment(\.dismiss) private var dismiss
     @State private var name: String = ""
@@ -199,17 +200,24 @@ struct ProfileEditView: View {
             userProfile.waistCM = waistVal
         }
         
+        userProfile.incrementGraphUpdate(for: .bmi)
+        
         // Save fitness data
         if let swimmingVal = Int(swimming), swimmingVal > 0 {
             userProfile.swimming50MLaps = swimmingVal
+            userProfile.incrementGraphUpdate(for: .swimming)
         }
+        
+       
         
         if let runningVal = Double(running), runningVal > 0 {
             userProfile.running5KTimeSec = Int(runningVal * 60) // Convert minutes to seconds
+            userProfile.incrementGraphUpdate(for: .running)
         }
         
         if let incomeVal = Int(income), incomeVal > 0 {
             userProfile.annualIncomeThousands = incomeVal
+            userProfile.incrementGraphUpdate(for: .income)
         }
         
         // Save pull-ups data to custom stats
@@ -228,14 +236,23 @@ struct ProfileEditView: View {
                 isHigherBetter: true
             )
             userProfile.customStats.append(pullUpsStat)
+            userProfile.incrementGraphUpdate(for: .pullUps)
         }
         
-        if userProfile.level == 2{
-            userProfile.xp =  Double(400 + earnedXP) // 400 for level 1 xp
-            if userProfile.xp == 1400{
-                userProfile.level = 3
-            }
+        if questManager.currentBatch == 7{
+            questManager.completeQuestWithIncremnetStaticForce(named: "Update 2 different graphs", num: 2, Quebatch: 7)
         }
+        
+        if questManager.currentBatch == 12{
+            questManager.completeQuestWithIncremnetStaticForce(named: "Update 2 different graphs", num: 2, Quebatch: 12)
+        }
+        
+//        if userProfile.level == 2{
+//            userProfile.xp =  Double(400 + earnedXP) // 400 for level 1 xp
+//            if userProfile.xp == 1400{
+//                userProfile.level = 3
+//            }
+//        }
         
         
         userProfile.save()

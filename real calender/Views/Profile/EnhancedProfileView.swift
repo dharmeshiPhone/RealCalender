@@ -428,16 +428,16 @@ struct EnhancedProfileView: View {
                         .frame(maxWidth: .infinity)
                     }
                     
-                    // Quick restore button if missing performance data
-                    if !hasCompletePerformanceData {
-                        Button("📊 Restore Performance Data") {
-                            restorePerformanceData()
-                        }
-                        .buttonStyle(.bordered)
-                        .controlSize(.large)
-                        .frame(maxWidth: .infinity)
-                        .foregroundColor(.blue)
-                    }
+                    // Quick restore button if missing performance data // ahr
+//                    if !hasCompletePerformanceData {
+//                        Button("📊 Restore Performance Data") {
+//                            restorePerformanceData()
+//                        }
+//                        .buttonStyle(.bordered)
+//                        .controlSize(.large)
+//                        .frame(maxWidth: .infinity)
+//                        .foregroundColor(.blue)
+//                    }
                     
                     NavigationLink(destination: UserStatsView(profile: $userProfile)) {
                         HStack {

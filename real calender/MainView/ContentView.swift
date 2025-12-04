@@ -154,7 +154,7 @@ struct ContentView: View {
                         }
                         .tag(0)
 
-                    AIChatView(events: $events)
+                    AIChatView(events: $events,userProfile: $userProfile)
                         .environmentObject(aiChatManager)
                         .environmentObject(screenTimeManager)
                         .tabItem {
@@ -550,14 +550,114 @@ struct ContentView: View {
     func setupCalenderLogEvent(){
         questManager.completeQuestWithIncremnetStaticForce(named: "Log 3 calendar event", num: events.count)
         
-        if events.count > 3 {
+        if events.count > 2 {
             questManager.completeQuestWithIncremnetStaticForce(named: "Add 5 new event", num: events.count - 3)
         }
-       
-        let respondedAndCompletedCount = events.filter { $0.isRespond && $0.isCompleted }.count
-        questManager.completeQuestWithIncremnetStaticForce(named: "Complete 2 scheduled event", num: respondedAndCompletedCount)
-        questManager.completeQuestWithIncremnetStaticForce(named: "Complete 3 scheduled event", num: respondedAndCompletedCount)
         
+        if events.count > 7 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 8,  Quebatch: 8)
+        }
+        
+        if events.count > 9 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 10,  Quebatch: 9)
+        }
+        
+        if events.count > 11 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 12,  Quebatch: 10)
+        }
+        
+        if events.count > 13 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 14,  Quebatch: 11)
+        }
+        
+        if events.count > 15 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 16,  Quebatch: 12)
+        }
+        
+        
+        
+        // MARK: -  For CompletedEvents.
+     
+        let respondedAndCompletedCount = events.filter { $0.isRespond && $0.isCompleted }.count
+        // Batch 3 quest (needs 2 events)
+        questManager.completeQuestWithIncremnetStaticForce(
+            named: "Complete 2 scheduled event",
+            num: respondedAndCompletedCount
+        )
+        
+        // Batch 4 quest (needs 3 events) → reduce by 2
+        if respondedAndCompletedCount > 1 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 2,
+                Quebatch: 4
+            )
+        }
+        
+        if respondedAndCompletedCount > 4 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 5,
+                Quebatch: 5
+            )
+        }
+        
+        if respondedAndCompletedCount > 7 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 8,
+                Quebatch: 6
+            )
+        }
+        
+        if respondedAndCompletedCount > 11 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 12,
+                Quebatch: 7
+            )
+        }
+        
+        if respondedAndCompletedCount > 15 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 16,
+                Quebatch: 8
+            )
+        }
+        
+        if respondedAndCompletedCount > 20 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 5 scheduled event",
+                num: respondedAndCompletedCount - 21,
+                Quebatch: 9
+            )
+        }
+        
+        if respondedAndCompletedCount > 25 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 5 scheduled event",
+                num: respondedAndCompletedCount - 26,
+                Quebatch: 10
+            )
+        }
+        
+        if respondedAndCompletedCount > 28 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 29,
+                Quebatch: 11
+            )
+        }
+        
+        if respondedAndCompletedCount > 30 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 2 scheduled event",
+                num: respondedAndCompletedCount - 31,
+                Quebatch: 12
+            )
+        }
+
         
     }
     
@@ -738,6 +838,13 @@ struct ContentView: View {
         UserDefaults.standard.removeObject(forKey: "userPets")
         UserDefaults.standard.removeObject(forKey: "pendingRewardQuestIds")
         UserDefaults.standard.removeObject(forKey: "showGlowIcon")
+        
+        // clear streck
+        UserDefaults.standard.removeObject(forKey: "StreakData")
+        UserDefaults.standard.removeObject(forKey: "currentStreak")
+        UserDefaults.standard.removeObject(forKey: "totalDaysLogged")
+        UserDefaults.standard.removeObject(forKey: "longestStreak")
+        UserDefaults.standard.removeObject(forKey: "lastLoginDate")
         
         // Force synchronize UserDefaults to ensure changes are saved immediately
         UserDefaults.standard.synchronize()

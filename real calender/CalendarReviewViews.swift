@@ -5,6 +5,7 @@ import SwiftUI
 
 // MARK: - Calendar Review Main View
 struct CalendarReviewView: View {
+    @EnvironmentObject var questManager: QuestManager
     let events: [CalendarEvent]
     @Binding var isPresented: Bool
     let onEventUpdated: (CalendarEvent) -> Void 
@@ -146,13 +147,14 @@ struct CalendarReviewView: View {
                             Text(ReviewTab.conflicts.rawValue)
                         }
                         .tag(ReviewTab.conflicts)
-                    
-                    EnhancedInsightsTabView(events: eventsWithTravel)
-                        .tabItem {
-                            Image(systemName: ReviewTab.insights.icon)
-                            Text(ReviewTab.insights.rawValue)
-                        }
-                        .tag(ReviewTab.insights)
+                    if questManager.currentBatch > 11{ // hide up to level 13
+                        EnhancedInsightsTabView(events: eventsWithTravel)
+                            .tabItem {
+                                Image(systemName: ReviewTab.insights.icon)
+                                Text(ReviewTab.insights.rawValue)
+                            }
+                            .tag(ReviewTab.insights)
+                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)

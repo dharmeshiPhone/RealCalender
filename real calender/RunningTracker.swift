@@ -85,6 +85,7 @@ class RunningTracker: NSObject, ObservableObject, CLLocationManagerDelegate {
 
 // MARK: - Running Tracker View
 struct RunningTrackerView: View {
+    @EnvironmentObject var questManager: QuestManager
     @ObservedObject var runningTracker: RunningTracker
     @Binding var userProfile: UserProfile
     @Environment(\.dismiss) private var dismiss
@@ -214,7 +215,28 @@ struct RunningTrackerView: View {
                     distance: runningTracker.distance
                 )
                 userProfile.addRun(runRecord)
+                userProfile.incrementGraphUpdate(for: .running)
                 userProfile.save()
+                NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
+                if questManager.currentBatch == 5{
+                    questManager.completeQuestWithIncremnetStaticForce(named: "Update Running graph or gym graph", num: 1, Quebatch: 5)
+                }
+                if questManager.currentBatch == 7{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 7)
+                }
+                
+                if questManager.currentBatch == 8{
+                    questManager.completeQuestWithIncremnetStaticForce(named: "Update running graph", num: 1, Quebatch: 8)
+                }
+                
+                if questManager.currentBatch == 10{
+                    questManager.completeQuestWithIncremnetStaticForce(named: "Update Running graph or gym graph or Fill out Academic Graph if applicable", num: 1, Quebatch: 10)
+                }
+                
+                if questManager.currentBatch == 12{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
+                }
+                
                 dismiss()
             }
             Button("Discard") {

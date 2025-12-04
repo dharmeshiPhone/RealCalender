@@ -41,7 +41,24 @@ struct QuestPopoverView: View {
             Color(red: 0/255, green: 100/255, blue: 150/255)
                 .ignoresSafeArea()
         )
+        .onAppear {
+            autoFixIncompletePendingQuests()
+        }
     }
+    
+    private func autoFixIncompletePendingQuests() {
+        let currentBatch = questManager.getCurrentBatchQuests()
+
+        for quest in currentBatch {
+            if questManager.pendingRewardQuestIds.contains(quest.id),
+               quest.isCompleted == false {
+
+                // Force complete the quest
+                questManager.completeQuestWithIncremnetStaticForce(named: quest.title, num: quest.totalCount,Quebatch: quest.batch)
+            }
+        }
+    }
+
     
     private func handle(quest: QuestItem) {
         guard quest.isCompleted else { return }

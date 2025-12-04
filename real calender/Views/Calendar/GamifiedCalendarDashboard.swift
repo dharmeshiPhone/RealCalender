@@ -10,7 +10,6 @@ struct GamifiedCalendarDashboard: View {
     
     @AppStorage("showGlowIcon") private var showGlowQuestIcon: Bool = false
 
-    
     @Binding var events: [CalendarEvent]
     @Binding var selectedDate: Date
     @State private var currentStreak = 7
@@ -37,7 +36,8 @@ struct GamifiedCalendarDashboard: View {
             VStack(spacing: 20) {
                 GreetingAndQuoteSection(
                     userProfile: userProfile,
-                    todaysQuote: todaysQuote
+                    todaysQuote: todaysQuote,
+                    showQuote: questManager.currentBatch > 8
                 )
                 .onChange(of: UserProfile.shared.level, { _, new in
                     if new > 1{
@@ -68,8 +68,14 @@ struct GamifiedCalendarDashboard: View {
                 )
                 
                 AIOverviewSection(
+                    currentBatch: questManager.currentBatch ,
                     onCalendarReview: { showingCalendarReview = true },
-                    onDailySummary: { showingDailyOverview = true },
+                    onDailySummary: {
+                        showingDailyOverview = true
+                        if questManager.currentBatch == 9{
+                            questManager.completeQuest(named: "Check Daily Summary from yesterday")
+                        }
+                    },
                     onMonthlyReport: { }
                 )
                 

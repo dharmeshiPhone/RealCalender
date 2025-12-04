@@ -55,7 +55,6 @@ struct PetDetailView: View {
             
             if questManager.currentBatch == 4{
                 questManager.completeQuest(named: "Check pet happiness (just open pet page)")
-                questManager.completeQuest(named:"Use Sick or Holiday prompt")
             }
         }
     }

@@ -84,28 +84,7 @@ class QuestManager: ObservableObject {
     
     init() {
         // Define all quests here
-        self.predefinedQuests = [
-            // Batch 1 - Basic Quests
-            QuestItem(title: "Set up the basics of your calendar", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 1),
-            QuestItem(title: "Complete two graphs in your profile", completedCount: 0, totalCount: 2, xP: 50, coins: 25, batch: 1),
-            QuestItem(title: "Get your first egg from the pet store", completedCount: 0, totalCount: 1, xP: 50, coins: 50, batch: 1),
-            
-            // temps
-            // Batch 2 - Intermediate Quests
-            QuestItem(title: "Log 3 calendar event", completedCount: 0, totalCount: 3, xP: 75, coins: 50, batch: 2),
-            QuestItem(title: "Turn on notifications", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 2),
-            QuestItem(title: "Complete 1 scheduled event", completedCount: 0, totalCount: 1, xP: 100, coins: 75, batch: 2),
-            
-            // Batch 3 - Advanced Quests
-            QuestItem(title: "Complete 2 scheduled event", completedCount: 0, totalCount: 2, xP: 75, coins: 75, batch: 3),
-            QuestItem(title: "Add 5 new event", completedCount: 0, totalCount: 5, xP: 100, coins: 50, batch: 3),
-            QuestItem(title: "Use Task Prioritisation", completedCount: 0, totalCount: 1, xP: 75, coins: 75, batch: 3),
-            
-            // Batch 4 - Expert Quests
-            QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 100, coins: 75, batch: 4),
-            QuestItem(title: "Check pet happiness (just open pet page)", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 4),
-            QuestItem(title: "Use Sick or Holiday prompt", completedCount: 0, totalCount: 1, xP: 100, coins: 50, batch: 4)
-        ]
+        self.predefinedQuests = questItems
         
         loadQuests()
     }
@@ -194,9 +173,19 @@ class QuestManager: ObservableObject {
     
     // MARK: - Complete Quest force
     
-    func completeQuestWithIncremnetForce(named questTitle: String,num:Int) { // icremental
-        guard let index = allQuests.firstIndex(where: { $0.title == questTitle }) else {
-            print("Quest not found: \(questTitle)")
+    func completeQuestWithIncremnetForce(named questTitle: String,num:Int, Quebatch: Int? = nil) { // icremental
+        // 1) Find by title and batch (if batch provided)
+        let questIndex: Int?
+
+        if let batch = Quebatch {
+            questIndex = allQuests.firstIndex(where: { $0.title == questTitle && $0.batch == batch })
+        } else {
+            questIndex = allQuests.firstIndex(where: { $0.title == questTitle })
+        }
+
+        // 2) Validate index
+        guard let index = questIndex else {
+            print("Quest not found for title: \(questTitle), batch: \(Quebatch ?? -1)")
             return
         }
         
@@ -219,13 +208,25 @@ class QuestManager: ObservableObject {
             print("Quest already completed: \(questTitle)")
         }
     }
-    
-    func completeQuestWithIncremnetStaticForce(named questTitle: String,num:Int) { // static
-        guard let index = allQuests.firstIndex(where: { $0.title == questTitle }) else {
-            print("Quest not found: \(questTitle)")
+  
+    func completeQuestWithIncremnetStaticForce(named questTitle: String, num: Int, Quebatch: Int? = nil) {
+
+        // 1) Find by title and batch (if batch provided)
+        let questIndex: Int?
+
+        if let batch = Quebatch {
+            questIndex = allQuests.firstIndex(where: { $0.title == questTitle && $0.batch == batch })
+        } else {
+            questIndex = allQuests.firstIndex(where: { $0.title == questTitle })
+        }
+
+        // 2) Validate index
+        guard let index = questIndex else {
+            print("Quest not found for title: \(questTitle), batch: \(Quebatch ?? -1)")
             return
         }
         
+        // 3) Access quest safely
         let quest = allQuests[index]
         if !quest.isCompleted {
             allQuests[index].staticIncrementforceProgress(num: num)
@@ -244,7 +245,9 @@ class QuestManager: ObservableObject {
         } else {
             print("Quest already completed: \(questTitle)")
         }
+
     }
+
     
     func checkQuestWasCompleted(_ questTitle: String) -> Bool{
         guard let index = allQuests.firstIndex(where: { $0.title == questTitle }) else {
@@ -322,6 +325,10 @@ class QuestManager: ObservableObject {
 //                }
 //            }
             showNotificationPopup = true
+        case 7:
+            if  UserDefaults.standard.integer(forKey: "currentStreak") > 0{
+                completeQuest(named: "Maintain 7-day streak")
+            }
         default:
             break
         }

@@ -234,6 +234,7 @@ struct EducationEditor: View {
 
 // MARK: - Income Editor
 struct IncomeEditor: View {
+    @EnvironmentObject var questManager: QuestManager
     @Binding var userProfile: UserProfile
     @Environment(\.dismiss) private var dismiss
     @State private var tempIncome: Double = 0
@@ -277,10 +278,20 @@ struct IncomeEditor: View {
                         // Update the binding
                         userProfile.annualIncomeThousands = Int(tempIncome)
                         print("💰 IncomeEditor: Updated binding - income: \(userProfile.annualIncomeThousands)")
-                        
+                        userProfile.incrementGraphUpdate(for: .income)
                         // Save to UserDefaults
                         userProfile.save()
+                        if questManager.currentBatch == 6{
+                            questManager.completeQuest(named: "Fill out Gym or Swimming graph or income")
+                        }
                         
+                        if questManager.currentBatch == 7{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 7)
+                        }
+                        
+                        if questManager.currentBatch == 12{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
+                        }
                         // Post notification
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
                         print("💰 IncomeEditor: Posted profileUpdated notification with income: \(userProfile.annualIncomeThousands)")
@@ -300,6 +311,7 @@ struct IncomeEditor: View {
 
 // MARK: - Swimming Editor (DEBUG Version)
 struct SwimmingEditor: View {
+    @EnvironmentObject var questManager: QuestManager
     @Binding var userProfile: UserProfile
     @Environment(\.dismiss) private var dismiss
     @State private var tempLaps: Double = 0
@@ -349,10 +361,20 @@ struct SwimmingEditor: View {
                         // Update the binding
                         userProfile.swimming50MLaps = Int(tempLaps)
                         print("🏊‍♂️ SwimmingEditor: Updated binding - swimming: \(userProfile.swimming50MLaps)")
-                        
+                        userProfile.incrementGraphUpdate(for: .swimming)
                         // Save to UserDefaults with extra safety
                         userProfile.save()
                        // saveProfileSafely()
+                        if questManager.currentBatch == 6{
+                            questManager.completeQuest(named: "Fill out Gym or Swimming graph or income")
+                        }
+                        
+                        if questManager.currentBatch == 7{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 7)
+                        }
+                        if questManager.currentBatch == 12{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
+                        }
                         
                         // Post notification to trigger unlock animation
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
@@ -560,6 +582,7 @@ struct CustomStatsEditor: View {
 
 // MARK: - Pull-ups Editor
 struct PullUpsEditor: View {
+    @EnvironmentObject var questManager: QuestManager
     @Binding var userProfile: UserProfile
     @Environment(\.dismiss) private var dismiss
     @State private var tempPullUps: Double = 0
@@ -619,11 +642,27 @@ struct PullUpsEditor: View {
                         } else {
                             print("💪 PullUpsEditor: No pull-ups data added (value is 0)")
                         }
-                        
+                        userProfile.incrementGraphUpdate(for: .pullUps)
                         // Save to UserDefaults
                         userProfile.save()
-                       
+                        if questManager.currentBatch == 5{
+                            questManager.completeQuestWithIncremnetStaticForce(named: "Update Running graph or gym graph", num: 1, Quebatch: 5)
+                        }
+                        questManager.completeQuest(named: "Update Running graph or gym graph or Fill out Academic Graph if applicable")
+                        if questManager.currentBatch == 6{
+                            questManager.completeQuestWithIncremnetStaticForce(named: "Fill out Gym or Swimming graph or income", num: 1, Quebatch: 6)
+                        }
+                        if questManager.currentBatch == 7{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 7)
+                        }
                         
+                        if questManager.currentBatch == 10{
+                            questManager.completeQuestWithIncremnetStaticForce(named: "Update Running graph or gym graph or Fill out Academic Graph if applicable", num: 1, Quebatch: 10)
+                        }
+                        
+                        if questManager.currentBatch == 12{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
+                        }
                         // Post notification to trigger unlock animation
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
                         print("💪 PullUpsEditor: Posted profileUpdated notification")
@@ -647,3 +686,144 @@ struct PullUpsEditor: View {
         }
     }
 }
+
+
+// MARK: - Acedemic Editor
+struct AcedemicEditor: View {
+    @EnvironmentObject var questManager: QuestManager
+    @Binding var userProfile: UserProfile
+    @Environment(\.dismiss) private var dismiss
+    @State private var currentGPA: String = ""
+    
+    var body: some View {
+        NavigationView {
+            ScrollView{
+                VStack(spacing: 30) {
+                    Text("Education Status")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Select Your Education Level")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                        HStack(spacing: 16) {
+                            
+                            // High School Button
+                            Button(action: {
+                                userProfile.educationLevel = .highSchool
+                            }) {
+                                Text("High School")
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        userProfile.educationLevel == .highSchool ?
+                                        Color.blue : Color.black.opacity(0.6)
+                                    )
+                                    .foregroundColor(
+                                        userProfile.educationLevel == .highSchool ?
+                                            .white : .primary
+                                    )
+                                    .cornerRadius(12)
+                            }
+                            
+                            // University Button
+                            Button(action: {
+                                userProfile.educationLevel = .university
+                            }) {
+                                Text("University")
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        userProfile.educationLevel == .university ?
+                                        Color.blue :  Color.black.opacity(0.6)
+                                    )
+                                    .foregroundColor(
+                                        userProfile.educationLevel == .university ?
+                                            .white : .primary
+                                    )
+                                    .cornerRadius(12)
+                            }
+                        }
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("What's your current GPA?")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                        Text("Enter your GPA out of 7.0 (or convert from 4.0 scale)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        TextField("e.g. 6.2", text: $currentGPA)
+                            .textFieldStyle(.roundedBorder)
+                            .keyboardType(.decimalPad)
+                            .frame(maxWidth: 150)
+                    }
+                    .frame(maxWidth:.infinity,alignment: .leading)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
+                    
+                }
+                .padding()
+            }
+            .navigationTitle("Education")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        userProfile.universityGPA = 0.0
+                        userProfile.highSchoolGPA = 0.0
+                        
+                        if userProfile.educationLevel == .highSchool || userProfile.educationLevel == .university {
+                            let gpa = Double(currentGPA) ?? 0.0
+                            
+                            if userProfile.educationLevel == .highSchool {
+                                userProfile.highSchoolGPA = gpa
+                            } else {
+                                userProfile.universityGPA = gpa
+                            }
+                            print("🔧 InitialProfileSetup: Added academic data - GPA: \(gpa)")
+                            questManager.completeQuest(named: "Complete two graphs in your profile")
+                        }
+                       
+                        userProfile.incrementGraphUpdate(for: .acedemic)
+                        // Save to UserDefaults
+                        userProfile.save()
+                       
+                        if questManager.currentBatch == 7{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 7)
+                        }
+                        
+                        if questManager.currentBatch == 10{
+                            questManager.completeQuestWithIncremnetStaticForce(named: "Update Running graph or gym graph or Fill out Academic Graph if applicable", num: 1, Quebatch: 10)
+                        }
+                        
+                        if questManager.currentBatch == 12{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
+                        }
+                        // Post notification to trigger unlock animation
+                        NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
+                        
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .onAppear {
+            // Load existing pull-up value if it exists
+            currentGPA = "\(userProfile.highSchoolGPA > 0 ? userProfile.highSchoolGPA : userProfile.universityGPA)"
+        }
+    }
+}
+
+
