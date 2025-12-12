@@ -54,7 +54,7 @@ class QuestStorageManager {
 class QuestManager: ObservableObject {
     @AppStorage("showGlowIcon") private var showGlowQuestIcon: Bool = false
     @AppStorage("pendingRewardQuestIds") private var storedPendingRewardQuestIdsData: Data?
-
+    
     
     var pendingRewardQuestIds: [UUID] {
         get {
@@ -69,11 +69,11 @@ class QuestManager: ObservableObject {
             storedPendingRewardQuestIdsData = try? JSONEncoder().encode(strings)
         }
     }
-
+    
     
     @Published var showNotificationPopup : Bool = false
-   
-
+    
+    
     @Published var currentBatch: Int = 1
     @Published var allQuests: [QuestItem] = []
     
@@ -108,12 +108,18 @@ class QuestManager: ObservableObject {
             allQuests[index].resetProgress()
         }
         saveAllData()
+        
     }
     
     
     private func saveAllData() {
         storageManager.saveCurrentBatch(currentBatch)
         storageManager.saveAllQuests(allQuests)
+        if currentBatch > 27{ // unlock after day 27
+            Task{
+                await sendLowProgressNotificationIfNeeded()
+            }
+        }
     }
     
     // MARK: - Public Methods
@@ -142,28 +148,28 @@ class QuestManager: ObservableObject {
             let latestQuest = allQuests[index]
             if latestQuest.isCompleted{
                 // Add XP to current user
-//                var user = UserProfile.shared
-//                user.xp += Double(quest.xP)
-//                user.coins += quest.coins
-//                
-//                let XprequriedToComplteLevel = UserProfile.xpRequiredForLevel(user.level)
-//                
-//                if user.xp >= XprequriedToComplteLevel{
-//                    user.level += 1
-//                    showGlowQuestIcon = true
-//                }
-//                
-//                user.save()
-//                NotificationCenter.default.post(name: .profileUpdated, object: user)
+                //                var user = UserProfile.shared
+                //                user.xp += Double(quest.xP)
+                //                user.coins += quest.coins
+                //
+                //                let XprequriedToComplteLevel = UserProfile.xpRequiredForLevel(user.level)
+                //
+                //                if user.xp >= XprequriedToComplteLevel{
+                //                    user.level += 1
+                //                    showGlowQuestIcon = true
+                //                }
+                //
+                //                user.save()
+                //                NotificationCenter.default.post(name: .profileUpdated, object: user)
                 var list = pendingRewardQuestIds
                 list.append(quest.id)
                 pendingRewardQuestIds = list
-
+                
                 showGlowQuestIcon = true
             }
             // Save quests and check batch
             saveAllData()
-          //  checkBatchCompletion()
+            //  checkBatchCompletion()
             
             print("Quest progress updated: \(questTitle), XP added: \(quest.xP)")
         } else {
@@ -176,13 +182,13 @@ class QuestManager: ObservableObject {
     func completeQuestWithIncremnetForce(named questTitle: String,num:Int, Quebatch: Int? = nil) { // icremental
         // 1) Find by title and batch (if batch provided)
         let questIndex: Int?
-
+        
         if let batch = Quebatch {
             questIndex = allQuests.firstIndex(where: { $0.title == questTitle && $0.batch == batch })
         } else {
             questIndex = allQuests.firstIndex(where: { $0.title == questTitle })
         }
-
+        
         // 2) Validate index
         guard let index = questIndex else {
             print("Quest not found for title: \(questTitle), batch: \(Quebatch ?? -1)")
@@ -208,18 +214,18 @@ class QuestManager: ObservableObject {
             print("Quest already completed: \(questTitle)")
         }
     }
-  
+    
     func completeQuestWithIncremnetStaticForce(named questTitle: String, num: Int, Quebatch: Int? = nil) {
-
+        
         // 1) Find by title and batch (if batch provided)
         let questIndex: Int?
-
+        
         if let batch = Quebatch {
             questIndex = allQuests.firstIndex(where: { $0.title == questTitle && $0.batch == batch })
         } else {
             questIndex = allQuests.firstIndex(where: { $0.title == questTitle })
         }
-
+        
         // 2) Validate index
         guard let index = questIndex else {
             print("Quest not found for title: \(questTitle), batch: \(Quebatch ?? -1)")
@@ -245,9 +251,9 @@ class QuestManager: ObservableObject {
         } else {
             print("Quest already completed: \(questTitle)")
         }
-
+        
     }
-
+    
     
     func checkQuestWasCompleted(_ questTitle: String) -> Bool{
         guard let index = allQuests.firstIndex(where: { $0.title == questTitle }) else {
@@ -262,7 +268,7 @@ class QuestManager: ObservableObject {
         list.removeAll { $0 == questId }
         pendingRewardQuestIds = list
     }
-
+    
     func resetQuest(_ questId: UUID) {
         guard let index = allQuests.firstIndex(where: { $0.id == questId }) else { return }
         
@@ -314,25 +320,43 @@ class QuestManager: ObservableObject {
         
         switch currentBatch{
         case 2:
-//            if let data = UserDefaults.standard.data(forKey: "calendarEvents"),
-//               let events = try? JSONDecoder().decode([CalendarEvent].self, from: data) {
-//                if events.count == 1{
-//                    completeQuest(named: "Log 3 calendar event")
-//                }else if events.count == 2{
-//                    completeQuestWithIncremnetForce(named: "Log 3 calendar event", num: 2)
-//                }else if events.count > 2{
-//                    completeQuestWithIncremnetForce(named: "Log 3 calendar event", num: 3)
-//                }
-//            }
+            //            if let data = UserDefaults.standard.data(forKey: "calendarEvents"),
+            //               let events = try? JSONDecoder().decode([CalendarEvent].self, from: data) {
+            //                if events.count == 1{
+            //                    completeQuest(named: "Log 3 calendar event")
+            //                }else if events.count == 2{
+            //                    completeQuestWithIncremnetForce(named: "Log 3 calendar event", num: 2)
+            //                }else if events.count > 2{
+            //                    completeQuestWithIncremnetForce(named: "Log 3 calendar event", num: 3)
+            //                }
+            //            }
             showNotificationPopup = true
         case 7:
             if  UserDefaults.standard.integer(forKey: "currentStreak") > 0{
                 completeQuest(named: "Maintain 7-day streak")
             }
+        case 14:
+            if  UserDefaults.standard.integer(forKey: "currentStreak") >= 14{
+                completeQuest(named: "Maintain 14-day streak")
+            }
+        case 20:
+            if  UserDefaults.standard.integer(forKey: "currentStreak") >= 20{
+                completeQuest(named: "Maintain 20-day streak")
+            }
+        case 21:
+            if  UserDefaults.standard.integer(forKey: "currentStreak") >= 21{
+                completeQuest(named: "Maintain 21-day streak")
+            }
+            
+        case 28:
+            if  UserDefaults.standard.integer(forKey: "currentStreak") >= 28{
+                completeQuest(named: "Maintain 28-day streak")
+            }
+            
         default:
             break
         }
-       
+        
     }
     
     private func resetCurrentBatchQuests() {
@@ -383,7 +407,55 @@ class QuestManager: ObservableObject {
         }
         print("===========================")
     }
+    
+    
+    // MARK: - Daily Summary Task
+    
+    @Published var dailySummaryStreak: Int = 0
+    @Published var lastDailySummaryDate: Date? = nil
+    
+    func updateDailySummaryStreak() {
+        let today = Calendar.current.startOfDay(for: Date())
+        
+        if let lastDate = lastDailySummaryDate {
+            let last = Calendar.current.startOfDay(for: lastDate)
+            
+            if let diff = Calendar.current.dateComponents([.day], from: last, to: today).day {
+                if diff == 1 {
+                    dailySummaryStreak += 1
+                } else if diff > 1 {
+                    dailySummaryStreak = 1
+                }
+            }
+        } else {
+            dailySummaryStreak = 1
+        }
+        
+        lastDailySummaryDate = today
+        // MARK: Complete the quest after 7 days in a row
+        if dailySummaryStreak >= 7 {
+            completeQuest(named: "Check Daily Summary 7 days in a row")
+        }
+    }
 }
 
 
 
+extension QuestManager {
+    func sendLowProgressNotificationIfNeeded() async {
+        let progress = getBatchCompletionPercentage()
+        if let savedPetsData = UserDefaults.standard.data(forKey: "userPets"),
+           let decodedPets = try? JSONDecoder().decode([Pet].self, from: savedPetsData) {
+            
+            // Fire notification only when progress < 33%
+            if progress < 0.33 {
+                await LocalNotificationManager.shared.schedulePetHappinessNotifications(petName: decodedPets.first?.name ?? "Fluffy")
+            }
+        }else{
+            // Fire notification only when progress < 33%
+            if progress < 0.33 {
+                await LocalNotificationManager.shared.schedulePetHappinessNotifications(petName:  "Fluffy")
+            }
+        }
+    }
+}

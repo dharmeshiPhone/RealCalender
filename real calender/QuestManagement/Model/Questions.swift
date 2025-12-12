@@ -68,6 +68,8 @@ let questItems = [
     QuestItem(title: "Add 2 new event", completedCount: 0, totalCount: 2, xP: 75, coins: 50, batch: 10),
     QuestItem(title: "Buy a pet cosmetic worth 400 coins", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 10),
     
+    // incompletes
+    
     // Batch 11
     QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 11),
     QuestItem(title: "Add 2 new event", completedCount: 0, totalCount: 2, xP: 75, coins: 50, batch: 11),
@@ -77,4 +79,98 @@ let questItems = [
     QuestItem(title: "Complete 2 scheduled event", completedCount: 0, totalCount: 2, xP: 125, coins: 100, batch: 12),
     QuestItem(title: "Update 2 different graphs", completedCount: 0, totalCount: 2, xP: 75, coins: 50, batch: 12),
     QuestItem(title: "Add 2 new events", completedCount: 0, totalCount: 2, xP: 50, coins: 25, batch: 12),
+    
+    // Batch 13
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 13),
+    QuestItem(title: "Add 2 new event", completedCount: 0, totalCount: 2, xP: 75, coins: 50, batch: 13),
+    QuestItem(title: "Update one graph", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 13),
+    
+    // Batch 14
+    QuestItem(title: "Maintain 14-day streak", completedCount: 0, totalCount: 1, xP: 0, coins: 125, batch: 14),
+    QuestItem(title: "Complete 2 scheduled event", completedCount: 0, totalCount: 2, xP: 200, coins: 50, batch: 14),
+    QuestItem(title: "Update BMI or Running graph", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 14),
+    
+    
+    
+    
+    // MARK: - Week 3
+    
+    // Batch 15
+    QuestItem(title: "Complete 2 scheduled event", completedCount: 0, totalCount: 2, xP: 125, coins: 100, batch: 15),
+    QuestItem(title: "Add 3 new event", completedCount: 0, totalCount: 3, xP: 75, coins: 50, batch: 15),
+    QuestItem(title: "Check Weekly Analytics", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 15),
+    
+    
+    // Batch 16
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 16),
+    QuestItem(title: "Update Swimming or Gym graph", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 16),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 16),
+    
+    
+    // Batch 17
+    QuestItem(title: "Complete 6 scheduled event", completedCount: 0, totalCount: 6, xP: 125, coins: 100, batch: 17),
+    QuestItem(title: "Add 3 new event", completedCount: 0, totalCount: 3, xP: 75, coins: 50, batch: 17),
+    QuestItem(title: "Check Daily Summary", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 17),
+    
+    
+    // Batch 18
+    QuestItem(title: "Complete 5 scheduled event", completedCount: 0, totalCount: 5, xP: 125, coins: 100, batch: 18),
+    QuestItem(title: "Update 3 different graphs", completedCount: 0, totalCount: 3, xP: 75, coins: 50, batch: 18),
+    QuestItem(title: "Update one graph", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 18),
+    
+    // Batch 19
+    QuestItem(title: "Complete 2 scheduled event", completedCount: 0, totalCount: 2, xP: 125, coins: 100, batch: 19),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 19),
+    QuestItem(title: "Buy 2 pet cosmetics worth 300 coins", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 19),
+    
+    // Batch 20
+    QuestItem(title: "Maintain 20-day streak", completedCount: 0, totalCount: 1, xP: 0, coins: 125, batch: 20),
+    QuestItem(title: "Complete 5 scheduled event", completedCount: 0, totalCount: 5, xP: 200, coins: 50, batch: 20),
+    QuestItem(title: "Update 2 graphs", completedCount: 0, totalCount: 2, xP: 50, coins: 25, batch: 20),
+    
+    // Batch 21
+    QuestItem(title: "Maintain 21-day streak", completedCount: 0, totalCount: 1, xP: 0, coins: 150, batch: 21),
+    QuestItem(title: "Complete 2 scheduled event", completedCount: 0, totalCount: 2, xP: 200, coins: 50, batch: 21),
+    QuestItem(title: "Update all unlocked graphs", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 21),
+    
+    
+    // MARK: - Week 4
+    
+    // Batch 22
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 22),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 22),
+    QuestItem(title: "Check Daily Summary 7 days in a row", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 22),
+    
+    // Batch 23
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 23),
+    QuestItem(title: "BMI or running graph", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 23),
+    QuestItem(title: "Add 2 new events", completedCount: 0, totalCount: 2, xP: 50, coins: 25, batch: 23),
+    
+    // Batch 24
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 24),
+    QuestItem(title: "Add 2 new events", completedCount: 0, totalCount: 2, xP: 75, coins: 50, batch: 24),
+    QuestItem(title: "Open analytics page", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 24),
+    
+    // Batch 25
+    QuestItem(title: "Complete 5 scheduled event", completedCount: 0, totalCount: 5, xP: 125, coins: 100, batch: 25),
+    QuestItem(title: "Update gym graph and Running graphs", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 25),
+    QuestItem(title: "Update 2 graphs", completedCount: 0, totalCount: 2, xP: 50, coins: 25, batch: 25),
+    
+    
+    // Batch 26
+    QuestItem(title: "Complete 4 scheduled event", completedCount: 0, totalCount: 4, xP: 125, coins: 100, batch: 26),
+    QuestItem(title: "Add 2 new events", completedCount: 0, totalCount: 2, xP: 75, coins: 50, batch: 26),
+    QuestItem(title: "Check Weekly Analytics", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 26),
+    
+    
+    // Batch 27
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 27),
+    QuestItem(title: "Update 3 different graphs", completedCount: 0, totalCount: 3, xP: 75, coins: 50, batch: 27),
+    QuestItem(title: "Check Daily Summary days in a row", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 27),
+    
+    
+    // Batch 28
+    QuestItem(title: "Maintain 28-day streak", completedCount: 0, totalCount: 1, xP: 0, coins: 125, batch: 28),
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 200, coins: 50, batch: 28),
+    QuestItem(title: "Buy a Tier 4 pet cosmetic worth 250 coins", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 28),
 ]

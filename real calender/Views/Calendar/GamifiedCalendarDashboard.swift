@@ -75,6 +75,17 @@ struct GamifiedCalendarDashboard: View {
                         if questManager.currentBatch == 9{
                             questManager.completeQuest(named: "Check Daily Summary from yesterday")
                         }
+                        
+                        if questManager.currentBatch == 17 {
+                            questManager.completeQuest(named: "Check Daily Summary")
+                        }
+                        
+                        if questManager.currentBatch == 27 {
+                            questManager.completeQuest(named: "Check Daily Summary days in a row")
+                        }
+                        
+                        // 🔥 Update streak every time user checks Daily Summary
+                        questManager.updateDailySummaryStreak()
                     },
                     onMonthlyReport: { }
                 )

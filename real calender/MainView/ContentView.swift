@@ -550,87 +550,226 @@ struct ContentView: View {
     func setupCalenderLogEvent(){
         questManager.completeQuestWithIncremnetStaticForce(named: "Log 3 calendar event", num: events.count)
         
-        if events.count > 2 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 5 new event", num: events.count - 3)
+        if events.count > 32 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 33,  Quebatch: 26)
         }
         
-        if events.count > 7 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 8,  Quebatch: 8)
+        if events.count > 30 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 31,  Quebatch: 24)
         }
         
-        if events.count > 9 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 10,  Quebatch: 9)
+        if events.count > 28 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 29,  Quebatch: 23)
         }
         
-        if events.count > 11 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 12,  Quebatch: 10)
+        if events.count > 26 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 27,  Quebatch: 22)
         }
         
-        if events.count > 13 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 14,  Quebatch: 11)
+        if events.count > 25 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 26,  Quebatch: 19)
+        }
+        
+        if events.count > 24 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 25,  Quebatch: 17)
+        }
+        
+        if events.count > 21 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 22,  Quebatch: 16)
+        }
+        
+        if events.count > 20 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 21,  Quebatch: 15)
+        }
+        
+        if events.count > 17 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 18,  Quebatch: 13)
         }
         
         if events.count > 15 {
             questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 16,  Quebatch: 12)
         }
         
+        if events.count > 13 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 14,  Quebatch: 11)
+        }
+        
+        if events.count > 11 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 12,  Quebatch: 10)
+        }
+        
+        if events.count > 9 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 10,  Quebatch: 9)
+        }
+        
+        if events.count > 7 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 8,  Quebatch: 8)
+        }
+        
+        if events.count > 2 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 5 new event", num: events.count - 3)
+        }
         
         
         // MARK: -  For CompletedEvents.
      
         let respondedAndCompletedCount = events.filter { $0.isRespond && $0.isCompleted }.count
+        
+        
         // Batch 3 quest (needs 2 events)
         questManager.completeQuestWithIncremnetStaticForce(
             named: "Complete 2 scheduled event",
             num: respondedAndCompletedCount
         )
         
-        // Batch 4 quest (needs 3 events) → reduce by 2
-        if respondedAndCompletedCount > 1 {
+        if respondedAndCompletedCount > 84{
             questManager.completeQuestWithIncremnetStaticForce(
                 named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 2,
-                Quebatch: 4
+                num: respondedAndCompletedCount - 85,
+                Quebatch: 28
             )
         }
         
-        if respondedAndCompletedCount > 4 {
+        if respondedAndCompletedCount > 81{
             questManager.completeQuestWithIncremnetStaticForce(
                 named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 5,
-                Quebatch: 5
+                num: respondedAndCompletedCount - 82,
+                Quebatch: 27
             )
         }
         
-        if respondedAndCompletedCount > 7 {
+        if respondedAndCompletedCount > 78{
             questManager.completeQuestWithIncremnetStaticForce(
                 named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 8,
-                Quebatch: 6
+                num: respondedAndCompletedCount - 79,
+                Quebatch: 26
             )
         }
         
-        if respondedAndCompletedCount > 11 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 12,
-                Quebatch: 7
-            )
-        }
-        
-        if respondedAndCompletedCount > 15 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 16,
-                Quebatch: 8
-            )
-        }
-        
-        if respondedAndCompletedCount > 20 {
+        if respondedAndCompletedCount > 74 {
             questManager.completeQuestWithIncremnetStaticForce(
                 named: "Complete 5 scheduled event",
-                num: respondedAndCompletedCount - 21,
-                Quebatch: 9
+                num: respondedAndCompletedCount - 75,
+                Quebatch:25
+            )
+        }
+        
+        if respondedAndCompletedCount > 69 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 70,
+                Quebatch:24
+            )
+        }
+        
+        if respondedAndCompletedCount > 66 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 67,
+                Quebatch: 23
+            )
+        }
+        
+        if respondedAndCompletedCount > 63 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 64,
+                Quebatch: 22
+            )
+        }
+        
+        if respondedAndCompletedCount > 60 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 2 scheduled event",
+                num: respondedAndCompletedCount - 61,
+                Quebatch: 21
+            )
+        }
+        
+        
+        if respondedAndCompletedCount > 58 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 5 scheduled event",
+                num: respondedAndCompletedCount - 59,
+                Quebatch: 20
+            )
+        }
+        
+        if respondedAndCompletedCount > 53 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 2 scheduled event",
+                num: respondedAndCompletedCount - 54,
+                Quebatch: 19
+            )
+        }
+        
+        
+        
+        if respondedAndCompletedCount > 51 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 5 scheduled event",
+                num: respondedAndCompletedCount - 52,
+                Quebatch: 18
+            )
+        }
+        
+        
+        if respondedAndCompletedCount > 46 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 6 scheduled event",
+                num: respondedAndCompletedCount - 47,
+                Quebatch: 17
+            )
+        }
+        
+        if respondedAndCompletedCount > 40 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 41,
+                Quebatch: 16
+            )
+        }
+        
+        
+        if respondedAndCompletedCount > 37 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 2 scheduled event",
+                num: respondedAndCompletedCount - 38,
+                Quebatch: 15
+            )
+        }
+        
+        if respondedAndCompletedCount > 35 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 2 scheduled event",
+                num: respondedAndCompletedCount - 36,
+                Quebatch: 14
+            )
+        }
+        
+        if respondedAndCompletedCount > 33 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 34,
+                Quebatch: 13
+            )
+        }
+      
+        
+        if respondedAndCompletedCount > 30 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 2 scheduled event",
+                num: respondedAndCompletedCount - 31,
+                Quebatch: 12
+            )
+        }
+        
+        
+        if respondedAndCompletedCount > 28 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 29,
+                Quebatch: 11
             )
         }
         
@@ -642,23 +781,56 @@ struct ContentView: View {
             )
         }
         
-        if respondedAndCompletedCount > 28 {
+        if respondedAndCompletedCount > 20 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 5 scheduled event",
+                num: respondedAndCompletedCount - 21,
+                Quebatch: 9
+            )
+        }
+        
+        if respondedAndCompletedCount > 15 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 16,
+                Quebatch: 8
+            )
+        }
+        
+        if respondedAndCompletedCount > 11 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 12,
+                Quebatch: 7
+            )
+        }
+        
+        if respondedAndCompletedCount > 7 {
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 8,
+                Quebatch: 6
+            )
+        }
+        
+        if respondedAndCompletedCount > 4 {
             questManager.completeQuestWithIncremnetStaticForce(
                 named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 29,
-                Quebatch: 11
+                num: respondedAndCompletedCount - 5,
+                Quebatch: 5
             )
         }
         
-        if respondedAndCompletedCount > 30 {
+        
+        // Batch 4 quest (needs 3 events) → reduce by 2
+        if respondedAndCompletedCount > 1 {
             questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 2 scheduled event",
-                num: respondedAndCompletedCount - 31,
-                Quebatch: 12
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 2,
+                Quebatch: 4
             )
         }
-
-        
+ 
     }
     
     

@@ -39,6 +39,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // Called when the user discards a scene session
     }
     
+    
+    
     // MARK: - URL Scheme Handling
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {

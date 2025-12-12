@@ -292,6 +292,28 @@ struct IncomeEditor: View {
                         if questManager.currentBatch == 12{
                             questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
                         }
+                        
+                        if questManager.currentBatch == 13{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 13)
+                        }
+                        
+                        if questManager.currentBatch == 18{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 different graphs", num: 1, Quebatch: 18)
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 18)
+                        }
+                        
+                        if questManager.currentBatch == 20{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 20)
+                        }
+                        
+                        if questManager.currentBatch == 21{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 21)
+                        }
+                        
+                        if questManager.currentBatch == 25{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 25)
+                        }
+                       
                         // Post notification
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
                         print("💰 IncomeEditor: Posted profileUpdated notification with income: \(userProfile.annualIncomeThousands)")
@@ -374,6 +396,29 @@ struct SwimmingEditor: View {
                         }
                         if questManager.currentBatch == 12{
                             questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
+                        }
+                        if questManager.currentBatch == 13{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 13)
+                        }
+                        
+                        if questManager.currentBatch == 16{
+                            questManager.completeQuestWithIncremnetForce(named: "Update Swimming or Gym graph", num: 1, Quebatch: 16)
+                        }
+                        
+                        if questManager.currentBatch == 18{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 different graphs", num: 1, Quebatch: 18)
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 18)
+                        }
+                        
+                        if questManager.currentBatch == 20{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 20)
+                        }
+                        
+                        if questManager.currentBatch == 21{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 21)
+                        }
+                        if questManager.currentBatch == 25{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 25)
                         }
                         
                         // Post notification to trigger unlock animation
@@ -663,6 +708,31 @@ struct PullUpsEditor: View {
                         if questManager.currentBatch == 12{
                             questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
                         }
+                        
+                        if questManager.currentBatch == 13{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 13)
+                        }
+                        
+                        if questManager.currentBatch == 16{
+                            questManager.completeQuestWithIncremnetForce(named: "Update Swimming or Gym graph", num: 1, Quebatch: 16)
+                        }
+                        
+                        if questManager.currentBatch == 18{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 different graphs", num: 1, Quebatch: 18)
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 18)
+                        }
+                        
+                        if questManager.currentBatch == 20{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 20)
+                        }
+                        
+                        if questManager.currentBatch == 21{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 21)
+                        }
+                        if questManager.currentBatch == 25{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 25)
+                            questManager.completeQuestWithIncremnetForce(named: "Update gym graph and Running graphs", num: 1, Quebatch: 25)
+                        }
                         // Post notification to trigger unlock animation
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
                         print("💪 PullUpsEditor: Posted profileUpdated notification")
@@ -810,6 +880,25 @@ struct AcedemicEditor: View {
                         
                         if questManager.currentBatch == 12{
                             questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
+                        }
+                        if questManager.currentBatch == 13{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 13)
+                        }
+                        
+                        if questManager.currentBatch == 18{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 different graphs", num: 1, Quebatch: 18)
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 18)
+                        }
+                        
+                        if questManager.currentBatch == 20{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 20)
+                        }
+                        
+                        if questManager.currentBatch == 21{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 21)
+                        }
+                        if questManager.currentBatch == 25{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 25)
                         }
                         // Post notification to trigger unlock animation
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)

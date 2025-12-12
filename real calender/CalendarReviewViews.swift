@@ -119,6 +119,14 @@ struct CalendarReviewView: View {
                     print("📊 CalendarReviewView: Received \(events.count) total events")
                     print("📊 CalendarReviewView: Events with travel: \(eventsWithTravel.count)")
                     print("📊 CalendarReviewView: === END ANALYSIS ===")
+                    
+                    if questManager.currentBatch == 15{
+                        questManager.completeQuest(named: "Check Weekly Analytics")
+                    }
+                    
+                    if questManager.currentBatch == 26{
+                        questManager.completeQuest(named: "Check Weekly Analytics")
+                    }
                 }
                 
                 // Tab content

@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - Enhanced Analytics Tab
 struct EnhancedAnalyticsTabView: View {
+    @EnvironmentObject var questManager: QuestManager
     let events: [CalendarEvent]
     @State private var selectedTimeRange: AnalyticsTimeRange = .week
     @State private var selectedMetric: AnalyticsMetric = .eventCount
@@ -41,6 +42,11 @@ struct EnhancedAnalyticsTabView: View {
                 timePatternsSection
             }
             .padding()
+            .onAppear {
+                if questManager.currentBatch == 24{
+                    questManager.completeQuest(named:"Open analytics page")
+                }
+            }
         }
     }
     

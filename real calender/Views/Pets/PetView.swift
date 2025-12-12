@@ -87,7 +87,6 @@ struct PetStoreView: View {
             .onReceive(timer) { _ in
                 currentTime = Date()
             }
-            
         }
     }
     

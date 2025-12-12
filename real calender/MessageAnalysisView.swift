@@ -5,10 +5,10 @@ import UserNotifications
 struct MessageAnalysisView: View {
     @EnvironmentObject var messageAnalyzer: MessageAnalyzer
     @EnvironmentObject var aiChatManager: AIChatManager
-    
+    @EnvironmentObject var questManager: QuestManager
     var body: some View {
         NavigationView {
-           ScrollView {
+            ScrollView {
                 VStack(spacing: 20) {
                     // Hero Section - Shortcuts Integration
                     VStack(alignment: .leading, spacing: 20) {
@@ -365,7 +365,7 @@ struct MessageAnalysisView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(16)
                     
-                    // Results sections 
+                    // Results sections
                     // Today's Summary
                     if !messageAnalyzer.todaysSummary.isEmpty {
                         VStack(alignment: .leading, spacing: 12) {
@@ -456,8 +456,40 @@ struct MessageAnalysisView: View {
                 }
                 .padding()
             }
+            .disabled(questManager.currentBatch > 12)
+            .opacity(questManager.currentBatch > 12 ? 1.0 : 0.75)
             .navigationTitle("Message Analysis")
             .navigationBarTitleDisplayMode(.large)
+            .overlay(content: {
+                if questManager.currentBatch <= 12{
+                    ZStack {
+                        Color.black.opacity(0.55)
+                            .ignoresSafeArea()
+                        
+                        VStack(spacing: 16) {
+                            Image(systemName: "lock.fill")
+                                .font(.system(size: 40))
+                                .foregroundColor(.white.opacity(0.9))
+                            
+                            Text("Message Analysis Locked")
+                                .font(.title3.bold())
+                                .foregroundColor(.white.opacity(0.9))
+                            
+                            Text("Unlock smart insights for your emails and messages — including tone detection, sentiment breakdown, and communication improvement tips.\n\nReach Level 14 to activate this feature.")
+                                .font(.body)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white.opacity(0.9))
+                        }
+                        .padding()
+                        .background(Color.orange.opacity(0.5))
+                        .background(Color.black)
+                        .cornerRadius(20)
+                        .padding(.horizontal, 30)
+                    }
+                }
+                
+            })
+            
             .onAppear {
                 messageAnalyzer.onEventCreated = { event in
                     print("📸 MessageAnalysisView: Event created from analysis: '\(event.title)'")

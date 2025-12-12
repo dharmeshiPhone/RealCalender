@@ -237,6 +237,37 @@ struct RunningTrackerView: View {
                     questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
                 }
                 
+                if questManager.currentBatch == 13{
+                    questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 13)
+                }
+                
+                if questManager.currentBatch == 14{
+                    questManager.completeQuestWithIncremnetForce(named: "Update BMI or Running graph", num: 1, Quebatch: 14)
+                }
+                
+                if questManager.currentBatch == 18{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 3 different graphs", num: 1, Quebatch: 18)
+                    questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 18)
+                }
+                
+                if questManager.currentBatch == 20{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 20)
+                }
+                
+                if questManager.currentBatch == 21{
+                    questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 21)
+                }
+                
+                if questManager.currentBatch == 23{
+                    questManager.completeQuestWithIncremnetForce(named: "BMI or running graph", num: 1, Quebatch: 23)
+                }
+                
+                if questManager.currentBatch == 25{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 25)
+                    questManager.completeQuestWithIncremnetForce(named: "Update gym graph and Running graphs", num: 1, Quebatch: 25)
+                }
+               
+                
                 dismiss()
             }
             Button("Discard") {
