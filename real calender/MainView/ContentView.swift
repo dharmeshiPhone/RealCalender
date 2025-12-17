@@ -39,7 +39,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             mainContent
-            debugGesture
+           // debugGesture
         }
         .onAppear {
             print("ContentView: onAppear called - setting up notification listeners")
@@ -177,7 +177,8 @@ struct ContentView: View {
                         }
                         .tag(2)
 
-                    BadgesView()
+                   // BadgesView()
+                    BadgeScreen(userProfile: userProfile)
                         .environmentObject(achievementManager)
                         .tabItem {
                             ZStack {
@@ -550,6 +551,32 @@ struct ContentView: View {
     func setupCalenderLogEvent(){
         questManager.completeQuestWithIncremnetStaticForce(named: "Log 3 calendar event", num: events.count)
         
+        
+        if events.count > 40 {
+            questManager.completeQuestWithIncremnetStaticForce(named:  "Add 2 new events", num: events.count - 41,  Quebatch: 39)
+        }
+        if events.count > 38 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 39,  Quebatch: 38)
+        }
+        if events.count > 37 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 38,  Quebatch: 36)
+        }
+        if events.count > 36 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 37,  Quebatch: 34)
+        }
+        
+        if events.count > 35 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 36,  Quebatch: 33)
+        }
+        
+        if events.count > 34 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 35,  Quebatch: 31)
+        }
+        
+        if events.count > 33 {
+            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 34,  Quebatch: 28)
+        }
+        
         if events.count > 32 {
             questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 33,  Quebatch: 26)
         }
@@ -621,6 +648,104 @@ struct ContentView: View {
             named: "Complete 2 scheduled event",
             num: respondedAndCompletedCount
         )
+        
+        
+        
+        
+        if respondedAndCompletedCount > 124{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 2 scheduled event",
+                num: respondedAndCompletedCount - 125,
+                Quebatch: 40
+            )
+        }
+        
+        if respondedAndCompletedCount > 122{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 123,
+                Quebatch: 39
+            )
+        }
+        
+        if respondedAndCompletedCount > 118{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 119,
+                Quebatch: 38
+            )
+        }
+        
+        if respondedAndCompletedCount > 115{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 116,
+                Quebatch: 37
+            )
+        }
+        
+        if respondedAndCompletedCount > 112{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 113,
+                Quebatch: 36
+            )
+        }
+        
+        if respondedAndCompletedCount > 108{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 109,
+                Quebatch: 35
+            )
+        }
+        if respondedAndCompletedCount > 105{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 106,
+                Quebatch: 34
+            )
+        }
+        
+        if respondedAndCompletedCount > 102{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 103,
+                Quebatch: 33
+            )
+        }
+        
+        if respondedAndCompletedCount > 98{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 99,
+                Quebatch: 32
+            )
+        }
+        
+        if respondedAndCompletedCount > 95{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named:  "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 96,
+                Quebatch: 31
+            )
+        }
+        
+        if respondedAndCompletedCount > 91{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 3 scheduled event",
+                num: respondedAndCompletedCount - 92,
+                Quebatch: 30
+            )
+        }
+        
+        if respondedAndCompletedCount > 88{
+            questManager.completeQuestWithIncremnetStaticForce(
+                named: "Complete 4 scheduled event",
+                num: respondedAndCompletedCount - 89,
+                Quebatch: 29
+            )
+        }
         
         if respondedAndCompletedCount > 84{
             questManager.completeQuestWithIncremnetStaticForce(
@@ -1008,6 +1133,7 @@ struct ContentView: View {
         UserDefaults.standard.removeObject(forKey: "userLocation")
         UserDefaults.standard.removeObject(forKey: "morningPrepTime")
         UserDefaults.standard.removeObject(forKey: "userPets")
+        UserDefaults.standard.removeObject(forKey: "petCosmeticTiers")
         UserDefaults.standard.removeObject(forKey: "pendingRewardQuestIds")
         UserDefaults.standard.removeObject(forKey: "showGlowIcon")
         

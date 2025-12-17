@@ -19,6 +19,9 @@ struct AddEventView: View {
     @State private var locationSuggestions: [String] = []
     @State private var showingLocationSuggestions = false
     
+    @State private var scheduleNotification = false
+
+    
     private let colors: [Color] = [.blue, .green, .red, .orange, .purple, .pink, .yellow]
     
     var body: some View {
@@ -144,6 +147,24 @@ struct AddEventView: View {
                     .background(Color(.systemBackground))
                     .cornerRadius(12)
                     .shadow(radius: 1)
+                    
+                    if questManager.currentBatch > 9 { // unlock this feature
+                        VStack(alignment: .leading, spacing: 8) {
+                            Toggle(isOn: $scheduleNotification) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Schedule Notification")
+                                        .font(.subheadline)
+                                        .fontWeight(.medium)
+                                    
+                                    Text("Notify me 30 minutes before the event")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                            .disabled(date < Date())
+                        }
+                        .padding(.horizontal)
+                    }
                     
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Color")
@@ -318,6 +339,20 @@ struct AddEventView: View {
         )
         
         print("📅 AddEventView: Created manual event '\(newEvent.title)' and posted unified notification")
+      
+        if scheduleNotification {
+            print("⏰ Notification scheduled 30 minutes before: \(newEvent.title)")
+            Task {
+                await LocalNotificationManager.shared.scheduleEventReminder(
+                    eventId: newEvent.id.uuidString,
+                    title: newEvent.title,
+                    eventDate: newEvent.date,
+                    location: newEvent.location
+                )
+            }
+        }
+
+        
         if isFirstScheduledEvent{
             questManager.completeQuest(named: "Complete 1 scheduled event")
         }

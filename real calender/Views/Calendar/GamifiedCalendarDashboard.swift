@@ -73,15 +73,27 @@ struct GamifiedCalendarDashboard: View {
                     onDailySummary: {
                         showingDailyOverview = true
                         if questManager.currentBatch == 9{
-                            questManager.completeQuest(named: "Check Daily Summary from yesterday")
+                            questManager.completeQuestWithIncremnetForce(named: "Check Daily Summary from yesterday",num:1,Quebatch:9)
                         }
                         
                         if questManager.currentBatch == 17 {
-                            questManager.completeQuest(named: "Check Daily Summary")
+                            questManager.completeQuestWithIncremnetForce(named: "Check Daily Summary",num:1,Quebatch:17)
                         }
                         
                         if questManager.currentBatch == 27 {
-                            questManager.completeQuest(named: "Check Daily Summary days in a row")
+                            questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary days in a row",num:1,Quebatch:27)
+                        }
+                        
+                        if questManager.currentBatch == 29 {
+                            questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary",num:1,Quebatch:29)
+                        }
+                        
+                        if questManager.currentBatch == 32 {
+                            questManager.completeQuestWithIncremnetForce(named: "Check Daily Summary 14 days in a row",num:1,Quebatch:32)
+                        }
+                        
+                        if questManager.currentBatch == 40 {
+                            questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary",num:1,Quebatch:40)
                         }
                         
                         // 🔥 Update streak every time user checks Daily Summary
@@ -284,7 +296,7 @@ struct GamifiedCalendarDashboard: View {
                 }
         }
         .fullScreenCover(isPresented: $openPetView) {
-            PetStoreView()
+            PetDetailView(questManager:questManager)
         }
     }
     

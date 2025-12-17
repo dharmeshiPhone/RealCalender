@@ -238,7 +238,7 @@ class QuestManager: ObservableObject {
             allQuests[index].staticIncrementforceProgress(num: num)
             
             let latestQuest = allQuests[index]
-            if latestQuest.isCompleted{
+            if latestQuest.isCompleted {
                 var list = pendingRewardQuestIds
                 list.append(quest.id)
                 pendingRewardQuestIds = list
@@ -305,21 +305,32 @@ class QuestManager: ObservableObject {
     private func advanceToNextBatch() {
         let nextBatch = currentBatch + 1
         let maxBatch = allQuests.map { $0.batch }.max() ?? 1
-        
-        if nextBatch <= maxBatch {
-            currentBatch = nextBatch
-        } else {
-            // Loop back to first batch
-            currentBatch = 1
-        }
-        
+
+        currentBatch = nextBatch <= maxBatch ? nextBatch : 1
+
         resetCurrentBatchQuests()
         saveAllData()
-        
-        // MARK: -  Auto complete questions
-        
-        switch currentBatch{
-        case 2:
+
+        handleAutoCompleteForCurrentBatch()
+    }
+    
+    private func handleAutoCompleteForCurrentBatch() {
+        let currentStreak = UserDefaults.standard.integer(forKey: "currentStreak")
+
+        // Streak-based quest rules
+        let streakRules: [Int: String] = [
+            7:  "Maintain 7-day streak",
+            14: "Maintain 14-day streak",
+            20: "Maintain 20-day streak",
+            21: "Maintain 21-day streak",
+            28: "Maintain 28-day streak",
+            30: "Maintain 30-day streak",
+            35: "Maintain 35-day streak",
+            40: "Maintain 40-day streak"
+        ]
+
+        // Notification-only batches
+        if currentBatch == 2 {
             //            if let data = UserDefaults.standard.data(forKey: "calendarEvents"),
             //               let events = try? JSONDecoder().decode([CalendarEvent].self, from: data) {
             //                if events.count == 1{
@@ -331,33 +342,19 @@ class QuestManager: ObservableObject {
             //                }
             //            }
             showNotificationPopup = true
-        case 7:
-            if  UserDefaults.standard.integer(forKey: "currentStreak") > 0{
-                completeQuest(named: "Maintain 7-day streak")
-            }
-        case 14:
-            if  UserDefaults.standard.integer(forKey: "currentStreak") >= 14{
-                completeQuest(named: "Maintain 14-day streak")
-            }
-        case 20:
-            if  UserDefaults.standard.integer(forKey: "currentStreak") >= 20{
-                completeQuest(named: "Maintain 20-day streak")
-            }
-        case 21:
-            if  UserDefaults.standard.integer(forKey: "currentStreak") >= 21{
-                completeQuest(named: "Maintain 21-day streak")
-            }
-            
-        case 28:
-            if  UserDefaults.standard.integer(forKey: "currentStreak") >= 28{
-                completeQuest(named: "Maintain 28-day streak")
-            }
-            
-        default:
-            break
+            return
         }
-        
+
+        // Handle streak quests
+        if let questName = streakRules[currentBatch],
+           currentStreak >= currentBatch {
+            completeQuest(named: questName)
+        }
     }
+
+
+    
+   
     
     private func resetCurrentBatchQuests() {
         for index in allQuests.indices where allQuests[index].batch == currentBatch {

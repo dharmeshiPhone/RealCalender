@@ -465,6 +465,33 @@ struct EnhancedProfileView: View {
                         .cornerRadius(12)
                     }
                     .buttonStyle(.plain)
+                    
+                    if userProfile.level >= 38{
+                        Section(header: Text("Social Features")) {
+                            SocialButtonCompact(
+                                title: "Join Our Team",
+                                icon: "person.2.fill",
+                                color: .blue,
+                                action: { /* Handle join team */ }
+                            )
+                            
+                            SocialButtonCompact(
+                                title: "Send Feedback",
+                                icon: "text.bubble.fill",
+                                color: .green,
+                                action: { /* Handle feedback */ }
+                            )
+                            
+                            SocialButtonCompact(
+                                title: "Follow on Instagram",
+                                icon: "camera.fill",
+                                color: .pink,
+                                action: { /* Open Instagram */ }
+                            )
+                        }
+                        .padding(.top)
+                    }
+                 
                 }
                 .padding(.top)
             }
@@ -664,6 +691,40 @@ struct EnhancedProfileView: View {
         // Remove particle after animation
         DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
             goldMistParticles.removeAll { $0.id == particle.id }
+        }
+    }
+}
+
+struct SocialButtonCompact: View {
+    let title: String
+    let icon: String
+    let color: Color
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Image(systemName: icon)
+                    .foregroundColor(color)
+                    .frame(width: 20)
+                
+                Text(title)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            .padding(.vertical, 12)
+            .padding(.horizontal, 16)
+            .background(Color(.systemBackground))
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+            )
         }
     }
 }

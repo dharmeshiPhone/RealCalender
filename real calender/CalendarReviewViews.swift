@@ -121,11 +121,19 @@ struct CalendarReviewView: View {
                     print("📊 CalendarReviewView: === END ANALYSIS ===")
                     
                     if questManager.currentBatch == 15{
-                        questManager.completeQuest(named: "Check Weekly Analytics")
+                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:15)
                     }
                     
                     if questManager.currentBatch == 26{
-                        questManager.completeQuest(named: "Check Weekly Analytics")
+                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:26)
+                    }
+                    
+                    if questManager.currentBatch == 35{
+                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:35)
+                    }
+                    
+                    if questManager.currentBatch == 38{
+                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics 6 weeks in a row",num:1,Quebatch:35)
                     }
                 }
                 

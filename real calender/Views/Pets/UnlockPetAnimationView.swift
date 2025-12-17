@@ -43,6 +43,7 @@ struct UnlockPetAnimationView: View {
                 .opacity(glowOpacity)
                 .scaleEffect(animationPhase >= 2 ? 1.5 : 0.1)
         }
+        .ignoresSafeArea()
     }
     
     private var mainContent: some View {

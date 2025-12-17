@@ -66,7 +66,7 @@ let questItems = [
     // Batch 10
     QuestItem(title: "Complete 5 scheduled event", completedCount: 0, totalCount: 5, xP: 125, coins: 100, batch: 10),
     QuestItem(title: "Add 2 new event", completedCount: 0, totalCount: 2, xP: 75, coins: 50, batch: 10),
-    QuestItem(title: "Buy a pet cosmetic worth 400 coins", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 10),
+    QuestItem(title: "Buy a pet cosmetic", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 10),
     
     // incompletes
     
@@ -121,7 +121,7 @@ let questItems = [
     // Batch 19
     QuestItem(title: "Complete 2 scheduled event", completedCount: 0, totalCount: 2, xP: 125, coins: 100, batch: 19),
     QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 19),
-    QuestItem(title: "Buy 2 pet cosmetics worth 300 coins", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 19),
+    QuestItem(title: "Buy 2 pet cosmetics", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 19),
     
     // Batch 20
     QuestItem(title: "Maintain 20-day streak", completedCount: 0, totalCount: 1, xP: 0, coins: 125, batch: 20),
@@ -172,5 +172,79 @@ let questItems = [
     // Batch 28
     QuestItem(title: "Maintain 28-day streak", completedCount: 0, totalCount: 1, xP: 0, coins: 125, batch: 28),
     QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 200, coins: 50, batch: 28),
-    QuestItem(title: "Buy a Tier 4 pet cosmetic worth 250 coins", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 28),
+    QuestItem(title: "Buy pet cosmetic", completedCount: 0, totalCount: 1, xP: 50, coins: 0, batch: 28),
+    
+    
+    // MARK: - Week 5
+    
+    // Batch 29
+    QuestItem(title: "Complete 4 scheduled event", completedCount: 0, totalCount: 4, xP: 125, coins: 100, batch: 29),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 29),
+    QuestItem(title: "Check Daily Summary", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 29),
+    
+    
+    // Batch 30
+    QuestItem(title: "Maintain 30-day streak", completedCount: 0, totalCount: 1, xP: 0, coins: 150, batch: 30),
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 200, coins: 50, batch: 30),
+    QuestItem(title: "Update all graphs", completedCount: 0, totalCount: 5, xP: 50, coins: 25, batch: 30),
+    
+    // Batch 31
+    QuestItem(title: "Complete 4 scheduled event", completedCount: 0, totalCount: 4, xP: 125, coins: 100, batch: 31),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 31),
+    QuestItem(title: "Update one graph", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 31),
+    
+    // Batch 32
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 32),
+    QuestItem(title: "Use Task Prioritisation on 1 task", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 32),
+    QuestItem(title: "Check Daily Summary 14 days in a row", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 32),
+    
+    // Batch 33
+    QuestItem(title: "Complete 4 scheduled event", completedCount: 0, totalCount: 4, xP: 125, coins: 100, batch: 33),
+    QuestItem(title: "Update BMI and Running graphs", completedCount: 0, totalCount: 2, xP: 75, coins: 50, batch: 33),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 33),
+    
+    // Batch 34
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 34),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 34),
+    QuestItem(title: "Buy 2 pet cosmetics", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 34),
+    
+    // Batch 35
+    QuestItem(title: "Maintain 35-day streak", completedCount: 0, totalCount: 0, xP: 0, coins: 150, batch: 35),
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 200, coins: 50, batch: 35),
+    QuestItem(title: "Check Weekly Analytics", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 35),
+    
+    
+    // MARK: - Week 6 (Days 36-42)
+    
+    // Batch 36
+    QuestItem(title: "Complete 4 scheduled event", completedCount: 0, totalCount: 4, xP: 125, coins: 100, batch: 36),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 36),
+    QuestItem(title: "Update 3 graphs", completedCount: 0, totalCount: 3, xP: 50, coins: 25, batch: 36),
+
+    //Unlocks: Social: "Join Team," "Feedback," "Follow Instagram" buttons
+    
+    // Batch 37
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 37),
+    QuestItem(title: "Use Task Prioritisation on 3 tasks", completedCount: 0, totalCount: 3, xP: 75, coins: 50, batch: 37),
+    QuestItem(title: "Check on pets happiness", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 37),
+    
+    
+    // Batch 38
+    QuestItem(title: "Complete 3 scheduled event", completedCount: 0, totalCount: 3, xP: 125, coins: 100, batch: 38),
+    QuestItem(title: "Add 1 new event", completedCount: 0, totalCount: 1, xP: 75, coins: 50, batch: 38),
+    QuestItem(title: "Check Weekly Analytics 6 weeks in a row", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 38),
+    
+    // Batch 39
+    QuestItem(title: "Complete 4 scheduled event", completedCount: 0, totalCount: 4, xP: 125, coins: 100, batch: 39),
+    QuestItem(title: "Update all unlocked graphs", completedCount: 0, totalCount: 5, xP: 75, coins: 50, batch: 39),
+    QuestItem(title: "Add 2 new events", completedCount: 0, totalCount: 2, xP: 50, coins: 25, batch: 39),
+
+
+    // Batch 40
+    QuestItem(title: "Maintain 40-day streak", completedCount: 0, totalCount: 0, xP: 0, coins: 150, batch: 40),
+    QuestItem(title: "Complete 2 scheduled event", completedCount: 0, totalCount: 2, xP: 200, coins: 50, batch: 40),
+    QuestItem(title: "Check Daily Summary", completedCount: 0, totalCount: 1, xP: 50, coins: 25, batch: 40),
+    
+    
+
 ]

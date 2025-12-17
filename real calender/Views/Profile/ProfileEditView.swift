@@ -294,6 +294,24 @@ struct ProfileEditView: View {
             questManager.completeQuestWithIncremnetForce(named: "Update gym graph and Running graphs", num: 1, Quebatch: 25)
         }
         
+        if questManager.currentBatch == 30{
+            questManager.completeQuestWithIncremnetStaticForce(named: "Update all graphs", num: 5, Quebatch: 30)
+        }
+        
+        if questManager.currentBatch == 31{
+            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 31)
+        }
+        
+        if questManager.currentBatch == 33{
+            questManager.completeQuestWithIncremnetForce(named: "Update BMI and Running graphs", num: 1, Quebatch: 33)
+        }
+        if questManager.currentBatch == 36{
+            questManager.completeQuestWithIncremnetForce(named: "Update 3 graphs", num: 3, Quebatch: 36)
+        }
+        if questManager.currentBatch == 39{
+            questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 5, Quebatch: 39)
+        }
+        
 //        if userProfile.level == 2{
 //            userProfile.xp =  Double(400 + earnedXP) // 400 for level 1 xp
 //            if userProfile.xp == 1400{

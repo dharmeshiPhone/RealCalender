@@ -25,11 +25,6 @@ struct PetStoreView: View {
     // Sample initial pet data
     let initialPets = [
         Pet(name: "Fluffy", isUnlocked: false, cost: 50, icon: "pawprint.circle.fill", color: .blue),
-//        Pet(name: "Sparky", isUnlocked: false, cost: 100, icon: "bolt.circle.fill", color: .yellow),
-//        Pet(name: "Aqua", isUnlocked: false, cost: 150, icon: "drop.circle.fill", color: .cyan),
-//        Pet(name: "Rocky", isUnlocked: false, cost: 200, icon: "shield.righthalf.filled", color: .brown),
-//        Pet(name: "Mystic", isUnlocked: false, cost: 250, icon: "apple.image.playground.fill", color: .purple),
-//        Pet(name: "Blaze", isUnlocked: false, cost: 300, icon: "flame.circle.fill", color: .orange)
     ]
     
     var body: some View {
@@ -63,10 +58,10 @@ struct PetStoreView: View {
                 }
             }
             .navigationTitle("Pet Store")
-            .navigationBarTitleDisplayMode(.large)
-            .navigationDestination(item: $openPet, destination: { pet in
-                PetDetailView(pet: pet, questManager: questManager)
-            })
+            .navigationBarTitleDisplayMode(.inline)
+//            .navigationDestination(item: $openPet, destination: { pet in
+//                PetDetailView(pet: pet, questManager: questManager)
+//            })
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -338,41 +333,10 @@ struct PetStoreView: View {
         showingUnlockAnimation = true
         
         questManager.completeQuest(named: "Get your first egg from the pet store")
-        
-        //showGlowQuestIcon = true
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.34) {
-//            withAnimation(.easeOut(duration: 0.3)){
-//                questManager.showLevelUp = true
-//            }
-//        }
+  
     }
     
-    // MARK: - Action Buttons
-    private var actionButtonsSection: some View {
-        VStack(spacing: 12) {
-            Button(action: { unlockRandomPet() }) {
-                HStack(spacing: 12) {
-                    Image(systemName: "sparkles")
-                    Text("Unlock Random Pet").fontWeight(.semibold)
-                    Spacer()
-                    Text("250")
-                        .font(.caption)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.orange.opacity(0.2))
-                        .cornerRadius(8)
-                    Image(systemName: "dollarsign.circle.fill")
-                }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .padding(.horizontal, 20)
-                .background(LinearGradient(colors: [.purple, .blue], startPoint: .leading, endPoint: .trailing))
-                .cornerRadius(16)
-                .shadow(color: .purple.opacity(0.3), radius: 8)
-            }
-        }
-    }
+   
     
     
     private func loadPets() {
@@ -391,25 +355,7 @@ struct PetStoreView: View {
         }
     }
     
-    private func unlockRandomPet() {
-        let lockedPets = pets.enumerated().filter { !$0.element.isUnlocked }
-        guard !lockedPets.isEmpty else { return }
-        
-        let randomCost = 250
-        guard userProfile.coins >= randomCost else { return }
-        
-        userProfile.coins -= randomCost
-        userProfile.save()
-        
-        let randomIndex = Int.random(in: 0..<lockedPets.count)
-        let (index, _) = lockedPets[randomIndex]
-        
-        pets[index].isUnlocked = true
-        savePets()
-        
-        unlockedPetIndex = index
-        showingUnlockAnimation = true
-    }
+  
 }
 
 

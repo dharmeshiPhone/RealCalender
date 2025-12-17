@@ -12,6 +12,7 @@ struct ScreenTimeCalendarApp: App {
     
     var body: some Scene {
         WindowGroup {
+            
             ZStack {
                 ContentView()
                     .environmentObject(screenTimeManager)
@@ -55,3 +56,5 @@ struct ScreenTimeCalendarApp: App {
         #endif
     }
 }
+
+

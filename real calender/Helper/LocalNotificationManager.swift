@@ -93,6 +93,65 @@ final class LocalNotificationManager {
             try? await center.add(request)
         }
     }
+    
+    
+    // MARK: - Event Reminder Notification (30 minutes before)
+    func scheduleEventReminder(
+        eventId: String,
+        title: String,
+        eventDate: Date,
+        location: String? = nil
+    ) async {
+
+        // Calculate trigger time (30 minutes before event)
+        let reminderDate = Calendar.current.date(byAdding: .minute, value: -30, to: eventDate)
+
+        guard let triggerDate = reminderDate, triggerDate > Date() else {
+            print("⛔️ Reminder time already passed. Skipping notification.")
+            return
+        }
+
+        let granted = await requestAuthorizationIfNeeded()
+        guard granted else {
+            print("🔕 Notification permission not granted.")
+            return
+        }
+
+        let center = UNUserNotificationCenter.current()
+
+        let content = UNMutableNotificationContent()
+        content.title = "Upcoming Event"
+        content.body = location == nil
+            ? "\(title) starts in 30 minutes"
+            : "\(title) starts in 30 minutes at \(location!)"
+        content.sound = .default
+
+        if #available(iOS 15.0, *) {
+            content.interruptionLevel = .timeSensitive
+        }
+
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: Calendar.current.dateComponents(
+                [.year, .month, .day, .hour, .minute],
+                from: triggerDate
+            ),
+            repeats: false
+        )
+
+        let request = UNNotificationRequest(
+            identifier: "event.reminder.\(eventId)",
+            content: content,
+            trigger: trigger
+        )
+
+        do {
+            try await center.add(request)
+            print("⏰ Scheduled reminder for '\(title)' at \(triggerDate)")
+        } catch {
+            print("❌ Failed to schedule event reminder:", error.localizedDescription)
+        }
+    }
+
 
 
     

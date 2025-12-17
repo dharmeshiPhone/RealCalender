@@ -13,6 +13,8 @@ struct AIChatView: View {
     @State private var selectedImage: UIImage?
     @State private var photoPickerItem: PhotosPickerItem?
     @State private var showingTaskPrioritization = false
+    
+    @State private var showStats = false // for stats
 
     var body: some View {
         NavigationView {
@@ -40,6 +42,9 @@ struct AIChatView: View {
                         }
                     }
                 }
+                .overlay(alignment: .topLeading, content: {
+                    overlayView
+                })
                 
                 // Voice input indicator
                 if aiChatManager.isListening {
@@ -76,53 +81,6 @@ struct AIChatView: View {
                 
                 // Input area
                 VStack(spacing: 12) {
-                    // Task Prioritise button
-                    let isUnlocked = questManager.currentBatch > 2
-
-                    HStack {
-                        Spacer()
-                        
-                        Button(action: {
-                            if isUnlocked {
-                                showingTaskPrioritization = true
-                                if questManager.currentBatch == 3{
-                                    questManager.completeQuest(named: "Use Task Prioritisation")
-                                    userProfile.coins -= 100
-                                    userProfile.save()
-                                }
-                            }
-                        }) {
-                            HStack(spacing: 12) {
-                                Image(systemName: isUnlocked ? "list.bullet.indent" : "lock.fill")
-                                    .font(.subheadline)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(isUnlocked ? .white : .gray.opacity(0.7))
-                                
-                                Text("Task Prioritise")
-                                    .font(.subheadline)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(isUnlocked ? .white : .gray.opacity(0.7))
-                            }
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .background(
-                                isUnlocked
-                                ? Color.teal.opacity(0.2)
-                                : Color.gray.opacity(0.1)
-                            )
-                            .cornerRadius(30)
-                            .shadow(
-                                color: isUnlocked ? Color.teal.opacity(0.35) : Color.clear,
-                                radius: 6,
-                                x: 0,
-                                y: 3
-                            )
-                        }
-                        .disabled(!isUnlocked)
-                    }
-
-                  
-                    
                     // Quick action buttons
                     if showingQuickActions {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -247,6 +205,7 @@ struct AIChatView: View {
                 .padding(.bottom)
                 .background(Color(.systemBackground))
             }
+           
             .navigationTitle("AI Assistant")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -308,6 +267,54 @@ struct AIChatView: View {
         }
     }
     
+    // MARK: - overlay view
+    
+    private var overlayView: some View {
+        ScrollView{
+            VStack(alignment:.leading,spacing:12){
+                let TaskisUnlocked = questManager.currentBatch > 2
+                let holidaySeekUnlocked = questManager.currentBatch > 3
+                TOPButton(isUnlocked: holidaySeekUnlocked, name: "Sick", action: {
+                    if holidaySeekUnlocked{
+                        aiChatManager.sendMessage("Help me Sick of my day")
+                        questManager.completeQuestWithIncremnetStaticForce(named: "Use Sick or Holiday prompt", num: 1, Quebatch: 4)
+                        
+                        if questManager.currentBatch > 4{
+                            questManager.completeQuestWithIncremnetStaticForce(named: "Use Sick or Holiday prompt", num: 1, Quebatch: 5)
+                        }
+                    }
+                })
+                TOPButton(isUnlocked: holidaySeekUnlocked, name: "Holiday", action: {
+                    if holidaySeekUnlocked{
+                        aiChatManager.sendMessage("Help me Holiday of my day")
+                        questManager.completeQuestWithIncremnetStaticForce(named: "Use Sick or Holiday prompt", num: 1, Quebatch: 4)
+                        
+                        if questManager.currentBatch > 4{
+                            questManager.completeQuestWithIncremnetStaticForce(named: "Use Sick or Holiday prompt", num: 1, Quebatch: 5)
+                        }
+                    }
+                })
+                TOPButton(isUnlocked: true, name: "Your Stats", action: {
+                    showStats.toggle()
+                })
+                if showStats{
+                    StatsGridView()
+                    
+                }
+                TOPButton(isUnlocked: TaskisUnlocked, name: "Task Prioritise", action: {
+                    if TaskisUnlocked {
+                        showingTaskPrioritization = true
+                        if questManager.currentBatch == 3{
+                            questManager.completeQuest(named: "Use Task Prioritisation")
+                            userProfile.coins -= 100
+                            userProfile.save()
+                        }
+                    }
+                })
+            }
+            .padding(.horizontal)
+        }
+    }
     
     
     private func sendMessage() {
@@ -787,8 +794,17 @@ struct TaskPrioritizationView: View {
                                     selectedEvent = nil
                                     
                                     if questManager.currentBatch == 6{
-                                        questManager.completeQuest(named:"Use Task Prioritisation on 1 task")
+                                        questManager.completeQuestWithIncremnetStaticForce(named:"Use Task Prioritisation on 1 task",num:1,Quebatch:6)
                                     }
+                                    if questManager.currentBatch == 32{
+                                        questManager.completeQuestWithIncremnetStaticForce(named:"Use Task Prioritisation on 1 task",num:1,Quebatch:32)
+                                    }
+                                    
+                                    if questManager.currentBatch == 37{
+                                        questManager.completeQuestWithIncremnetForce(named:"Use Task Prioritisation on 3 tasks",num:1,Quebatch:37)
+                                    }
+                                    
+                                    
                                 }
                             }
                         }
@@ -1008,3 +1024,150 @@ struct StatBox: View {
         .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
     }
 }
+
+// MARK: - State Grid
+
+struct TOPButton: View {
+    var isUnlocked:Bool
+    var name:String
+    var action:()-> Void
+    
+    var body: some View {
+        Button(action: {
+            action()
+        }) {
+            HStack(spacing: 12) {
+                Image(systemName: isUnlocked ? "list.bullet.indent" : "lock.fill")
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                
+                Text(name)
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(
+                isUnlocked
+                ? Color.teal//.opacity(0.2)
+                : Color.blue//.opacity(0.1)
+            )
+            .cornerRadius(30)
+            .shadow(
+                color: isUnlocked ? Color.teal.opacity(0.35) : Color.clear,
+                radius: 6,
+                x: 0,
+                y: 3
+            )
+        }
+        .disabled(!isUnlocked)
+    }
+}
+
+
+// MARK: - State Grid
+
+
+struct StatsGridView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack{
+                Text("Energy")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                
+                (Text("74")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.yellow)
+                +
+                Text("/100")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                )
+                Spacer()
+            }
+            
+            StatCardVertical(
+                title: "Stress",
+                value: "75%",
+                color: .orange,
+                percentage: 0.75
+            )
+            
+            StatCardVertical(
+                title: "Sleep",
+                value: "67%",
+                color: .purple,
+                percentage: 0.67
+            )
+            
+            StatCardVertical(
+                title: "Recovery",
+                value: "89%",
+                color: .green,
+                percentage: 0.89
+            )
+            
+            Text("Recommended: Moderate day, Do 1-2 guests")
+                .font(.headline)
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+                .multilineTextAlignment(.leading)
+        }
+        .padding(.horizontal)
+    }
+}
+
+struct StatCardVertical: View {
+    let title: String
+    let value: String
+    var maxValue: String = ""
+    let color: Color
+    let percentage: Double
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Top section: Title + Value
+            HStack {
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                if !maxValue.isEmpty {
+                    Text("\(value)/\(maxValue)")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                } else {
+                    Text(value)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+            }
+            
+            // Progress bar at bottom
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .fill(color.opacity(0.2))
+                        .frame(height: 24)
+                        .cornerRadius(4)
+                    
+                    Rectangle()
+                        .fill(color)
+                        .frame(width: geometry.size.width * percentage, height: 24)
+                        .cornerRadius(4)
+                }
+            }
+            .frame(height: 24)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+

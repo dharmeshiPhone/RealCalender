@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct PetDetailView: View {
-    var pet: Pet
+    @State private var pet: Pet =  Pet(name: "Fluffy", isUnlocked: false, cost: 50, icon: "pawprint.circle.fill", color: .blue)
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var questManager: QuestManager
+    @State private var userProfile = UserProfile.shared
     @State private var happiness: Double = 25
     @State private var scaleEffect: CGFloat = 0.8
     @State private var glowOpacity: Double = 0
@@ -19,155 +20,214 @@ struct PetDetailView: View {
     @State private var showingEditSheet = false
     @State private var newPetName: String = ""
     
+    @State private var currentTime = Date()
+    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State private var showingUnlockAnimation = false
+    
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                backgroundGradient
-                
-                VStack(spacing: 0) {
-                    headerView
-                        .padding(.horizontal)
-                        .padding(.top, 10)
-                    Spacer()
-                    if pet.isUnlocked{
-                        petDisplayView
-                            .frame(height: geometry.size.height * 0.35)
-                    }else{
-                        petLockedDisplayView
-                            .frame(height: geometry.size.height * 0.35)
+        NavigationStack {
+            GeometryReader { geometry in
+                ZStack {
+                    backgroundGradient
+                    
+                    VStack(spacing: 0) {
+                        headerView
+                            .padding(.horizontal)
+                            .padding(.top, 10)
+                        Spacer()
+                        if pet.isUnlocked && !showingUnlockAnimation{
+                            petDisplayView
+                                .frame(height: geometry.size.height * 0.35)
+                        }else if pet.isUnlocked && showingUnlockAnimation{
+                            if showingUnlockAnimation{
+                                UnlockPetAnimationView(
+                                    pet: pet,
+                                    isShowing: $showingUnlockAnimation
+                                )
+                            }
+                        }else{
+                            petLockedDisplayView
+                                .frame(height: geometry.size.height * 0.35)
+                                .onTapGesture {
+                                    handlePetSelection()
+                                }
+                            
+                            if pet.isHatching {
+                                let remaining = pet.timeRemaining(currentTime: currentTime) ?? 0
+                                Text("Hatching...")
+                                    .font(.headline)
+                                    .foregroundColor(.orange)
+                                
+                                Text(String(format: "%02d:%02d:%02d",
+                                            Int(remaining ) / 3600,
+                                            (Int(remaining) % 3600) / 60,
+                                            Int(remaining) % 60))
+                                .font(.system(size: 30, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.white)
+                                .onReceive(timer) { _ in
+                                    currentTime = Date()
+                                }
+                            }else{
+                                if pet.isReadyToReveal {
+                                    Button(action: {
+                                        revealPet()
+                                    }) {
+                                        Text("Reveal!")
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .padding(.horizontal, 16)
+                                            .padding(.vertical, 8)
+                                            .background(LinearGradient(colors: [.purple, .blue], startPoint: .leading, endPoint: .trailing))
+                                            .foregroundColor(.white)
+                                            .cornerRadius(12)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                        Spacer()
+                        if pet.isUnlocked && !showingUnlockAnimation{
+                            statsCardView
+                                .padding(.horizontal)
+                                .padding(.bottom, 10)
+                        }
                     }
-                   
-                    Spacer()
-                    statsCardView
-                        .padding(.horizontal)
-                        .padding(.bottom, 10)
+                    
                 }
             }
-        }
-        .navigationBarHidden(true)
-        .sheet(isPresented: $showingEditSheet) {
-            editPetNameSheet
-        }
-        .onAppear {
-            startAnimations()
-            initializePetState()
-            newPetName = pet.name
-            
-            if questManager.currentBatch == 4{
-                questManager.completeQuest(named: "Check pet happiness (just open pet page)")
+            .navigationBarHidden(true)
+            .sheet(isPresented: $showingEditSheet) {
+                editPetNameSheet
+            }
+            .onAppear {
+                loadPets()
+                startAnimations()
+                initializePetState()
+                newPetName = pet.name
+                
+                if questManager.currentBatch == 4{
+                    questManager.completeQuest(named: "Check pet happiness (just open pet page)")
+                }
+                if questManager.currentBatch == 37{
+                    questManager.completeQuest(named: "Check on pets happiness")
+                }
+                
             }
         }
     }
     
     // MARK: - Edit Pet Name Sheet
-        private var editPetNameSheet: some View {
-            NavigationView {
-                VStack(spacing: 30) {
-                    // Header
-                    VStack(spacing: 15) {
-                        ZStack {
-                            Circle()
-                                .fill(pet.swiftUIColor.opacity(0.2))
-                                .frame(width: 100, height: 100)
-                            
-                            Image(systemName: pet.icon)
-                                .font(.system(size: 40))
-                                .foregroundColor(pet.swiftUIColor)
-                        }
+    private var editPetNameSheet: some View {
+        NavigationView {
+            VStack(spacing: 30) {
+                // Header
+                VStack(spacing: 15) {
+                    ZStack {
+                        Circle()
+                            .fill(pet.swiftUIColor.opacity(0.2))
+                            .frame(width: 100, height: 100)
                         
-                        Text("Edit Pet Name")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                        
-                        Text("Give your pet a new name!")
-                            .font(.body)
-                            .foregroundColor(.secondary)
+                        Image(systemName: pet.icon)
+                            .font(.system(size: 40))
+                            .foregroundColor(pet.swiftUIColor)
                     }
-                    .padding(.top, 20)
                     
-                    // Text Field
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Pet Name")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        TextField("Enter new name", text: $newPetName)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color(.systemGray6))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(pet.swiftUIColor, lineWidth: 1)
-                            )
-                            .disableAutocorrection(true)
-                            .textInputAutocapitalization(.words)
-                        
-                        HStack {
-                            Image(systemName: "info.circle.fill")
-                                .foregroundColor(.gray)
-                                .font(.caption)
-                            
-                            Text("Maximum 20 characters")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .padding(.horizontal)
+                    Text("Edit Pet Name")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
                     
-                    Spacer()
-                    
-                    // Action Buttons
-                    VStack(spacing: 15) {
-                        Button(action: {
-                            saveNewName()
-                        }) {
-                            HStack {
-                                Spacer()
-                                Text("Save Changes")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                Spacer()
-                            }
-                            .padding()
-                            .background(
-                                LinearGradient(
-                                    colors: [pet.swiftUIColor, pet.swiftUIColor.opacity(0.8)],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                            .cornerRadius(15)
-                        }
-                        .disabled(newPetName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                        .opacity(newPetName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.6 : 1.0)
-                        
-                        Button(action: {
-                            newPetName = pet.name
-                            showingEditSheet = false
-                        }) {
-                            Text("Cancel")
-                                .font(.body)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 30)
+                    Text("Give your pet a new name!")
+                        .font(.body)
+                        .foregroundColor(.secondary)
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(
-                    leading: Button("Cancel") {
+                .padding(.top, 20)
+                
+                // Text Field
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Pet Name")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    TextField("Enter new name", text: $newPetName)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color(.systemGray6))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(pet.swiftUIColor, lineWidth: 1)
+                        )
+                        .disableAutocorrection(true)
+                        .textInputAutocapitalization(.words)
+                    
+                    HStack {
+                        Image(systemName: "info.circle.fill")
+                            .foregroundColor(.gray)
+                            .font(.caption)
+                        
+                        Text("Maximum 20 characters")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                }
+                .padding(.horizontal)
+                
+                Spacer()
+                
+                // Action Buttons
+                VStack(spacing: 15) {
+                    Button(action: {
+                        saveNewName()
+                    }) {
+                        HStack {
+                            Spacer()
+                            Text("Save Changes")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
+                        .padding()
+                        .background(
+                            LinearGradient(
+                                colors: [pet.swiftUIColor, pet.swiftUIColor.opacity(0.8)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .cornerRadius(15)
+                    }
+                    .disabled(newPetName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .opacity(newPetName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.6 : 1.0)
+                    
+                    Button(action: {
                         newPetName = pet.name
                         showingEditSheet = false
+                    }) {
+                        Text("Cancel")
+                            .font(.body)
+                            .foregroundColor(.gray)
                     }
-                )
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 30)
             }
-            .accentColor(pet.swiftUIColor)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
+                leading: Button("Cancel") {
+                    newPetName = pet.name
+                    showingEditSheet = false
+                }
+            )
         }
+        .accentColor(pet.swiftUIColor)
+    }
     
-
+    
     
     private var backgroundGradient: some View {
         ZStack {
@@ -181,18 +241,20 @@ struct PetDetailView: View {
                 endPoint: .bottomTrailing
             )
             .edgesIgnoringSafeArea(.all)
-            
-            // Animated background elements
-            ForEach(0..<3) { index in
-                Circle()
-                    .fill(pet.isUnlocked ? pet.swiftUIColor.opacity(0.1) : Color.gray.opacity(0.05))
-                    .frame(width: CGFloat(200 + index * 100))
-                    .blur(radius: 20)
-                    .offset(
-                        x: cos(Double(index) * 2.0 + rotationAngle * 0.5) * 50,
-                        y: sin(Double(index) * 2.0 + rotationAngle * 0.5) * 50
-                    )
+            if pet.isUnlocked{
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color.green,
+                        Color.green.opacity(0.9),
+                        Color.clear,
+                        Color.clear
+                    ]),
+                    startPoint: .bottom,
+                    endPoint: .top
+                )
+                .edgesIgnoringSafeArea(.all)
             }
+            
         }
     }
     
@@ -204,17 +266,18 @@ struct PetDetailView: View {
                     presentationMode.wrappedValue.dismiss()
                 }
             }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 18, weight: .semibold))
-                    Text("Back")
-                        .font(.system(size: 16, weight: .medium))
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color.black.opacity(0.4))
-                .cornerRadius(12)
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(14)
+                    .background(
+                        Circle()
+                            .fill(Color.black.opacity(0.25))
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.white.opacity(0.2), lineWidth: 0.5)
+                            )
+                    )
             }
             
             Spacer()
@@ -245,7 +308,7 @@ struct PetDetailView: View {
                     .font(.system(size: 16))
                     .foregroundColor(.yellow)
                 
-                Text("\(pet.cost)")
+                Text("\(userProfile.coins)")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
             }
@@ -355,7 +418,7 @@ struct PetDetailView: View {
                             ),
                             lineWidth: ring == 0 ? 1.5 : 0.8
                         )
-                        .frame(width: CGFloat(180 + ring * 40), height: CGFloat(180 + ring * 40))
+                        .frame(width: CGFloat(220 + ring * 40), height: CGFloat(220 + ring * 40))
                         .rotationEffect(.degrees(rotationAngle * Double(ring + 1) * 0.3))
                         .scaleEffect(scaleEffect)
                 }
@@ -363,7 +426,7 @@ struct PetDetailView: View {
                 Image("egg")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 180, height: 180)
+                    .frame(width: 220, height: 220)
                     .foregroundColor(.gray)
                     .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 3)
                     .scaleEffect(scaleEffect)
@@ -391,14 +454,30 @@ struct PetDetailView: View {
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                                 )
+                            if !pet.isHatching{
+                                HStack(spacing: 4) {
+                                    Image(systemName: "dollarsign.circle.fill")
+                                        .font(.caption)
+                                        .foregroundColor(.orange)
+                                    
+                                    Text("\(pet.cost)")
+                                        .font(.caption)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.orange)
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(Color.orange.opacity(0.1))
+                                .cornerRadius(12)
+                            }
                         }
                     }
             }
             
             Rectangle()
                 .fill(Color.black.opacity(0.3))
-                .frame(width: 200, height: 200)
-                .cornerRadius(100)
+                .frame(width: 240, height: 240)
+                .cornerRadius(120)
                 .allowsHitTesting(false)
         }
     }
@@ -433,19 +512,19 @@ struct PetDetailView: View {
                             .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 2)
                     }
                 }
-               
+                
             }
             
             // Happiness Meter
             happinessMeterView
             
-             //Level and Evolution
-//            levelEvolutionView
+            //Level and Evolution
+            levelEvolutionView
             
             // Additional Stats (for future use)
-//            if showStats {
-//                additionalStatsView
-//            }
+            //            if showStats {
+            //                additionalStatsView
+            //            }
         }
         .padding(24)
         .background(
@@ -526,15 +605,28 @@ struct PetDetailView: View {
         }
     }
     
+    let evolveLevels = [7, 9, 16, 23, 53]
+
+    func upcomingNextTargetLevel() -> Int {
+        let level = userProfile.level
+        return evolveLevels.first(where: { $0 > level }) ?? level
+    }
+
+    var isEvolveEnabled: Bool {
+        userProfile.level >= upcomingNextTargetLevel()
+    }
+
+    
     private var levelEvolutionView: some View {
         VStack(alignment: .leading, spacing: 16) {
+            
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Level")
                         .font(.headline)
                         .foregroundColor(.white)
                     
-                    Text("\(8)/10")
+                    Text("\(userProfile.level)/\(upcomingNextTargetLevel())")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.gray)
                 }
@@ -561,18 +653,29 @@ struct PetDetailView: View {
                 }
                 .disabled(8 < 10)
                 .opacity(8 >= 10 ? 1.0 : 0.5)
+                
+                NavigationLink {
+                    PetCosmeticStoreView(pet:pet)
+                } label: {
+                    Image(systemName: "storefront")
+                        .font(.system(size: 28))
+                }
+             
             }
             
-            // Level Progress
-            HStack(spacing: 4) {
-                ForEach(1...10, id: \.self) { level in
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(levelGradient)
-                        //.fill(level <= 8 ? levelGradient : Color.gray.opacity(0.3))
-                        .frame(height: 6)
-                        .shadow(color: level <= 8 ? pet.swiftUIColor.opacity(0.3) : .clear, radius: 2, x: 0, y: 1)
-                }
-            }
+            
+            
+            
+            //            // Level Progress
+            //            HStack(spacing: 4) {
+            //                ForEach(1...10, id: \.self) { level in
+            //                    RoundedRectangle(cornerRadius: 2)
+            //                        .fill(levelGradient)
+            //                        //.fill(level <= 8 ? levelGradient : Color.gray.opacity(0.3))
+            //                        .frame(height: 6)
+            //                        .shadow(color: level <= 8 ? pet.swiftUIColor.opacity(0.3) : .clear, radius: 2, x: 0, y: 1)
+            //                }
+            //            }
         }
     }
     
@@ -647,38 +750,27 @@ struct PetDetailView: View {
     // MARK: - Methods
     
     private func initializePetState() {
-        let allQuests = questManager.getCurrentBatchQuests()
-        guard !allQuests.isEmpty else {
-            happiness = 10
-            return
-        }
-        
-        // Count completed quests
-        let completedCount = allQuests.filter { $0.isCompleted }.count
-        let totalCount = allQuests.count
-        
-        // Calculate percentage of completion
-        let completionRatio = Double(completedCount) / Double(totalCount)
-        var value = completionRatio * 100
-        
-//        // Adjust based on pet state
-//        if pet.isReadyToReveal {
-//            // If ready to reveal, boost baseline happiness slightly
-//            value = max(value, 70)
-//        } else if pet.isUnlocked {
-//            // If fully unlocked, happiness should be 100
-//            value = 100
-//        } else if completedCount == 0 {
-//            // If no quests started
-//            value = 10
-//        } else {
-//            // Clamp the value between 10–100
-//            value = min(max(value, 25), 100)
+        let ratio = Double(userProfile.level) / Double(upcomingNextTargetLevel())
+//        let allQuests = questManager.getCurrentBatchQuests()
+//        guard !allQuests.isEmpty else {
+//            happiness = 10
+//            return
 //        }
+//        
+//        // Count completed quests
+//        let completedCount = allQuests.filter { $0.isCompleted }.count
+//        let totalCount = allQuests.count
+//        
+//        // Calculate percentage of completion
+//        let completionRatio = Double(completedCount) / Double(totalCount)
+        var value = ratio * 100
         
-        happiness = max(value,10)
+        
+        happiness = max(value,1)
     }
-   
+    
+  
+    
     
     private func saveNewName() {
         // Trim whitespace and newlines
@@ -710,7 +802,7 @@ struct PetDetailView: View {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
     }
-
+    
     
     private func startAnimations() {
         // Reset state first
@@ -737,7 +829,7 @@ struct PetDetailView: View {
             }
         }
     }
-
+    
     private func triggerEvolution() {
         withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
             scaleEffect = 1.3
@@ -749,6 +841,48 @@ struct PetDetailView: View {
             }
         }
     }
+    
+    // MARK: - pet Unlock View
+    
+    private func loadPets() {
+        if let savedPetsData = UserDefaults.standard.data(forKey: "userPets"),
+           let decodedPets = try? JSONDecoder().decode([Pet].self, from: savedPetsData) {
+            pet = decodedPets.first ?? Pet(name: "Fluffy", isUnlocked: false, cost: 50, icon: "pawprint.circle.fill", color: .blue)
+        } else {
+            pet = Pet(name: "Fluffy", isUnlocked: false, cost: 50, icon: "pawprint.circle.fill", color: .blue)
+            savePets()
+        }
+    }
+    
+    private func savePets() {
+        if let encodedPets = try? JSONEncoder().encode([pet]) {
+            UserDefaults.standard.set(encodedPets, forKey: "userPets")
+        }
+    }
+    
+    private func handlePetSelection() {
+        if !pet.isHatching && !pet.isReadyToReveal {
+            if userProfile.coins >= pet.cost {
+                userProfile.coins -= pet.cost
+                userProfile.save()
+                pet.unlockTimestamp = Date()
+                savePets()
+                
+                print("🪺 \(pet.name) is now hatching! Will unlock in 24 hours.")
+            }
+        }else{
+            presentAlert(message: "Insuffient coins, please complete task to revel!", primaryAction: .OK)
+        }
+    }
+    
+    private func revealPet() {
+        pet.isUnlocked = true
+        pet.unlockTimestamp = nil
+        savePets()
+        showingUnlockAnimation = true
+        questManager.completeQuest(named: "Get your first egg from the pet store")
+    }
+    
 }
 
 // MARK: - Supporting Views
