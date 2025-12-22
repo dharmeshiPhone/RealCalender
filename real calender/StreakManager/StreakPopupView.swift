@@ -35,7 +35,7 @@ struct StreakPopupView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
-                        
+                    
                     Spacer()
                     Button(action: {
                         withAnimation(.spring()) {
@@ -45,14 +45,14 @@ struct StreakPopupView: View {
                     }) {
                         Image(systemName: "xmark.circle.fill")
                             .font(.title2)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.white)
                     }
                 }
                 .padding()
                 .background(
                     LinearGradient(
                         colors: isStreakIncreased ?
-                            [Color.orange, Color.red] :
+                        [Color.orange, Color.red] :
                             [Color.blue, Color.purple],
                         startPoint: .leading,
                         endPoint: .trailing
@@ -162,7 +162,7 @@ struct StreakPopupView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                     
-                  
+                    
                     
                     // Action button
                     Button(action: {
@@ -195,31 +195,32 @@ struct StreakPopupView: View {
             .frame(width: min(350, UIScreen.main.bounds.width * 0.9))
             .cornerRadius(25)
             .shadow(color: .black.opacity(0.2), radius: 30)
-            .scaleEffect(isAnimating ? 1 : 0.8)
+            .scaleEffect(isAnimating ? 1 : 0.85)
             
-           
+            
         }
         .onAppear {
+            animatedStreak = streakCount
             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                 isAnimating = true
             }
-            
-            // Animate streak count
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation(.easeOut(duration: 1.5)) {
-                    animatedStreak = streakCount
-                }
-            }
+            //
+            //            // Animate streak count
+            //            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            //                withAnimation(.easeOut(duration: 1.5)) {
+            //                    animatedStreak = streakCount
+            //                }
+            //            }
             
             // Show confetti for increased streak
-            if isStreakIncreased {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    showConfetti = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        showConfetti = false
-                    }
-                }
-            }
+            //            if isStreakIncreased {
+            //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            //                    showConfetti = true
+            //                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            //                        showConfetti = false
+            //                    }
+            //                }
+            //            }
         }
     }
     

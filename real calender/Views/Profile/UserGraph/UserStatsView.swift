@@ -71,6 +71,8 @@ struct UserStatsView: View {
     @State private var showingIncomeEditor = false
     @State private var showingPullUpsEditor = false
     @State private var showingAcademicEditor = false
+    @State private var showingBMIEditor = false
+    
     
     
 //    init(profile: UserProfile? = nil) {
@@ -140,7 +142,8 @@ struct UserStatsView: View {
                     showingRunTracker: $showingRunTracker,
                     showingPullUpsEditor: $showingPullUpsEditor,
                     showingIncomeEditor: $showingIncomeEditor,
-                    showingAcademicEditor:$showingAcademicEditor
+                    showingAcademicEditor:$showingAcademicEditor,
+                    showingBMIEditor:$showingBMIEditor
                 )
                 
                 // 5K Run Tracker
@@ -202,6 +205,9 @@ struct UserStatsView: View {
         .sheet(isPresented: $showingAcademicEditor) {
             AcedemicEditor(userProfile: $profile)
         }
+        .sheet(isPresented: $showingBMIEditor, content: {
+            BMIEditor(userProfile: $profile)
+        })
         .onReceive(NotificationCenter.default.publisher(for: .profileUpdated)) { notification in
             print("🔔🔔🔔 UserStatsView: NOTIFICATION RECEIVED 🔔🔔🔔")
             
@@ -262,7 +268,7 @@ struct UserStatsView: View {
             lastUnlockedCount = 0
             
             // Start BOTH progress indicators from 0
-            animatedCompletedCount = 0
+           // animatedCompletedCount = 0
             completionProgress = 0.0
             
             // Initialize unlock phases based on current data
@@ -271,7 +277,7 @@ struct UserStatsView: View {
             // Keep both at 0 on initial load - they'll increment as graphs unlock
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 // Don't animate to current state - let them increment naturally
-                animatedCompletedCount = 0
+                //animatedCompletedCount = 0
                 completionProgress = 0.0
             }
         }

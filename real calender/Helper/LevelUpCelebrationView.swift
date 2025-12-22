@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LevelUpCelebrationView: View {
     @Binding var isShowing: Bool
+    @Binding var userProfile: UserProfile
     let achievementLevel: Int
     
     @State private var scale: CGFloat = 0.5
@@ -17,6 +18,15 @@ struct LevelUpCelebrationView: View {
     @State private var glowOpacity: Double = 1.0
     @State private var confettiScale: CGFloat = 0.8
     @State private var textOpacity: Double = 0
+    
+    private let levelRewards: [Int: Int] = [
+        32: 500,
+        52: 750,
+        62: 900,
+        64: 2000,
+        66: 1000
+    ]
+    
     
     var body: some View {
         ZStack {
@@ -46,8 +56,20 @@ struct LevelUpCelebrationView: View {
                         .opacity(textOpacity)
                 }
                 
+                if let reward = levelRewards[achievementLevel] {
+                    Text("+\(reward) coins")
+                        .font(.headline)
+                        .foregroundColor(.yellow)
+                        .padding(.top, 4)
+                }
+                
+                
                 Button("Continue Your Journey") {
                     dismissAnimation()
+                    if let reward = levelRewards[achievementLevel] {
+                        userProfile.coins += reward
+                        userProfile.save()
+                    }
                 }
                 .font(.headline)
                 .fontWeight(.bold)

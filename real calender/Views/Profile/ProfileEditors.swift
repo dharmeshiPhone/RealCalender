@@ -48,17 +48,17 @@ struct NameEditor: View {
         }
     }
     
-//    private func saveProfileSafely() {
-//        // Ensure we don't accidentally clear the onboarding flag
-//        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
-//        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
-//        
-//        userProfile.save()
-//       
-//        // Restore the onboarding flags if they somehow got lost
-//        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
-//        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
-//    }
+    //    private func saveProfileSafely() {
+    //        // Ensure we don't accidentally clear the onboarding flag
+    //        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+    //        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
+    //
+    //        userProfile.save()
+    //
+    //        // Restore the onboarding flags if they somehow got lost
+    //        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
+    //        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
+    //    }
 }
 
 // MARK: - Physical Stats Editor
@@ -130,19 +130,19 @@ struct PhysicalStatsEditor: View {
         }
     }
     
-//    private func saveProfileSafely() {
-//        // Ensure we don't accidentally clear the onboarding flag
-//        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
-//        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
-//        
-//        if let encoded = try? JSONEncoder().encode(userProfile) {
-//            UserDefaults.standard.set(encoded, forKey: "userProfile")
-//        }
-//        
-//        // Restore the onboarding flags if they somehow got lost
-//        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
-//        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
-//    }
+    //    private func saveProfileSafely() {
+    //        // Ensure we don't accidentally clear the onboarding flag
+    //        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+    //        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
+    //
+    //        if let encoded = try? JSONEncoder().encode(userProfile) {
+    //            UserDefaults.standard.set(encoded, forKey: "userProfile")
+    //        }
+    //
+    //        // Restore the onboarding flags if they somehow got lost
+    //        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
+    //        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
+    //    }
 }
 
 // MARK: - Education Editor
@@ -204,7 +204,7 @@ struct EducationEditor: View {
                         userProfile.universityGPA = tempUniversityGPA
                         userProfile.highSchoolGrades = tempHighSchoolGrades
                         userProfile.save()
-                       //saveProfileSafely()
+                        //saveProfileSafely()
                         dismiss()
                     }
                 }
@@ -217,19 +217,19 @@ struct EducationEditor: View {
         }
     }
     
-//    private func saveProfileSafely() {
-//        // Ensure we don't accidentally clear the onboarding flag
-//        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
-//        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
-//        
-//        if let encoded = try? JSONEncoder().encode(userProfile) {
-//            UserDefaults.standard.set(encoded, forKey: "userProfile")
-//        }
-//        
-//        // Restore the onboarding flags if they somehow got lost
-//        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
-//        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
-//    }
+    //    private func saveProfileSafely() {
+    //        // Ensure we don't accidentally clear the onboarding flag
+    //        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+    //        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
+    //
+    //        if let encoded = try? JSONEncoder().encode(userProfile) {
+    //            UserDefaults.standard.set(encoded, forKey: "userProfile")
+    //        }
+    //
+    //        // Restore the onboarding flags if they somehow got lost
+    //        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
+    //        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
+    //    }
 }
 
 // MARK: - Income Editor
@@ -333,7 +333,61 @@ struct IncomeEditor: View {
                         if questManager.currentBatch == 39{
                             questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 39)
                         }
-                       
+                        
+                        if questManager.currentBatch == 42{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 42)
+                        }
+                        
+                        if questManager.currentBatch == 43{
+                            questManager.completeQuestWithIncremnetForce(named: "Update Income graph", num: 1, Quebatch: 43)
+                        }
+                        
+                        if questManager.currentBatch == 45{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 graphs", num: 1, Quebatch: 45)
+                        }
+                        
+                        if questManager.currentBatch == 46{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 different graphs", num: 1, Quebatch: 46)
+                        }
+                        
+                        if questManager.currentBatch == 50{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 50)
+                        }
+                        
+                        if questManager.currentBatch == 52{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 52)
+                        }
+                        
+                        if questManager.currentBatch == 53{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 53)
+                        }
+                        
+                        if questManager.currentBatch == 54{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 54)
+                        }
+                        
+                        if questManager.currentBatch == 56{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 56)
+                        }
+                        
+                        if questManager.currentBatch == 57{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 57)
+                        }
+                        if questManager.currentBatch == 58{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 1 graph", num: 1, Quebatch: 58)
+                        }
+                        
+                        if questManager.currentBatch == 59{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 5 different graphs", num: 1, Quebatch: 59)
+                        }
+                        
+                        if questManager.currentBatch == 61{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 61)
+                        }
+                        
+                        if questManager.currentBatch == 63{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 63)
+                        }
                         // Post notification
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
                         print("💰 IncomeEditor: Posted profileUpdated notification with income: \(userProfile.annualIncomeThousands)")
@@ -406,7 +460,7 @@ struct SwimmingEditor: View {
                         userProfile.incrementGraphUpdate(for: .swimming)
                         // Save to UserDefaults with extra safety
                         userProfile.save()
-                       // saveProfileSafely()
+                        // saveProfileSafely()
                         if questManager.currentBatch == 6{
                             questManager.completeQuest(named: "Fill out Gym or Swimming graph or income")
                         }
@@ -452,6 +506,55 @@ struct SwimmingEditor: View {
                         if questManager.currentBatch == 39{
                             questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 39)
                         }
+                        if questManager.currentBatch == 42{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 42)
+                        }
+                        if questManager.currentBatch == 45{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 graphs", num: 1, Quebatch: 45)
+                        }
+                        
+                        if questManager.currentBatch == 46{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 different graphs", num: 1, Quebatch: 46)
+                        }
+                        
+                        if questManager.currentBatch == 50{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 50)
+                        }
+                        
+                        if questManager.currentBatch == 52{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 52)
+                        }
+                        if questManager.currentBatch == 53{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 53)
+                        }
+                        
+                        if questManager.currentBatch == 54{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 54)
+                        }
+                        
+                        if questManager.currentBatch == 56{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 56)
+                        }
+                        
+                        if questManager.currentBatch == 57{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 57)
+                        }
+                        
+                        if questManager.currentBatch == 58{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 1 graph", num: 1, Quebatch: 58)
+                        }
+                        
+                        if questManager.currentBatch == 59{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 5 different graphs", num: 1, Quebatch: 59)
+                        }
+                        
+                        if questManager.currentBatch == 61{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 61)
+                        }
+                        
+                        if questManager.currentBatch == 63{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 63)
+                        }
                         
                         // Post notification to trigger unlock animation
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
@@ -476,32 +579,32 @@ struct SwimmingEditor: View {
         }
     }
     
-//    private func saveProfileSafely() {
-//        print("🏊‍♂️ SwimmingEditor: saveProfileSafely() called")
-//        
-//        // Preserve critical flags before saving
-//        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
-//        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
-//        
-//        print("🏊‍♂️ SwimmingEditor: Preserving flags - onboarding: \(hasCompletedOnboarding), calendar: \(hasCompletedCalendarSetup)")
-//        
-//        // Save the profile
-//        do {
-//            let encoded = try JSONEncoder().encode(userProfile)
-//            UserDefaults.standard.set(encoded, forKey: "userProfile")
-//            UserDefaults.standard.synchronize()
-//            print("🏊‍♂️ SwimmingEditor: Profile saved successfully")
-//        } catch {
-//            print("❌ SwimmingEditor: Failed to save profile: \(error)")
-//        }
-//        
-//        // Restore the critical flags
-//        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
-//        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
-//        UserDefaults.standard.synchronize()
-//        
-//        print("🏊‍♂️ SwimmingEditor: Flags restored and synchronized")
-//    }
+    //    private func saveProfileSafely() {
+    //        print("🏊‍♂️ SwimmingEditor: saveProfileSafely() called")
+    //
+    //        // Preserve critical flags before saving
+    //        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+    //        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
+    //
+    //        print("🏊‍♂️ SwimmingEditor: Preserving flags - onboarding: \(hasCompletedOnboarding), calendar: \(hasCompletedCalendarSetup)")
+    //
+    //        // Save the profile
+    //        do {
+    //            let encoded = try JSONEncoder().encode(userProfile)
+    //            UserDefaults.standard.set(encoded, forKey: "userProfile")
+    //            UserDefaults.standard.synchronize()
+    //            print("🏊‍♂️ SwimmingEditor: Profile saved successfully")
+    //        } catch {
+    //            print("❌ SwimmingEditor: Failed to save profile: \(error)")
+    //        }
+    //
+    //        // Restore the critical flags
+    //        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
+    //        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
+    //        UserDefaults.standard.synchronize()
+    //
+    //        print("🏊‍♂️ SwimmingEditor: Flags restored and synchronized")
+    //    }
 }
 
 // MARK: - Running Editor
@@ -598,31 +701,31 @@ struct RunningEditor: View {
         }
     }
     
-//    private func saveProfileSafely() {
-//        print("🏃‍♂️ RunningEditor: saveProfileSafely() called")
-//        
-//        // Ensure we don't accidentally clear the onboarding flag
-//        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
-//        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
-//        
-//        print("🏃‍♂️ RunningEditor: Preserving flags - onboarding: \(hasCompletedOnboarding), calendar: \(hasCompletedCalendarSetup)")
-//        
-//        do {
-//            let encoded = try JSONEncoder().encode(userProfile)
-//            UserDefaults.standard.set(encoded, forKey: "userProfile")
-//            UserDefaults.standard.synchronize()
-//            print("🏃‍♂️ RunningEditor: Profile saved successfully")
-//        } catch {
-//            print("❌ RunningEditor: Failed to save profile: \(error)")
-//        }
-//        
-//        // Restore the onboarding flags if they somehow got lost
-//        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
-//        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
-//        UserDefaults.standard.synchronize()
-//        
-//        print("🏃‍♂️ RunningEditor: Flags restored and synchronized")
-//    }
+    //    private func saveProfileSafely() {
+    //        print("🏃‍♂️ RunningEditor: saveProfileSafely() called")
+    //
+    //        // Ensure we don't accidentally clear the onboarding flag
+    //        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+    //        let hasCompletedCalendarSetup = UserDefaults.standard.bool(forKey: "hasCompletedCalendarSetup")
+    //
+    //        print("🏃‍♂️ RunningEditor: Preserving flags - onboarding: \(hasCompletedOnboarding), calendar: \(hasCompletedCalendarSetup)")
+    //
+    //        do {
+    //            let encoded = try JSONEncoder().encode(userProfile)
+    //            UserDefaults.standard.set(encoded, forKey: "userProfile")
+    //            UserDefaults.standard.synchronize()
+    //            print("🏃‍♂️ RunningEditor: Profile saved successfully")
+    //        } catch {
+    //            print("❌ RunningEditor: Failed to save profile: \(error)")
+    //        }
+    //
+    //        // Restore the onboarding flags if they somehow got lost
+    //        UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
+    //        UserDefaults.standard.set(hasCompletedCalendarSetup, forKey: "hasCompletedCalendarSetup")
+    //        UserDefaults.standard.synchronize()
+    //
+    //        print("🏃‍♂️ RunningEditor: Flags restored and synchronized")
+    //    }
 }
 
 // MARK: - Custom Stats Editor
@@ -777,6 +880,56 @@ struct PullUpsEditor: View {
                         if questManager.currentBatch == 39{
                             questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 39)
                         }
+                        if questManager.currentBatch == 42{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 42)
+                        }
+                        if questManager.currentBatch == 45{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 graphs", num: 1, Quebatch: 45)
+                        }
+                        
+                        if questManager.currentBatch == 46{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 different graphs", num: 1, Quebatch: 46)
+                        }
+                        
+                        if questManager.currentBatch == 50{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 50)
+                        }
+                        
+                        if questManager.currentBatch == 52{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 52)
+                        }
+                        if questManager.currentBatch == 53{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 53)
+                        }
+                        
+                        if questManager.currentBatch == 54{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 54)
+                        }
+                        
+                        if questManager.currentBatch == 56{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 56)
+                        }
+                        
+                        if questManager.currentBatch == 57{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 57)
+                        }
+                        
+                        if questManager.currentBatch == 58{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 1 graph", num: 1, Quebatch: 58)
+                        }
+                        
+                        if questManager.currentBatch == 59{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 5 different graphs", num: 1, Quebatch: 59)
+                        }
+                        
+                        if questManager.currentBatch == 61{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 61)
+                        }
+                        
+                        if questManager.currentBatch == 63{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 63)
+                        }
+                        
                         // Post notification to trigger unlock animation
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
                         print("💪 PullUpsEditor: Posted profileUpdated notification")
@@ -909,11 +1062,11 @@ struct AcedemicEditor: View {
                             print("🔧 InitialProfileSetup: Added academic data - GPA: \(gpa)")
                             questManager.completeQuest(named: "Complete two graphs in your profile")
                         }
-                       
+                        
                         userProfile.incrementGraphUpdate(for: .acedemic)
                         // Save to UserDefaults
                         userProfile.save()
-                       
+                        
                         if questManager.currentBatch == 7{
                             questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 7)
                         }
@@ -956,6 +1109,56 @@ struct AcedemicEditor: View {
                         if questManager.currentBatch == 39{
                             questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 39)
                         }
+                        if questManager.currentBatch == 42{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 42)
+                        }
+                        if questManager.currentBatch == 45{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 graphs", num: 1, Quebatch: 45)
+                        }
+                        
+                        if questManager.currentBatch == 46{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 different graphs", num: 1, Quebatch: 46)
+                        }
+                        
+                        if questManager.currentBatch == 50{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 50)
+                        }
+                        
+                        if questManager.currentBatch == 52{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 52)
+                        }
+                        if questManager.currentBatch == 53{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 53)
+                        }
+                        
+                        if questManager.currentBatch == 54{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 54)
+                        }
+                        
+                        if questManager.currentBatch == 56{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 56)
+                        }
+                        
+                        if questManager.currentBatch == 57{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 57)
+                        }
+                        
+                        if questManager.currentBatch == 58{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 1 graph", num: 1, Quebatch: 58)
+                        }
+                        
+                        if questManager.currentBatch == 59{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 5 different graphs", num: 1, Quebatch: 59)
+                        }
+                        
+                        if questManager.currentBatch == 61{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 61)
+                        }
+                        
+                        if questManager.currentBatch == 63{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 63)
+                        }
+                        
                         // Post notification to trigger unlock animation
                         NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
                         
@@ -972,3 +1175,197 @@ struct AcedemicEditor: View {
 }
 
 
+// MARK: - BMI Editor
+struct BMIEditor: View {
+    @EnvironmentObject var questManager: QuestManager
+    @Binding var userProfile: UserProfile
+    @Environment(\.dismiss) private var dismiss
+    @State private var heightCM: String = ""
+    @State private var weightKG: String = ""
+    
+    var body: some View {
+        NavigationView {
+            ScrollView{
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("Physical Information")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("This helps us calculate your BMI and provide personalized health insights.")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        // Honesty note
+                        HStack {
+                            Image(systemName: "heart.fill")
+                                .foregroundColor(.red)
+                                .font(.title3)
+                            
+                            Text("Please be honest and don't lie to yourself - this app is here to help you!")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.primary)
+                                .multilineTextAlignment(.leading)
+                        }
+                        .padding()
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.red.opacity(0.3), lineWidth: 1)
+                        )
+                    }
+                    
+                    VStack(spacing: 16) {
+                        // Height Input
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Height (cm)")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                            
+                            TextField("e.g. 175", text: $heightCM)
+                                .textFieldStyle(.roundedBorder)
+                                .keyboardType(.numberPad)
+                                .frame(maxWidth: 150)
+                        }
+                        
+                        // Weight Input
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Weight (kg)")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                            
+                            TextField("e.g. 70", text: $weightKG)
+                                .textFieldStyle(.roundedBorder)
+                                .keyboardType(.numberPad)
+                                .frame(maxWidth: 150)
+                        }
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle("BMI Info")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        userProfile.heightCM = Double(heightCM) ?? 0.0
+                        userProfile.weightKG = Double(weightKG) ?? 0.0
+                        
+                        userProfile.incrementGraphUpdate(for: .bmi)
+                        // Save to UserDefaults
+                        userProfile.save()
+                        
+                        if questManager.currentBatch == 7{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 7)
+                        }
+                        
+                        if questManager.currentBatch == 12{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 different graphs", num: 1, Quebatch: 12)
+                        }
+                        
+                        if questManager.currentBatch == 13{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 13)
+                        }
+                        
+                        if questManager.currentBatch == 14{
+                            questManager.completeQuestWithIncremnetForce(named: "Update BMI or Running graph", num: 1, Quebatch: 14)
+                        }
+                        
+                        if questManager.currentBatch == 18{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 different graphs", num: 1, Quebatch: 18)
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 18)
+                        }
+                        
+                        if questManager.currentBatch == 20{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 20)
+                        }
+                        
+                        if questManager.currentBatch == 21{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 21)
+                        }
+                        if questManager.currentBatch == 25{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 25)
+                        }
+                        if questManager.currentBatch == 30{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 30)
+                        }
+                        if questManager.currentBatch == 31{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 31)
+                        }
+                        if questManager.currentBatch == 36{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 graphs", num: 1, Quebatch: 36)
+                        }
+                        if questManager.currentBatch == 39{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 39)
+                        }
+                        if questManager.currentBatch == 42{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 42)
+                        }
+                        if questManager.currentBatch == 45{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 3 graphs", num: 1, Quebatch: 45)
+                        }
+                        
+                        if questManager.currentBatch == 46{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 different graphs", num: 1, Quebatch: 46)
+                        }
+                        
+                        if questManager.currentBatch == 50{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 50)
+                        }
+                        
+                        if questManager.currentBatch == 52{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 52)
+                        }
+                        if questManager.currentBatch == 53{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 53)
+                        }
+                        
+                        if questManager.currentBatch == 54{
+                            questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 54)
+                        }
+                        
+                        if questManager.currentBatch == 56{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 56)
+                        }
+                        
+                        if questManager.currentBatch == 57{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 57)
+                        }
+                        
+                        if questManager.currentBatch == 58{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 1 graph", num: 1, Quebatch: 58)
+                        }
+                        
+                        if questManager.currentBatch == 59{
+                            questManager.completeQuestWithIncremnetForce(named: "Update 5 different graphs", num: 1, Quebatch: 59)
+                        }
+                        
+                        if questManager.currentBatch == 61{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 61)
+                        }
+                        
+                        if questManager.currentBatch == 63{
+                            questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 63)
+                        }
+                        // Post notification to trigger unlock animation
+                        NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
+                        
+                        dismiss()
+                    }
+                }
+            }
+            .onAppear {
+                heightCM = userProfile.heightCM > 0 ? String(Int(userProfile.heightCM)) : ""
+                weightKG = userProfile.weightKG > 0 ? String(Int(userProfile.weightKG)) : ""
+            }
+        }
+    }
+}

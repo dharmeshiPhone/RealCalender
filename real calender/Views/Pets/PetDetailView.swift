@@ -39,11 +39,8 @@ struct PetDetailView: View {
                             petDisplayView
                                 .frame(height: geometry.size.height * 0.35)
                         }else if pet.isUnlocked && showingUnlockAnimation{
-                            if showingUnlockAnimation{
-                                UnlockPetAnimationView(
-                                    pet: pet,
-                                    isShowing: $showingUnlockAnimation
-                                )
+                            ScrollView{
+                                EmptyView()
                             }
                         }else{
                             petLockedDisplayView
@@ -115,6 +112,15 @@ struct PetDetailView: View {
                     questManager.completeQuest(named: "Check on pets happiness")
                 }
                 
+            }
+            .overlay {
+                if showingUnlockAnimation{
+                    UnlockPetAnimationView(
+                        pet: pet,
+                        isShowing: $showingUnlockAnimation
+                    )
+                    .edgesIgnoringSafeArea(.all)
+                }
             }
         }
     }

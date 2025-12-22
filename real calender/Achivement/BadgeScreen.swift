@@ -89,10 +89,14 @@ struct BadgeScreen: View {
                 if let storedBadges = storeage.loadBadgesFromStorage() {
                     let updated = storeage.checkedUserBadgesComplitions(storedBadges,level:userProfile.level)
                     storeage.saveBadgesToStorage(updated)
+                    allBadges = updated
                 } else {
                     let updated = storeage.checkedUserBadgesComplitions(allintialBadges, level:userProfile.level)
                     storeage.saveBadgesToStorage(updated)
+                    allBadges = updated
                 }
+                
+                
             }
             
         }
@@ -159,9 +163,11 @@ struct AchievementProgressView: View {
                     .stroke(Color.gray.opacity(0.2), lineWidth: 20)
                     .frame(width: 200)
                 
+                let progress = min(Double(level) / 66.0, 1.0)
+                
                 // Progress Circle
                 Circle()
-                    .trim(from: 0, to: CGFloat(3/66))
+                    .trim(from: 0, to: progress)
                     .stroke(
                         LinearGradient(
                             colors: [.blue, .purple, .pink],

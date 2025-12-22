@@ -285,6 +285,56 @@ struct RunningTrackerView: View {
                 if questManager.currentBatch == 39{
                     questManager.completeQuestWithIncremnetForce(named: "Update all unlocked graphs", num: 1, Quebatch: 39)
                 }
+                if questManager.currentBatch == 42{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 42)
+                }
+                if questManager.currentBatch == 45{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 3 graphs", num: 1, Quebatch: 45)
+                }
+                
+                if questManager.currentBatch == 46{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 4 different graphs", num: 1, Quebatch: 46)
+                }
+                
+                if questManager.currentBatch == 50{
+                    questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 50)
+                }
+                
+                if questManager.currentBatch == 52{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 52)
+                }
+                
+                if questManager.currentBatch == 53{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 4 graphs", num: 1, Quebatch: 53)
+                }
+                
+                if questManager.currentBatch == 54{
+                    questManager.completeQuestWithIncremnetForce(named: "Update one graph", num: 1, Quebatch: 54)
+                }
+                
+                if questManager.currentBatch == 56{
+                    questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 56)
+                }
+                
+                if questManager.currentBatch == 57{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 2 graphs", num: 1, Quebatch: 57)
+                }
+                
+                if questManager.currentBatch == 58{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 1 graph", num: 1, Quebatch: 58)
+                }
+                
+                if questManager.currentBatch == 59{
+                    questManager.completeQuestWithIncremnetForce(named: "Update 5 different graphs", num: 1, Quebatch: 59)
+                }
+                
+                if questManager.currentBatch == 61{
+                    questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 61)
+                }
+                
+                if questManager.currentBatch == 63{
+                    questManager.completeQuestWithIncremnetForce(named: "Update all graphs", num: 1, Quebatch: 63)
+                }
                 
                 dismiss()
             }

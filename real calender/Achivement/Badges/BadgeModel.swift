@@ -148,7 +148,8 @@ var allintialBadges = [
         Badge(title: "30-Day Champion", description: "Almost halfway there!", iconName: "flag.fill", gradientColors: [.purple, .pink], requirement: "30 consecutive days", progress: 0.0, isUnlocked: false, unlockDate: nil, reward: "500 coins", category: .achievement),
         Badge(title: "50-Day Legend", description: "Pretty much there", iconName: "crown.fill", gradientColors: [.orange, .red], requirement: "50 consecutive days", progress: 0, isUnlocked: false, unlockDate: nil, reward: "750 coins", category: .achievement),
         Badge(title: "60-Day Master", description: "6 more days to go", iconName: "star.fill", gradientColors: [.yellow, .green], requirement: "60 consecutive days", progress: 0, isUnlocked: false, unlockDate: nil, reward: "900 coins", category: .achievement),
-        Badge(title: "66-Day Champion", description: "End or start of a new beginning", iconName: "trophy.fill", gradientColors: [.yellow, .orange], requirement: "Complete 66-day journey", progress: 0.0, isUnlocked: false, unlockDate: nil, reward: "1000 coins", category: .activity)
+        Badge(title: "Ultimate Achiever", description: "A special custom milestone", iconName: "sparkles", gradientColors: [.blue, .purple], requirement: "Complete 62-day journey", progress: 0.0, isUnlocked: false, unlockDate: nil, reward: "2000 coins", category: .achievement),
+        Badge(title: "66-Day Champion", description: "End or start of a new beginning", iconName: "trophy.fill", gradientColors: [.yellow, .orange], requirement: "Complete 66-day journey", progress: 0.0, isUnlocked: false, unlockDate: nil, reward: "1000 coins", category: .achievement)
     ],
     BadgeCategory.special: [
         Badge(title: "Data Nerd", description: "Complete all graph types", iconName: "chart.bar.fill", gradientColors: [.indigo, .blue], requirement: "Update all graphs at least once", progress: 0.0, isUnlocked: false, unlockDate: nil, reward: nil, category: .special)
@@ -277,16 +278,16 @@ struct BadgeCardView: View {
                     
                     // Unlock Status & Reward
                     HStack {
-                        if let reward = badge.reward {
+                        if let reward = badge.reward ,!badge.isUnlocked{
                             Label(reward, systemImage: "dollarsign.circle.fill")
                                 .font(.caption2)
-                                .foregroundColor(.yellow)
+                                .foregroundColor(.green)
                         }
                         
                         Spacer()
                         
                         if badge.isUnlocked, let unlockDate = badge.unlockDate {
-                            Text("Unlocked \(unlockDate, style: .relative)")
+                            Text("\(unlockDate, style: .relative)")
                                 .font(.caption2)
                                 .foregroundColor(.green)
                         } else {

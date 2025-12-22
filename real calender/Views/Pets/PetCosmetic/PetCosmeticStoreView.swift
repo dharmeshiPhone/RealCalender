@@ -117,7 +117,7 @@ struct PetCosmeticStoreView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.white)
-                
+            
             Spacer()
             
             HStack(spacing: 8) {
@@ -184,8 +184,8 @@ struct PetCosmeticStoreView: View {
         } else {
             self.selectedTierForUnlock = tier
             self.showingUnlockAlert = true
-//            self.purchaseMessage = "You need \(unlockPrice - userProfile.coins) more coins to unlock \(tier.name)."
-//            self.showingPurchaseAlert = true
+            //            self.purchaseMessage = "You need \(unlockPrice - userProfile.coins) more coins to unlock \(tier.name)."
+            //            self.showingPurchaseAlert = true
         }
     }
     
@@ -270,20 +270,22 @@ struct PetCosmeticStoreView: View {
     private func checkPurchasedValueForQuest() {
         var totalPurchasedValue = 0
         var numberofPurchased = 0
-
+        
         for tier in tiers {
             for slot in tier.slots {
                 if slot.isOwned {
                     totalPurchasedValue += slot.cost
                     numberofPurchased += 1
-//                    if tier.id == 3{
-//                        questManager.completeQuestWithIncremnetStaticForce(named: "Buy a Tier 3 pet cosmetic", num:1, Quebatch: 28)
-//                    }
+                                        if tier.id == 3{
+                                            if questManager.currentBatch == 48{
+                                                questManager.completeQuestWithIncremnetStaticForce(named: "Buy a Tier 3 cosmetic", num: 1 , Quebatch: 48)
+                                            }
+                                        }
                 }
-               
+                
             }
         }
-
+        
         if totalPurchasedValue >= 400 {
             questManager.completeQuestWithIncremnetStaticForce(named: "Buy a pet cosmetic", num: 1, Quebatch: 10)
         }
@@ -310,30 +312,31 @@ struct PetCosmeticStoreView: View {
             questManager.completeQuestWithIncremnetStaticForce(named: "Buy 3 pet cosmetics", num: numberofPurchased - 7 , Quebatch: 41)
         }
         
-        if questManager.currentBatch == 48{
-            questManager.completeQuestWithIncremnetStaticForce(named: "Buy a Tier 3 cosmetic", num: 1 , Quebatch: 48)
-        }
+//        if questManager.currentBatch == 48{
+//            questManager.completeQuestWithIncremnetStaticForce(named: "Buy a Tier 3 cosmetic", num: 1 , Quebatch: 48)
+//        }
         
         if numberofPurchased > 11{
             questManager.completeQuestWithIncremnetStaticForce(named: "Buy 4 pet cosmetics", num: numberofPurchased - 11 , Quebatch: 55)
         }
+        
         checkOwnOneFromEachTier()
         
-       
+        
     }
     
     private func checkOwnOneFromEachTier() {
         // Dictionary: [tierId: countOwned]
         var ownedPerTier: [Int : Int] = [:]
-
+        
         for tier in tiers {
             let ownedCount = tier.slots.filter { $0.isOwned }.count
             ownedPerTier[tier.id] = ownedCount
         }
-
+        
         // Check if ALL tiers have 1 or more owned slots
         let allTiersCompleted = ownedPerTier.values.allSatisfy { $0 > 0 }
-
+        
         if allTiersCompleted {
             questManager.completeQuestWithIncremnetStaticForce(
                 named: "own one cosmetic from each tire",
@@ -342,8 +345,4 @@ struct PetCosmeticStoreView: View {
             )
         }
     }
-
-
-
-
 }

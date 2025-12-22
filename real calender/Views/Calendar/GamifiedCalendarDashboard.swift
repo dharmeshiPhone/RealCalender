@@ -3,13 +3,14 @@ import UIKit
 import Combine
 
 struct GamifiedCalendarDashboard: View {
+    @ObservedObject var streakManager: StreakManager
     @EnvironmentObject var screenTimeManager: ScreenTimeManager
     @EnvironmentObject var aiChatManager: AIChatManager
     @EnvironmentObject var achievementManager: AchievementManager
     @EnvironmentObject var questManager: QuestManager
     
     @AppStorage("showGlowIcon") private var showGlowQuestIcon: Bool = false
-
+    
     @Binding var events: [CalendarEvent]
     @Binding var selectedDate: Date
     @State private var currentStreak = 7
@@ -96,6 +97,29 @@ struct GamifiedCalendarDashboard: View {
                             questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary",num:1,Quebatch:40)
                         }
                         
+                        if questManager.currentBatch == 44 {
+                            questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary 21 days in a row",num:1,Quebatch:44)
+                        }
+                        
+                        if questManager.currentBatch == 47 {
+                            questManager.completeQuestWithIncremnetForce(named:"Check daily summary",num:1,Quebatch:47)
+                        }
+                        
+                        if questManager.currentBatch == 51 {
+                            questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary",num:1,Quebatch:51)
+                        }
+                        
+                        if questManager.currentBatch == 53 {
+                            questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary",num:1,Quebatch:51)
+                        }
+                        
+                        if questManager.currentBatch == 62 {
+                            questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary",num:1,Quebatch:62)
+                        }
+                        if questManager.currentBatch == 64 {
+                            questManager.completeQuestWithIncremnetForce(named:"Check Daily Summary",num:1,Quebatch:64)
+                        }
+                        
                         // 🔥 Update streak every time user checks Daily Summary
                         questManager.updateDailySummaryStreak()
                     },
@@ -117,9 +141,11 @@ struct GamifiedCalendarDashboard: View {
             .padding()
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if !(UserDefaults.hasCompletedCalendarSetup && !UserDefaults.standard.bool(forKey: "hasSeenProfileUnlock")) {
+                    streakView
+                }
                 profileToolbarButton
-                
             }
             
             ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -227,11 +253,11 @@ struct GamifiedCalendarDashboard: View {
                 )
                 print("✅ DEBUG: Posted NewEventsCreated notification with \(newEvents.count) events")
                 print("􀄰 DEBUG: === END SETUP CALLBACK ANALYSIS ===")
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.34) {
-//                    withAnimation(.easeOut(duration: 0.3)){
-//                        questManager.showLevelUp = true
-//                    }
-//                }
+                //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.34) {
+                //                    withAnimation(.easeOut(duration: 0.3)){
+                //                        questManager.showLevelUp = true
+                //                    }
+                //                }
                 //showGlowQuestIcon = true
                 
             }
@@ -412,18 +438,39 @@ struct GamifiedCalendarDashboard: View {
         }
     }
     
+    
+    private var streakView: some View {
+        Button {
+            streakManager.shouldShowStreakPopup.toggle()
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: "flame.fill")
+                    .font(.caption)
+                    .foregroundColor(.orange)
+                
+                Text("\(streakManager.currentStreak)")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundColor(.primary)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(
+                Capsule()
+                    .fill(Color.orange.opacity(0.1))
+                    .overlay(
+                        Capsule()
+                            .strokeBorder(Color.orange.opacity(0.3), lineWidth: 1)
+                    )
+            )
+        }
+        .buttonStyle(.plain)
+    }
+    
+    
+    
+    
     private var QuestButton: some View {
         Button(action: {
-//            if showGlowQuestIcon{
-//                showGlowQuestIcon = false
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
-//                    withAnimation(.easeOut(duration: 0.3)){
-//                        questManager.showLevelUp = true
-//                    }
-//                }
-//            }else{
-//                showCustomPopover.toggle()
-//            }
             showCustomPopover.toggle()
         }) {
             ZStack {
@@ -480,7 +527,7 @@ struct GamifiedCalendarDashboard: View {
         Button(action: {
             openPetView.toggle()
         }) {
-            Image(systemName:"pawprint.circle.fill")//"dollarsign.ring"
+            Image(systemName:"pawprint.circle.fill")
                 .foregroundColor(.blue)
                 .font(.system(size: 20, weight: .regular))
         }

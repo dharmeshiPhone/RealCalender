@@ -119,22 +119,7 @@ struct CalendarReviewView: View {
                     print("📊 CalendarReviewView: Received \(events.count) total events")
                     print("📊 CalendarReviewView: Events with travel: \(eventsWithTravel.count)")
                     print("📊 CalendarReviewView: === END ANALYSIS ===")
-                    
-                    if questManager.currentBatch == 15{
-                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:15)
-                    }
-                    
-                    if questManager.currentBatch == 26{
-                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:26)
-                    }
-                    
-                    if questManager.currentBatch == 35{
-                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:35)
-                    }
-                    
-                    if questManager.currentBatch == 38{
-                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics 6 weeks in a row",num:1,Quebatch:35)
-                    }
+                   
                 }
                 
                 // Tab content
@@ -152,10 +137,12 @@ struct CalendarReviewView: View {
                     
                     EnhancedAnalyticsTabView(events: eventsWithTravel)
                         .tabItem {
-                            Image(systemName: ReviewTab.analytics.icon)
+                            Image(systemName: questManager.currentBatch > 11 ? ReviewTab.analytics.icon : "lock.fill")
                             Text(ReviewTab.analytics.rawValue)
                         }
                         .tag(ReviewTab.analytics)
+                        .disabled(questManager.currentBatch < 11)
+                        
                     
                     EnhancedConflictsTabView(events: eventsWithTravel)
                         .tabItem {

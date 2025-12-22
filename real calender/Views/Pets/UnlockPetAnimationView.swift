@@ -26,7 +26,7 @@ struct UnlockPetAnimationView: View {
         }
     }
     
-    // MARK: - Subviews
+//    // MARK: - Subviews
     private var backgroundView: some View {
         ZStack {
             LinearGradient(
@@ -43,7 +43,7 @@ struct UnlockPetAnimationView: View {
                 .opacity(glowOpacity)
                 .scaleEffect(animationPhase >= 2 ? 1.5 : 0.1)
         }
-        .ignoresSafeArea()
+        .ignoresSafeArea(.all)
     }
     
     private var mainContent: some View {

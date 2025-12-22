@@ -5,6 +5,7 @@ struct BMIUnlockChart: View {
     let profile: UserProfile
     let unlockAnimationPhase: Int
     let countdown: Int
+    var onAdd:(()-> Void)?
     
     private var isLocked: Bool {
         return unlockAnimationPhase == 0
@@ -25,7 +26,7 @@ struct BMIUnlockChart: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             // Header
-            BMIChartHeader(isLocked: isLocked, profile: profile)
+            BMIChartHeader(isLocked: isLocked, profile: profile,onAdd:onAdd)
             
             // Chart content
             VStack(spacing: 12) {
@@ -64,6 +65,7 @@ struct BMIUnlockChart: View {
 struct BMIChartHeader: View {
     let isLocked: Bool
     let profile: UserProfile
+    var onAdd:(()-> Void)?
     
     private var percentile: Double {
         guard profile.bmi > 0 else { return 0.0 }
@@ -88,24 +90,37 @@ struct BMIChartHeader: View {
     
     var body: some View {
         HStack {
-            HStack(spacing: 8) {
-                if isLocked {
-                    Image(systemName: "lock.fill")
-                        .font(.title3)
-                        .foregroundColor(.gray)
-                } else {
-                    // Show unlocked icon when not locked
-                    Image(systemName: "chart.bar.fill")
-                        .font(.title3)
-                        .foregroundColor(.purple)
+            VStack(alignment: .leading, spacing: 2){
+                HStack(spacing: 8) {
+                    if isLocked {
+                        Image(systemName: "lock.fill")
+                            .font(.title3)
+                            .foregroundColor(.gray)
+                    } else {
+                        // Show unlocked icon when not locked
+                        Image(systemName: "chart.bar.fill")
+                            .font(.title3)
+                            .foregroundColor(.purple)
+                    }
+                    
+                    Text("Body Mass Index")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                        .lineLimit(1)
                 }
-                
-                Text("Body Mass Index")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
+                if !isLocked{
+                    Button {
+                        onAdd?()
+                    } label: {
+                        Text("Update Data")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.blue)
+                    }
+                }
             }
+           
             
             Spacer()
             

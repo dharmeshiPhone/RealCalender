@@ -50,6 +50,11 @@ struct UserProfile: Identifiable, Codable {
     var numPullupsGraphUpdated: Int = 0
     var numRunningGraphUpdated: Int = 0
     
+    // weekly analytics for row
+    var lastAnalyticsWeek: Date = Date()
+    var weeklyAnalyticsStreak: Int = 0
+    
+    
     // Computed properties to fix compilation errors
     var hasBasicMeasurements: Bool {
         return heightCM > 0 && weightKG > 0
@@ -200,15 +205,43 @@ struct UserProfile: Identifiable, Codable {
     
     
     // MARK: - XP Helpers
+//    static func xpRequiredForLevel(_ level: Int) -> Double {
+//        // Define XP required for each level
+//        let xpTable: [Double] = [50, 50, 300, 250, 250, 250, 250, 250, 250, 250, 250 ,250, 250, 250 ,250]
+//        if level > 0 && level <= xpTable.count {
+//            return xpTable.prefix(level).reduce(0, +)
+//        } else {
+//            return 0
+//        }
+//    }
+    
     static func xpRequiredForLevel(_ level: Int) -> Double {
-        // Define XP required for each level
-        let xpTable: [Double] = [50, 50, 300, 250, 250, 250, 250, 250, 250, 250, 250 ,250, 250, 250 ,250]
-        if level > 0 && level <= xpTable.count {
-            return xpTable.prefix(level).reduce(0, +)
-        } else {
-            return 0
+        guard level > 0 && level <= 63 else { return 0 }
+
+        var total: Double = 0
+
+        for lvl in 1...level {
+            total += xpForLevel(lvl)
+        }
+
+        return total
+    }
+
+    static func xpForLevel(_ level: Int) -> Double {
+        guard level > 0 && level <= 63 else { return 0 }
+
+        switch level {
+        case 1, 2:
+            return 50
+        case 3:
+            return 300
+        default:
+            return 250
         }
     }
+
+
+
     
     
     var progressToNextLevel: Double {
@@ -237,6 +270,16 @@ struct UserProfile: Identifiable, Codable {
 
     
 }
+
+//struct WeeklyAnalyticsStreak {
+//    var currentStreak: Int
+//    var lastCheckedWeekStart: Date
+//}
+//func startOfWeek(for date: Date) -> Date {
+//    Calendar.current.dateInterval(of: .weekOfYear, for: date)!.start
+//}
+
+
 
 // MARK: - Persistence Helpers
 extension UserProfile {

@@ -326,7 +326,10 @@ class QuestManager: ObservableObject {
             28: "Maintain 28-day streak",
             30: "Maintain 30-day streak",
             35: "Maintain 35-day streak",
-            40: "Maintain 40-day streak"
+            40: "Maintain 40-day streak",
+            50: "Maintain 50-day streak",
+            55: "Maintain 55-day streak",
+            60: "Maintain 60-day streak"
         ]
 
         // Notification-only batches

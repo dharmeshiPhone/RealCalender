@@ -6,6 +6,7 @@ struct EnhancedAnalyticsTabView: View {
     let events: [CalendarEvent]
     @State private var selectedTimeRange: AnalyticsTimeRange = .week
     @State private var selectedMetric: AnalyticsMetric = .eventCount
+    @State private var user: UserProfile = UserProfile.shared
     
     enum AnalyticsTimeRange: String, CaseIterable {
         case week = "Week"
@@ -43,12 +44,91 @@ struct EnhancedAnalyticsTabView: View {
             }
             .padding()
             .onAppear {
+                if questManager.currentBatch == 15{
+                    questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:15)
+                }
+                
                 if questManager.currentBatch == 24{
                     questManager.completeQuest(named:"Open analytics page")
                 }
+                
+                if questManager.currentBatch == 26{
+                    questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:26)
+                }
+                
+                if questManager.currentBatch == 35{
+                    questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:35)
+                }
+                
+                if questManager.currentBatch == 38{
+                    if user.weeklyAnalyticsStreak == 6 {
+                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics 6 weeks in a row",num:1,Quebatch:35)
+                    }
+                }
+                
+                if questManager.currentBatch == 49{
+                    if user.weeklyAnalyticsStreak == 8 {
+                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics 8 weeks in a row",num:1,Quebatch:49)
+                    }
+                }
+                
+                if questManager.currentBatch == 52{
+                    questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics",num:1,Quebatch:52)
+                }
+                if questManager.currentBatch == 58{
+                    if user.weeklyAnalyticsStreak == 10 {
+                        questManager.completeQuestWithIncremnetForce(named: "Check Weekly Analytics 10 weeks in a row",num:1,Quebatch:58)
+                    }
+                }
+                
+                
+                
+                let result = updateWeeklyAnalyticsStreak(
+                    lastWeek: user.lastAnalyticsWeek,
+                    currentStreak: user.weeklyAnalyticsStreak
+                )
+                
+                user.weeklyAnalyticsStreak = result.newStreak
+                user.lastAnalyticsWeek = result.newLastWeek
+                user.save()
+                
             }
         }
     }
+    // MARK: - update analytics streak
+    private func updateWeeklyAnalyticsStreak(
+        lastWeek: Date?,
+        currentStreak: Int,
+        today: Date = Date()
+    ) -> (newStreak: Int, newLastWeek: Date) {
+        
+        let currentWeek = startOfWeek(for: today)
+        
+        // First time
+        guard let lastWeek else {
+            return (1, currentWeek)
+        }
+        
+        // Same week → do nothing
+        if Calendar.current.isDate(currentWeek, inSameDayAs: lastWeek) {
+            return (currentStreak, lastWeek)
+        }
+        
+        // Previous week → increment
+        if let expectedWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: currentWeek),
+           Calendar.current.isDate(expectedWeek, inSameDayAs: lastWeek) {
+            return (currentStreak + 1, currentWeek)
+        }
+        
+        // Missed a week → reset
+        return (1, currentWeek)
+    }
+    
+    private func startOfWeek(for date: Date) -> Date {
+        Calendar.current.dateInterval(of: .weekOfYear, for: date)!.start
+    }
+    
+    
     
     @ViewBuilder
     private var timeRangeSelector: some View {
@@ -62,6 +142,19 @@ struct EnhancedAnalyticsTabView: View {
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+        .onChange(of: selectedTimeRange) { oldValue, newValue in
+            completeVisitTabQuest()
+        }
+    }
+    
+    private func completeVisitTabQuest(){
+        if questManager.currentBatch == 62{
+            questManager.completeQuestWithIncremnetForce(named: "Check all analytics tabs",num:1,Quebatch:62)
+        }
+        
+        if questManager.currentBatch == 60{
+            questManager.completeQuestWithIncremnetForce(named: "Check all analytics tabs",num:1,Quebatch:60)
+        }
     }
     
     @ViewBuilder
@@ -394,11 +487,25 @@ struct EnhancedAnalyticsTabView: View {
             }
             return events.filter { $0.date >= weekAgo && $0.date <= now }
         case .month:
+            if questManager.currentBatch == 62{
+                questManager.completeQuestWithIncremnetForce(named: "Check all analytics tabs",num:1,Quebatch:62)
+            }
+            
+            if questManager.currentBatch == 60{
+                questManager.completeQuestWithIncremnetForce(named: "Check all analytics tabs",num:1,Quebatch:60)
+            }
             guard let monthAgo = calendar.date(byAdding: .month, value: -1, to: now) else {
                 return events
             }
             return events.filter { $0.date >= monthAgo && $0.date <= now }
         case .year:
+            if questManager.currentBatch == 62{
+                questManager.completeQuestWithIncremnetForce(named: "Check all analytics tabs",num:1,Quebatch:62)
+            }
+            
+            if questManager.currentBatch == 60{
+                questManager.completeQuestWithIncremnetForce(named: "Check all analytics tabs",num:1,Quebatch:60)
+            }
             guard let yearAgo = calendar.date(byAdding: .year, value: -1, to: now) else {
                 return events
             }
@@ -747,23 +854,24 @@ struct EnhancedConflictsTabView: View {
         }
         
         // Check for travel time conflicts
-        for i in 0..<sortedEvents.count - 1 {
-            let currentEvent = sortedEvents[i]
-            let nextEvent = sortedEvents[i + 1]
-            
-            if hasTravelTimeConflict(from: currentEvent, to: nextEvent) {
-                conflicts.append(ConflictScheduleConflict(
-                    id: UUID(),
-                    type: .travelTime,
-                    severity: .medium,
-                    title: "Insufficient Travel Time",
-                    description: "Not enough time to travel from '\(currentEvent.title)' to '\(nextEvent.title)'",
-                    affectedEvents: [currentEvent, nextEvent],
-                    suggestedSolutions: ["Add buffer time between events", "Reschedule one of the events", "Consider virtual alternative"]
-                ))
+        if sortedEvents.count > 0{
+            for i in 0..<sortedEvents.count - 1 {
+                let currentEvent = sortedEvents[i]
+                let nextEvent = sortedEvents[i + 1]
+                
+                if hasTravelTimeConflict(from: currentEvent, to: nextEvent) {
+                    conflicts.append(ConflictScheduleConflict(
+                        id: UUID(),
+                        type: .travelTime,
+                        severity: .medium,
+                        title: "Insufficient Travel Time",
+                        description: "Not enough time to travel from '\(currentEvent.title)' to '\(nextEvent.title)'",
+                        affectedEvents: [currentEvent, nextEvent],
+                        suggestedSolutions: ["Add buffer time between events", "Reschedule one of the events", "Consider virtual alternative"]
+                    ))
+                }
             }
         }
-        
         detectedConflicts = conflicts
     }
     
@@ -1109,7 +1217,7 @@ struct EnhancedInsightsTabView: View {
                 metricValue: "\(morningEvents.count)"
             ))
         }
-
+        
         // Add a fallback if no major insight exists
         if insights.isEmpty {
             insights.append(CalendarInsight(
@@ -1123,15 +1231,15 @@ struct EnhancedInsightsTabView: View {
                 metricValue: "—"
             ))
         }
-
+        
         return insights
     }
-
+    
     private func generateTimeManagementInsights() -> [CalendarInsight] {
         // Add implementation here
         return []
     }
-
+    
     // Dummy stub implementations for other categories for now
     private func generatePatternInsights() -> [CalendarInsight] {
         return [getNoDataInsight(for: .patterns)]
@@ -1142,7 +1250,7 @@ struct EnhancedInsightsTabView: View {
     private func generateWellnessInsights() -> [CalendarInsight] {
         return [getNoDataInsight(for: .wellness)]
     }
-
+    
     private func getNoDataInsight(for cat: CalendarInsightCategory) -> CalendarInsight {
         return CalendarInsight(
             

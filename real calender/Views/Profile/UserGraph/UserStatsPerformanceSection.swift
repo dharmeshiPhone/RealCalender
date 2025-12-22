@@ -48,6 +48,7 @@ struct UserStatsPerformanceSection: View {
     @Binding var showingPullUpsEditor: Bool
     @Binding var showingIncomeEditor: Bool
     @Binding var showingAcademicEditor: Bool
+    @Binding var showingBMIEditor: Bool
     
     var academicValue: Double {
         switch profile.educationLevel {
@@ -210,7 +211,10 @@ struct UserStatsPerformanceSection: View {
                     BMIUnlockChart(
                         profile: profile,
                         unlockAnimationPhase: bmiUnlockAnimationPhase,
-                        countdown: 0
+                        countdown: 0,
+                        onAdd: {
+                            showingBMIEditor = true
+                        }
                     )
                     .background(
                         GeometryReader { chartGeometry in
@@ -235,9 +239,9 @@ struct UserStatsPerformanceSection: View {
                             }
                         }
                     }
-                    .onAppear {
-                        bmiUnlockAnimationPhase = 0
-                    }
+//                    .onAppear {
+//                        bmiUnlockAnimationPhase = 0
+//                    }
                 }
                 .frame(height: 320)
                 
@@ -272,7 +276,8 @@ struct UserStatsPerformanceSection: View {
                 
                 HStack {
                     ZStack {
-                        Text("Graphs completed: \(animatedCompletedCount)/\(profile.isStudent ? "6" : "5")")
+                        let completed = (profile.isStudent ? 6 : 5) - getLockedGraphsCount()
+                        Text("Graphs completed: \(completed)/\(profile.isStudent ? "6" : "5")")//animatedCompletedCount
                             .font(.caption)
                             .foregroundColor(completionProgress > 0.8 ? .green : .secondary)
                             .fontWeight(completionProgress > 0.8 ? .semibold : .regular)
@@ -292,7 +297,7 @@ struct UserStatsPerformanceSection: View {
                             )
                         
                         if showCompletionEffect {
-                            Text("Graphs completed: \(animatedCompletedCount)/\(profile.isStudent ? "6" : "5")")
+                            Text("Graphs completed: \(completed)/\(profile.isStudent ? "6" : "5")")
                                 .font(.caption)
                                 .fontWeight(.bold)
                                 .foregroundColor(.green)

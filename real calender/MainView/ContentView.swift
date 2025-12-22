@@ -12,7 +12,7 @@ struct ContentView: View {
     @State private var events: [CalendarEvent] = []
     @StateObject private var messageAnalyzer = MessageAnalyzer()
     @StateObject private var questManager = QuestManager()
-
+    
     @State private var userProfile: UserProfile = UserProfile.shared
     @State private var hasCompletedOnboarding = false
     @State private var isCheckingOnboarding = true
@@ -39,7 +39,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             mainContent
-           // debugGesture
+            // debugGesture
         }
         .onAppear {
             print("ContentView: onAppear called - setting up notification listeners")
@@ -114,7 +114,7 @@ struct ContentView: View {
                 userProfile = updatedProfile
                 
                 updatedProfile.save()
-
+                
                 print("📱 ContentView: Profile update completed successfully")
             } else {
                 print("📱 ContentView: ERROR - Could not cast notification object to UserProfile")
@@ -144,7 +144,7 @@ struct ContentView: View {
                     }
             } else {
                 TabView(selection: $selectedTab) {
-                    TabbedCalendarView(events: $events)
+                    TabbedCalendarView(events: $events,userProfile: $userProfile)
                         .environmentObject(screenTimeManager)
                         .environmentObject(aiChatManager)
                         .environmentObject(achievementManager)
@@ -153,7 +153,7 @@ struct ContentView: View {
                             Text("Calendar")
                         }
                         .tag(0)
-
+                    
                     AIChatView(events: $events,userProfile: $userProfile)
                         .environmentObject(aiChatManager)
                         .environmentObject(screenTimeManager)
@@ -162,7 +162,7 @@ struct ContentView: View {
                             Text("AI Assistant")
                         }
                         .tag(1)
-
+                    
                     MessageAnalysisView()
                         .environmentObject(aiChatManager)
                         .environmentObject(messageAnalyzer)
@@ -170,21 +170,21 @@ struct ContentView: View {
                             Image(systemName: "text.bubble.fill")
                                 .foregroundColor(.primary)
                                 .font(.system(size: 16, weight: .regular))
-
+                            
                             Text("Text Analysis")
                                 .foregroundColor(.primary)
                                 .fontWeight(.regular)
                         }
                         .tag(2)
-
-                   // BadgesView()
+                    
+                    // BadgesView()
                     BadgeScreen(userProfile: userProfile)
                         .environmentObject(achievementManager)
                         .tabItem {
                             ZStack {
                                 Image(systemName: "trophy.fill")
                                     .foregroundColor(.yellow)
-
+                                
                                 if let calendarAchievement = achievementManager.getCalendarAchievement(),
                                    calendarAchievement.currentProgress > 0 {
                                     VStack {
@@ -207,28 +207,20 @@ struct ContentView: View {
                 .overlay(alignment: .center) {
                     LevelUpCelebrationView(
                         isShowing: $questManager.showLevelUp,
+                        userProfile: $userProfile,
                         achievementLevel: UserProfile.shared.level
                     )
-    //                    if achievementManager.showLevelUp {
-    //                        ZStack {
-    //                            Color.black.opacity(0.9)
-    //                                .ignoresSafeArea()
-    //                                .transition(.opacity)
-    //
-    //                            congratulationsView
-    //
-    //                        }
-    //                    }
+                 
                 }
                 .onAppear {
                     print("📱 ContentView: Showing TabView - hasCompletedOnboarding: \(hasCompletedOnboarding)")
                 }
                 .onChange(of: selectedTab) { _, newTab in
                     print(" Tab changed to: \(newTab)")
-                    if newTab == 0 { 
+                    if newTab == 0 {
                         print(" Calendar tab selected - updating progress")
                         achievementManager.updateCalendarProgress()
-                    } else if newTab == 3 { 
+                    } else if newTab == 3 {
                         print(" Badges tab selected")
                     }
                 }
@@ -238,53 +230,15 @@ struct ContentView: View {
             ZStack {
                 EmptyView()
             }
-            .allowsHitTesting(false)
-            .ignoresSafeArea()
+                .allowsHitTesting(false)
+                .ignoresSafeArea()
         )
     }
     
-    // MARK: - celebration View
-    private var congratulationsView: some View {
-        VStack(spacing: 16) {
-            Text("🎉 LEVEL UP! 🎉")
-                .font(.title2)
-                .fontWeight(.bold)
-                .foregroundColor(.yellow)
-                .shadow(color: .yellow.opacity(0.6), radius: 4)
-            
-            Text("You've reached level \(UserProfile.shared.level) 🎉")
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-            
-            Button("Continue Your Journey") {
-                questManager.showLevelUp = false
-            }
-            .font(.headline)
-            .fontWeight(.bold)
-            .foregroundColor(.black)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [.yellow, .orange]),
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .cornerRadius(16)
-            .shadow(color: .yellow.opacity(0.4), radius: 10)
-            .padding(.horizontal, 20)
-        }
-        .transition(.scale.combined(with: .opacity))
-        .scaleEffect(questManager.showLevelUp ? 1.0 : 0.5)
-        .opacity(questManager.showLevelUp ? 1 : 0)
-        .animation(.spring(response: 0.5, dampingFraction: 0.6), value: questManager.showLevelUp)
-    }
-
+   
+    
     private var debugGesture: some View {
-        #if DEBUG
+#if DEBUG
         VStack {
             HStack {
                 Spacer()
@@ -296,7 +250,7 @@ struct ContentView: View {
                         .onTapGesture(count: 5) {
                             resetAppDataViaGesture()
                         }
- 
+                    
                     // Add level-up test button
                     Button("LEVEL UP") {
                     }
@@ -321,11 +275,11 @@ struct ContentView: View {
             }
             Spacer()
         }
-        #else
+#else
         EmptyView()
-        #endif
+#endif
     }
-
+    
     // MARK: - Setup Functions
     private func checkOnboardingStatus() {
         print(" checkOnboardingStatus() called")
@@ -339,7 +293,7 @@ struct ContentView: View {
                 
                 // Additional safety check: if we have a valid user profile, onboarding should be completed
                 if !onboardingValue,  hasSavedProfile{//let data = UserDefaults.standard.data(forKey: "userProfile"),
-                   // let _ = try? JSONDecoder().decode(UserProfile.self, from: data)
+                    // let _ = try? JSONDecoder().decode(UserProfile.self, from: data)
                     print(" Found valid user profile but onboarding flag was false - fixing this")
                     UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
                     self.hasCompletedOnboarding = true
@@ -364,12 +318,12 @@ struct ContentView: View {
                     print("🧭 Onboarding NOT completed — showing OnboardingView")
                 }
                 
-//                if self.hasCompletedOnboarding {
-//                    print(" Onboarding completed - loading user profile")
-//                    self.loadUserProfile()
-//                } else {
-//                    print(" Onboarding NOT completed - should show OnboardingView")
-//                }
+                //                if self.hasCompletedOnboarding {
+                //                    print(" Onboarding completed - loading user profile")
+                //                    self.loadUserProfile()
+                //                } else {
+                //                    print(" Onboarding NOT completed - should show OnboardingView")
+                //                }
             } catch {
                 print(" Error checking onboarding status: \(error)")
                 self.hasCompletedOnboarding = false
@@ -377,7 +331,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     private func checkCalendarSetup() {
         DispatchQueue.main.async {
             do {
@@ -388,7 +342,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     private func setupCalendarSetupListener() {
         NotificationCenter.default.addObserver(
             forName: Notification.Name("CalendarSetupCompleted"),
@@ -441,7 +395,7 @@ struct ContentView: View {
                 // Check if this event is already in our array to avoid duplicates
                 let existingEvent = self.events.first { existingEvent in
                     existingEvent.id == newEvent.id ||
-                    (existingEvent.title == newEvent.title && 
+                    (existingEvent.title == newEvent.title &&
                      abs(existingEvent.date.timeIntervalSince(newEvent.date)) < 60) // Same title within 1 minute
                 }
                 
@@ -467,7 +421,7 @@ struct ContentView: View {
             }
         }
         
-        // Listen for events from photo analysis specifically  
+        // Listen for events from photo analysis specifically
         NotificationCenter.default.addObserver(
             forName: Notification.Name("PhotoEventsCreated"),
             object: nil,
@@ -506,13 +460,13 @@ struct ContentView: View {
             }
         }
     }
-
-
+    
+    
     private func createDefaultUserProfile() {
         UserProfile.createTempuser()
     }
-
-
+    
+    
     private func loadEvents() {
         DispatchQueue.main.async {
             do {
@@ -533,7 +487,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     private func saveEvents() {
         DispatchQueue.main.async {
             do {
@@ -548,418 +502,480 @@ struct ContentView: View {
         }
     }
     
-    func setupCalenderLogEvent(){
-        questManager.completeQuestWithIncremnetStaticForce(named: "Log 3 calendar event", num: events.count)
+    //    func setupCalenderLogEvent(){
+    //        questManager.completeQuestWithIncremnetStaticForce(named: "Log 3 calendar event", num: events.count)
+    //
+    //        if events.count > 43 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named:  "Add 2 new events", num: events.count - 44,  Quebatch: 42)
+    //        }
+    //
+    //        if events.count > 41 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named:  "Add 1 new event", num: events.count - 42,  Quebatch: 41)
+    //        }
+    //
+    //        if events.count > 40 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named:  "Add 2 new events", num: events.count - 41,  Quebatch: 39)
+    //        }
+    //        if events.count > 38 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 39,  Quebatch: 38)
+    //        }
+    //        if events.count > 37 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 38,  Quebatch: 36)
+    //        }
+    //        if events.count > 36 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 37,  Quebatch: 34)
+    //        }
+    //
+    //        if events.count > 35 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 36,  Quebatch: 33)
+    //        }
+    //
+    //        if events.count > 34 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 35,  Quebatch: 31)
+    //        }
+    //
+    //        if events.count > 33 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 34,  Quebatch: 28)
+    //        }
+    //
+    //        if events.count > 32 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 33,  Quebatch: 26)
+    //        }
+    //
+    //        if events.count > 30 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 31,  Quebatch: 24)
+    //        }
+    //
+    //        if events.count > 28 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 29,  Quebatch: 23)
+    //        }
+    //
+    //        if events.count > 26 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 27,  Quebatch: 22)
+    //        }
+    //
+    //        if events.count > 25 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 26,  Quebatch: 19)
+    //        }
+    //
+    //        if events.count > 24 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 25,  Quebatch: 17)
+    //        }
+    //
+    //        if events.count > 21 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 22,  Quebatch: 16)
+    //        }
+    //
+    //        if events.count > 20 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 21,  Quebatch: 15)
+    //        }
+    //
+    //        if events.count > 17 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 18,  Quebatch: 13)
+    //        }
+    //
+    //        if events.count > 15 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 16,  Quebatch: 12)
+    //        }
+    //
+    //        if events.count > 13 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 14,  Quebatch: 11)
+    //        }
+    //
+    //        if events.count > 11 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 12,  Quebatch: 10)
+    //        }
+    //
+    //        if events.count > 9 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 10,  Quebatch: 9)
+    //        }
+    //
+    //        if events.count > 7 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 8,  Quebatch: 8)
+    //        }
+    //
+    //        if events.count > 2 {
+    //            questManager.completeQuestWithIncremnetStaticForce(named: "Add 5 new event", num: events.count - 3,  Quebatch: 3)
+    //        }
+    //
+    //
+    //        // MARK: -  For CompletedEvents.
+    //
+    //        let respondedAndCompletedCount = events.filter { $0.isRespond && $0.isCompleted }.count
+    //
+    //
+    //        // Batch 3 quest (needs 2 events)
+    //        questManager.completeQuestWithIncremnetStaticForce(
+    //            named: "Complete 2 scheduled event",
+    //            num: respondedAndCompletedCount
+    //        )
+    //
+    //        if respondedAndCompletedCount > 128{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 1 scheduled event",
+    //                num: respondedAndCompletedCount - 129,
+    //                Quebatch: 42
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 127{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 128,
+    //                Quebatch: 41
+    //            )
+    //        }
+    //
+    //
+    //        if respondedAndCompletedCount > 124{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 2 scheduled event",
+    //                num: respondedAndCompletedCount - 125,
+    //                Quebatch: 40
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 122{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 123,
+    //                Quebatch: 39
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 118{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 119,
+    //                Quebatch: 38
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 115{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 116,
+    //                Quebatch: 37
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 112{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 113,
+    //                Quebatch: 36
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 108{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 109,
+    //                Quebatch: 35
+    //            )
+    //        }
+    //        if respondedAndCompletedCount > 105{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 106,
+    //                Quebatch: 34
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 102{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 103,
+    //                Quebatch: 33
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 98{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 99,
+    //                Quebatch: 32
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 95{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named:  "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 96,
+    //                Quebatch: 31
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 91{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 92,
+    //                Quebatch: 30
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 88{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 89,
+    //                Quebatch: 29
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 84{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 85,
+    //                Quebatch: 28
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 81{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 82,
+    //                Quebatch: 27
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 78{
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 79,
+    //                Quebatch: 26
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 74 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 5 scheduled event",
+    //                num: respondedAndCompletedCount - 75,
+    //                Quebatch:25
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 69 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 70,
+    //                Quebatch:24
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 66 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 67,
+    //                Quebatch: 23
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 63 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 64,
+    //                Quebatch: 22
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 60 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 2 scheduled event",
+    //                num: respondedAndCompletedCount - 61,
+    //                Quebatch: 21
+    //            )
+    //        }
+    //
+    //
+    //        if respondedAndCompletedCount > 58 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 5 scheduled event",
+    //                num: respondedAndCompletedCount - 59,
+    //                Quebatch: 20
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 53 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 2 scheduled event",
+    //                num: respondedAndCompletedCount - 54,
+    //                Quebatch: 19
+    //            )
+    //        }
+    //
+    //
+    //
+    //        if respondedAndCompletedCount > 51 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 5 scheduled event",
+    //                num: respondedAndCompletedCount - 52,
+    //                Quebatch: 18
+    //            )
+    //        }
+    //
+    //
+    //        if respondedAndCompletedCount > 46 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 6 scheduled event",
+    //                num: respondedAndCompletedCount - 47,
+    //                Quebatch: 17
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 40 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 41,
+    //                Quebatch: 16
+    //            )
+    //        }
+    //
+    //
+    //        if respondedAndCompletedCount > 37 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 2 scheduled event",
+    //                num: respondedAndCompletedCount - 38,
+    //                Quebatch: 15
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 35 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 2 scheduled event",
+    //                num: respondedAndCompletedCount - 36,
+    //                Quebatch: 14
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 33 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 34,
+    //                Quebatch: 13
+    //            )
+    //        }
+    //
+    //
+    //        if respondedAndCompletedCount > 30 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 2 scheduled event",
+    //                num: respondedAndCompletedCount - 31,
+    //                Quebatch: 12
+    //            )
+    //        }
+    //
+    //
+    //        if respondedAndCompletedCount > 28 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 29,
+    //                Quebatch: 11
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 25 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 5 scheduled event",
+    //                num: respondedAndCompletedCount - 26,
+    //                Quebatch: 10
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 20 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 5 scheduled event",
+    //                num: respondedAndCompletedCount - 21,
+    //                Quebatch: 9
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 15 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 16,
+    //                Quebatch: 8
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 11 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 12,
+    //                Quebatch: 7
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 7 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 4 scheduled event",
+    //                num: respondedAndCompletedCount - 8,
+    //                Quebatch: 6
+    //            )
+    //        }
+    //
+    //        if respondedAndCompletedCount > 4 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 5,
+    //                Quebatch: 5
+    //            )
+    //        }
+    //
+    //
+    //        // Batch 4 quest (needs 3 events) → reduce by 2
+    //        if respondedAndCompletedCount > 1 {
+    //            questManager.completeQuestWithIncremnetStaticForce(
+    //                named: "Complete 3 scheduled event",
+    //                num: respondedAndCompletedCount - 2,
+    //                Quebatch: 4
+    //            )
+    //        }
+    //
+    //    }
+    
+    func setupCalenderLogEvent() {
         
+        let eventCount = events.count
         
-        if events.count > 40 {
-            questManager.completeQuestWithIncremnetStaticForce(named:  "Add 2 new events", num: events.count - 41,  Quebatch: 39)
-        }
-        if events.count > 38 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 39,  Quebatch: 38)
-        }
-        if events.count > 37 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 38,  Quebatch: 36)
-        }
-        if events.count > 36 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 37,  Quebatch: 34)
-        }
-        
-        if events.count > 35 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 36,  Quebatch: 33)
-        }
-        
-        if events.count > 34 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 35,  Quebatch: 31)
-        }
-        
-        if events.count > 33 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 34,  Quebatch: 28)
-        }
-        
-        if events.count > 32 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 33,  Quebatch: 26)
-        }
-        
-        if events.count > 30 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 31,  Quebatch: 24)
-        }
-        
-        if events.count > 28 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 29,  Quebatch: 23)
-        }
-        
-        if events.count > 26 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 27,  Quebatch: 22)
-        }
-        
-        if events.count > 25 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 26,  Quebatch: 19)
-        }
-        
-        if events.count > 24 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 25,  Quebatch: 17)
-        }
-        
-        if events.count > 21 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 1 new event", num: events.count - 22,  Quebatch: 16)
-        }
-        
-        if events.count > 20 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 21,  Quebatch: 15)
-        }
-        
-        if events.count > 17 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 18,  Quebatch: 13)
-        }
-        
-        if events.count > 15 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new events", num: events.count - 16,  Quebatch: 12)
-        }
-        
-        if events.count > 13 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 14,  Quebatch: 11)
-        }
-        
-        if events.count > 11 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 12,  Quebatch: 10)
-        }
-        
-        if events.count > 9 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 2 new event", num: events.count - 10,  Quebatch: 9)
-        }
-        
-        if events.count > 7 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 3 new event", num: events.count - 8,  Quebatch: 8)
-        }
-        
-        if events.count > 2 {
-            questManager.completeQuestWithIncremnetStaticForce(named: "Add 5 new event", num: events.count - 3)
-        }
-        
-        
-        // MARK: -  For CompletedEvents.
-     
-        let respondedAndCompletedCount = events.filter { $0.isRespond && $0.isCompleted }.count
-        
-        
-        // Batch 3 quest (needs 2 events)
+        // MARK: - Log Calendar Event Quest
         questManager.completeQuestWithIncremnetStaticForce(
-            named: "Complete 2 scheduled event",
-            num: respondedAndCompletedCount
+            named: "Log 3 calendar event",
+            num: eventCount
         )
         
-        
-        
-        
-        if respondedAndCompletedCount > 124{
+        // MARK: - Add Event Quests
+        for rule in addEventRules where eventCount > rule.threshold {
             questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 2 scheduled event",
-                num: respondedAndCompletedCount - 125,
-                Quebatch: 40
+                named: rule.name,
+                num: eventCount - rule.offset,
+                Quebatch: rule.batch
             )
         }
         
-        if respondedAndCompletedCount > 122{
+        // MARK: - Completed Scheduled Events
+        let respondedAndCompletedCount = events.filter {
+            $0.isRespond && $0.isCompleted
+        }.count
+        
+        // Base quest
+        //        questManager.completeQuestWithIncremnetStaticForce(
+        //            named: "Complete 2 scheduled event",
+        //            num: respondedAndCompletedCount
+        //        )
+        
+        // Batch-based quests
+        for rule in completedEventRules where respondedAndCompletedCount > rule.threshold {
             questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 123,
-                Quebatch: 39
+                named: rule.name,
+                num: respondedAndCompletedCount - rule.offset,
+                Quebatch: rule.batch
             )
         }
-        
-        if respondedAndCompletedCount > 118{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 119,
-                Quebatch: 38
-            )
-        }
-        
-        if respondedAndCompletedCount > 115{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 116,
-                Quebatch: 37
-            )
-        }
-        
-        if respondedAndCompletedCount > 112{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 113,
-                Quebatch: 36
-            )
-        }
-        
-        if respondedAndCompletedCount > 108{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 109,
-                Quebatch: 35
-            )
-        }
-        if respondedAndCompletedCount > 105{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 106,
-                Quebatch: 34
-            )
-        }
-        
-        if respondedAndCompletedCount > 102{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 103,
-                Quebatch: 33
-            )
-        }
-        
-        if respondedAndCompletedCount > 98{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 99,
-                Quebatch: 32
-            )
-        }
-        
-        if respondedAndCompletedCount > 95{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named:  "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 96,
-                Quebatch: 31
-            )
-        }
-        
-        if respondedAndCompletedCount > 91{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 92,
-                Quebatch: 30
-            )
-        }
-        
-        if respondedAndCompletedCount > 88{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 89,
-                Quebatch: 29
-            )
-        }
-        
-        if respondedAndCompletedCount > 84{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 85,
-                Quebatch: 28
-            )
-        }
-        
-        if respondedAndCompletedCount > 81{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 82,
-                Quebatch: 27
-            )
-        }
-        
-        if respondedAndCompletedCount > 78{
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 79,
-                Quebatch: 26
-            )
-        }
-        
-        if respondedAndCompletedCount > 74 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 5 scheduled event",
-                num: respondedAndCompletedCount - 75,
-                Quebatch:25
-            )
-        }
-        
-        if respondedAndCompletedCount > 69 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 70,
-                Quebatch:24
-            )
-        }
-        
-        if respondedAndCompletedCount > 66 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 67,
-                Quebatch: 23
-            )
-        }
-        
-        if respondedAndCompletedCount > 63 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 64,
-                Quebatch: 22
-            )
-        }
-        
-        if respondedAndCompletedCount > 60 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 2 scheduled event",
-                num: respondedAndCompletedCount - 61,
-                Quebatch: 21
-            )
-        }
-        
-        
-        if respondedAndCompletedCount > 58 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 5 scheduled event",
-                num: respondedAndCompletedCount - 59,
-                Quebatch: 20
-            )
-        }
-        
-        if respondedAndCompletedCount > 53 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 2 scheduled event",
-                num: respondedAndCompletedCount - 54,
-                Quebatch: 19
-            )
-        }
-        
-        
-        
-        if respondedAndCompletedCount > 51 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 5 scheduled event",
-                num: respondedAndCompletedCount - 52,
-                Quebatch: 18
-            )
-        }
-        
-        
-        if respondedAndCompletedCount > 46 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 6 scheduled event",
-                num: respondedAndCompletedCount - 47,
-                Quebatch: 17
-            )
-        }
-        
-        if respondedAndCompletedCount > 40 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 41,
-                Quebatch: 16
-            )
-        }
-        
-        
-        if respondedAndCompletedCount > 37 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 2 scheduled event",
-                num: respondedAndCompletedCount - 38,
-                Quebatch: 15
-            )
-        }
-        
-        if respondedAndCompletedCount > 35 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 2 scheduled event",
-                num: respondedAndCompletedCount - 36,
-                Quebatch: 14
-            )
-        }
-        
-        if respondedAndCompletedCount > 33 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 34,
-                Quebatch: 13
-            )
-        }
-      
-        
-        if respondedAndCompletedCount > 30 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 2 scheduled event",
-                num: respondedAndCompletedCount - 31,
-                Quebatch: 12
-            )
-        }
-        
-        
-        if respondedAndCompletedCount > 28 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 29,
-                Quebatch: 11
-            )
-        }
-        
-        if respondedAndCompletedCount > 25 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 5 scheduled event",
-                num: respondedAndCompletedCount - 26,
-                Quebatch: 10
-            )
-        }
-        
-        if respondedAndCompletedCount > 20 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 5 scheduled event",
-                num: respondedAndCompletedCount - 21,
-                Quebatch: 9
-            )
-        }
-        
-        if respondedAndCompletedCount > 15 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 16,
-                Quebatch: 8
-            )
-        }
-        
-        if respondedAndCompletedCount > 11 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 12,
-                Quebatch: 7
-            )
-        }
-        
-        if respondedAndCompletedCount > 7 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 4 scheduled event",
-                num: respondedAndCompletedCount - 8,
-                Quebatch: 6
-            )
-        }
-        
-        if respondedAndCompletedCount > 4 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 5,
-                Quebatch: 5
-            )
-        }
-        
-        
-        // Batch 4 quest (needs 3 events) → reduce by 2
-        if respondedAndCompletedCount > 1 {
-            questManager.completeQuestWithIncremnetStaticForce(
-                named: "Complete 3 scheduled event",
-                num: respondedAndCompletedCount - 2,
-                Quebatch: 4
-            )
-        }
- 
     }
     
     
-
+    
+    
     private func setupInitialData() {
         loadEvents()
         print(" Setting up unified event creation system...")
@@ -993,7 +1009,7 @@ struct ContentView: View {
         
         print(" Unified event system setup completed")
     }
-
+    
     // MARK: - Unified Event Management
     private func addEventToMain(_ event: CalendarEvent, source: String) {
         DispatchQueue.main.async {
@@ -1093,9 +1109,9 @@ struct ContentView: View {
             print(" Removed \(removedCount) duplicate events. Total events: \(events.count)")
         }
     }
-
+    
     private func setupDevKeyboardShortcut() {
-        #if DEBUG
+#if DEBUG
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name("DevResetApp"),
             object: nil,
@@ -1103,16 +1119,16 @@ struct ContentView: View {
         ) { _ in
             self.resetAppDataViaKeyboard()
         }
-        #endif
+#endif
     }
-
+    
     private func resetAppDataViaGesture() {
-        #if DEBUG
+#if DEBUG
         print(" 5-tap gesture detected - resetting app data...")
         resetAppDataViaKeyboard()
-        #endif
+#endif
     }
-
+    
     private func resetAppDataViaKeyboard() {
         print("")
         print("===== STARTING APP RESET ======")
@@ -1134,15 +1150,26 @@ struct ContentView: View {
         UserDefaults.standard.removeObject(forKey: "morningPrepTime")
         UserDefaults.standard.removeObject(forKey: "userPets")
         UserDefaults.standard.removeObject(forKey: "petCosmeticTiers")
+        UserDefaults.standard.removeObject(forKey: "userBadges")
         UserDefaults.standard.removeObject(forKey: "pendingRewardQuestIds")
         UserDefaults.standard.removeObject(forKey: "showGlowIcon")
         
         // clear streck
-        UserDefaults.standard.removeObject(forKey: "StreakData")
+        UserDefaults.standard.removeObject(forKey: "hasUsedFreeze")
         UserDefaults.standard.removeObject(forKey: "currentStreak")
         UserDefaults.standard.removeObject(forKey: "totalDaysLogged")
         UserDefaults.standard.removeObject(forKey: "longestStreak")
         UserDefaults.standard.removeObject(forKey: "lastLoginDate")
+        UserDefaults.standard.removeObject(forKey: "hasSaverAvailable")
+        UserDefaults.standard.removeObject(forKey: "hasSeenDay7Offer")
+        UserDefaults.standard.removeObject(forKey: "hasSeenDay30Offer")
+        UserDefaults.standard.removeObject(forKey: "hasReceivedWelcomeBackGift")
+        UserDefaults.standard.removeObject(forKey: "lastWelcomeBackGiftDate")
+        
+        
+        UserDefaults.standard.removeObject(forKey: "hasShownCommitmentPopup")
+        
+        
         
         // Force synchronize UserDefaults to ensure changes are saved immediately
         UserDefaults.standard.synchronize()
@@ -1185,7 +1212,7 @@ struct ContentView: View {
             // Reset user profile to default
             self.userProfile = UserProfile.shared
             
-//            NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
+            //            NotificationCenter.default.post(name: .profileUpdated, object: userProfile)
             
             print("All state variables reset, about to check onboarding status...")
             
@@ -1198,3 +1225,117 @@ struct ContentView: View {
         }
     }
 }
+
+struct QuestRule {
+    let threshold: Int
+    let offset: Int
+    let name: String
+    let batch: Int?
+}
+
+
+// MARK: - Add Calendar Event Rules
+private let addEventRules: [QuestRule] = [
+    .init(threshold: 62, offset: 63, name: "Add 1 new event", batch: 64),
+    .init(threshold: 61, offset: 62, name: "Add 2 new event", batch: 62),
+    .init(threshold: 59, offset: 60, name: "Add 2 new events", batch: 59),
+    .init(threshold: 57, offset: 58, name: "Add 1 new event", batch: 57),
+    .init(threshold: 56, offset: 57, name: "Add 3 new events", batch: 56),
+    .init(threshold: 53, offset: 54, name: "Add 2 new event", batch: 54),
+    .init(threshold: 51, offset: 52, name: "Add 1 new event", batch: 51),
+    .init(threshold: 50, offset: 51, name: "Add 2 new events", batch: 49),
+    .init(threshold: 48, offset: 49, name: "Add 1 new event", batch: 48),
+    .init(threshold: 47, offset: 48, name: "Add 1 new event", batch: 46),
+    .init(threshold: 46, offset: 47, name: "Add 2 new events", batch: 44),
+    .init(threshold: 44, offset: 45, name: "Add 1 new event", batch: 43),
+    .init(threshold: 43, offset: 44, name: "Add 2 new events", batch: 42),
+    .init(threshold: 41, offset: 42, name: "Add 1 new event",  batch: 41),
+    .init(threshold: 40, offset: 41, name: "Add 2 new events", batch: 39),
+    .init(threshold: 38, offset: 39, name: "Add 1 new event",  batch: 38),
+    .init(threshold: 37, offset: 38, name: "Add 1 new event",  batch: 36),
+    .init(threshold: 36, offset: 37, name: "Add 1 new event",  batch: 34),
+    .init(threshold: 35, offset: 36, name: "Add 1 new event",  batch: 33),
+    .init(threshold: 34, offset: 35, name: "Add 1 new event",  batch: 31),
+    .init(threshold: 33, offset: 34, name: "Add 1 new event",  batch: 28),
+    .init(threshold: 32, offset: 33, name: "Add 2 new events", batch: 26),
+    .init(threshold: 30, offset: 31, name: "Add 2 new events", batch: 24),
+    .init(threshold: 28, offset: 29, name: "Add 2 new events", batch: 23),
+    .init(threshold: 26, offset: 27, name: "Add 1 new event",  batch: 22),
+    .init(threshold: 25, offset: 26, name: "Add 1 new event",  batch: 19),
+    .init(threshold: 24, offset: 25, name: "Add 3 new event",  batch: 17),
+    .init(threshold: 21, offset: 22, name: "Add 1 new event",  batch: 16),
+    .init(threshold: 20, offset: 21, name: "Add 3 new event",  batch: 15),
+    .init(threshold: 17, offset: 18, name: "Add 2 new event",  batch: 13),
+    .init(threshold: 15, offset: 16, name: "Add 2 new events", batch: 12),
+    .init(threshold: 13, offset: 14, name: "Add 2 new event",  batch: 11),
+    .init(threshold: 11, offset: 12, name: "Add 2 new event",  batch: 10),
+    .init(threshold: 9,  offset: 10, name: "Add 2 new event",  batch: 9),
+    .init(threshold: 7,  offset: 8,  name: "Add 3 new event",  batch: 8),
+    .init(threshold: 2,  offset: 3,  name: "Add 5 new event",  batch: 3)
+]
+
+// MARK: - Completed Scheduled Event Rules
+private let completedEventRules: [QuestRule] = [
+    .init(threshold: 204, offset: 204, name: "Complete 4 scheduled event", batch: 64),
+    .init(threshold: 199, offset: 199, name: "Complete 5 scheduled event", batch: 63),
+    .init(threshold: 196, offset: 196, name: "Complete 3 scheduled event", batch: 62),
+    .init(threshold: 192, offset: 192, name: "Complete 4 scheduled event", batch: 61),
+    .init(threshold: 189, offset: 189, name: "Complete 3 scheduled event", batch: 60),
+    .init(threshold: 185, offset: 185, name: "Complete 4 scheduled event", batch: 59),
+    .init(threshold: 184, offset: 184, name: "Complete 1 scheduled event", batch: 58),
+    .init(threshold: 179, offset: 179, name: "Complete 5 scheduled event", batch: 57),
+    .init(threshold: 177, offset: 177, name: "Complete 2 scheduled event", batch: 56),
+    .init(threshold: 174, offset: 174, name: "Complete 3 scheduled event", batch: 55),
+    .init(threshold: 172, offset: 172, name: "Complete 2 scheduled event", batch: 54),
+    .init(threshold: 168, offset: 168, name: "Complete 4 scheduled event", batch: 53),
+    .init(threshold: 165, offset: 165, name: "Complete 3 scheduled event", batch: 52),
+    .init(threshold: 162, offset: 162, name: "Complete 3 scheduled event", batch: 51),
+    .init(threshold: 157, offset: 157, name: "Complete 5 scheduled event", batch: 50),
+    .init(threshold: 153, offset: 153, name: "Complete 4 scheduled event", batch: 49),
+    .init(threshold: 151, offset: 151, name: "Complete 2 scheduled event", batch: 48),
+    .init(threshold: 147, offset: 147, name: "Complete 2 scheduled event", batch: 47),
+    .init(threshold: 144, offset: 144, name: "Complete 3 scheduled event", batch: 46),
+    .init(threshold: 141, offset: 141, name: "Complete 3 scheduled event", batch: 45),
+    .init(threshold: 139, offset: 139, name: "Complete 2 scheduled event", batch: 44),
+    .init(threshold: 135, offset: 135, name: "Complete 4 scheduled event", batch: 43),
+    .init(threshold: 134, offset: 134, name: "Complete 1 scheduled event", batch: 42),
+    .init(threshold: 131, offset: 131, name: "Complete 3 scheduled event", batch: 41),
+    .init(threshold: 129, offset: 129, name: "Complete 2 scheduled event", batch: 40),
+    .init(threshold: 125, offset: 125, name: "Complete 4 scheduled event", batch: 39),
+    .init(threshold: 122, offset: 122, name: "Complete 3 scheduled event", batch: 38),
+    .init(threshold: 119, offset: 119, name: "Complete 3 scheduled event", batch: 37),
+    .init(threshold: 115, offset: 115, name: "Complete 4 scheduled event", batch: 36),
+    .init(threshold: 112, offset: 112, name: "Complete 3 scheduled event", batch: 35),
+    .init(threshold: 109, offset: 109, name: "Complete 3 scheduled event", batch: 34),
+    .init(threshold: 105, offset: 105, name: "Complete 4 scheduled event", batch: 33),
+    .init(threshold: 102, offset: 102, name: "Complete 3 scheduled event", batch: 32),
+    .init(threshold: 98,  offset: 98,  name: "Complete 4 scheduled event", batch: 31),
+    .init(threshold: 95,  offset: 95,  name: "Complete 3 scheduled event", batch: 30),
+    .init(threshold: 91,  offset: 91,  name: "Complete 4 scheduled event", batch: 29),
+    .init(threshold: 88,  offset: 88,  name: "Complete 3 scheduled event", batch: 28),
+    .init(threshold: 85,  offset: 85,  name: "Complete 3 scheduled event", batch: 27),
+    .init(threshold: 81,  offset: 81,  name: "Complete 4 scheduled event", batch: 26),
+    .init(threshold: 76,  offset: 76,  name: "Complete 5 scheduled event", batch: 25),
+    .init(threshold: 73,  offset: 73,  name: "Complete 3 scheduled event", batch: 24),
+    .init(threshold: 70,  offset: 70,  name: "Complete 3 scheduled event", batch: 23),
+    .init(threshold: 67,  offset: 67,  name: "Complete 3 scheduled event", batch: 22),
+    .init(threshold: 65,  offset: 65,  name: "Complete 2 scheduled event", batch: 21),
+    .init(threshold: 59,  offset: 59,  name: "Complete 5 scheduled event", batch: 20),
+    .init(threshold: 57,  offset: 57,  name: "Complete 2 scheduled event", batch: 19),
+    .init(threshold: 52,  offset: 52,  name: "Complete 5 scheduled event", batch: 18),
+    .init(threshold: 46,  offset: 46,  name: "Complete 6 scheduled event", batch: 17),
+    .init(threshold: 43,  offset: 43,  name: "Complete 3 scheduled event", batch: 16),
+    .init(threshold: 41,  offset: 41,  name: "Complete 2 scheduled event", batch: 15),
+    .init(threshold: 39,  offset: 39,  name: "Complete 2 scheduled event", batch: 14),
+    .init(threshold: 36,  offset: 36,  name: "Complete 3 scheduled event", batch: 13),
+    .init(threshold: 34,  offset: 34,  name: "Complete 2 scheduled event", batch: 12),
+    .init(threshold: 31,  offset: 31,  name: "Complete 3 scheduled event", batch: 11),
+    .init(threshold: 26,  offset: 26,  name: "Complete 5 scheduled event", batch: 10),
+    .init(threshold: 21,  offset: 21,  name: "Complete 5 scheduled event", batch: 9),
+    .init(threshold: 17,  offset: 17,  name: "Complete 4 scheduled event", batch: 8),
+    .init(threshold: 13,  offset: 13,  name: "Complete 4 scheduled event", batch: 7),
+    .init(threshold: 9,   offset: 9,   name: "Complete 4 scheduled event", batch: 6),
+    .init(threshold: 6,   offset: 6,   name: "Complete 3 scheduled event", batch: 5),
+    .init(threshold: 3,   offset: 3,   name: "Complete 3 scheduled event", batch: 4),
+    .init(threshold: 1,   offset: 1,   name: "Complete 2 scheduled event", batch: 3),
+]

@@ -238,9 +238,12 @@ struct AIOverviewSection: View {
                         title: "Review Calendar",
                         icon: "calendar.badge.clock",
                         color: .purple,
-                        description: "View all events with times"
+                        description: "View all events with times",
+                        islocked: currentBatch <= 6
                     ) {
-                        onCalendarReview()
+                        if currentBatch > 6{
+                            onCalendarReview()
+                        }
                     }
                     
                     OverviewCard(
@@ -299,6 +302,8 @@ struct CalendarSection: View {
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
+                    .disabled(questManager.currentBatch < 6)
+                    
                 }
             }
             

@@ -141,11 +141,14 @@ final class BadgeStorage {
                     targetDays = 50
                 case "60-Day Master":
                     targetDays = 60
+                case "Ultimate Achiever":
+                    targetDays = 62
                 case "66-Day Champion":
                     targetDays = 66
                 default:
                     continue
                 }
+              
 
                 let progress = min(Double(level) / Double(targetDays), 1.0)
                 let shouldUnlock = progress >= 1.0
